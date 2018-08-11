@@ -22,6 +22,8 @@ html, body {
 
 .Page {
   height: 100%;
+  background-position: center;
+  background-size: cover;
 }
 
 .Home {
