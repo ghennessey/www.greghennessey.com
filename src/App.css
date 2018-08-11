@@ -1,4 +1,6 @@
 /* Commenting out old App.css stuff so I can write my own from scratch */
+@import url('https://fonts.googleapis.com/css?family=Marcellus');
+
 *, html {
   margin: 0;
   padding: 0;
@@ -6,6 +8,7 @@
 
 html, body {
   height: 100%;
+  font-family: 'Marcellus', serif;
 }
 
 #root {
@@ -22,7 +25,10 @@ html, body {
 }
 
 .Home {
-  
+  color: white;
+}
+.Home h1 {
+  font-size: 3em;
 }
 
 /*

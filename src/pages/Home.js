@@ -21,11 +21,8 @@ class Home extends Page {
     this.getPageData(SLUG);
   }
 
-  componentDidUpdate() {
-
-  }
-
-  //Overwrite this callback from Page to get the data I need for this specific page
+  //Overwrite this callback from Page.getPageData to get the data I need for
+  //this specific page
   pageDataIsSet = () => {
     this.setState({
       title: this.state.pageData.title.rendered,
@@ -33,12 +30,10 @@ class Home extends Page {
     });
   }
 
-  const
-
   render() {
     return (
-      <div className="Home Page">
-        <h1>{this.state.title}</h1>
+      <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          <h1>{this.state.title}</h1>
       </div>
     )
   }
