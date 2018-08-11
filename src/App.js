@@ -17,14 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //Asyncronously get data and set the results
-    // fetch(API + PAGES)
-    //   .then(results => results.json())
-    //   .then(data => {
-    //     //Grab the site JSON data and store it in a state for future use
-    //     console.log(data);
-    //     this.setState({hits: data});
-    //   });
+
   }
 
   render() {

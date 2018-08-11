@@ -1,10 +1,31 @@
-
-
 /* Commenting out old App.css stuff so I can write my own from scratch */
-/* .App {
+*, html {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.App {
+  height: 100%;
   text-align: center;
 }
 
+.Page {
+  height: 100%;
+}
+
+.Home {
+  
+}
+
+/*
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;

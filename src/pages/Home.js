@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Page from '../components/Page.js'
 
-const SLUG_HOME = 'home-page'
+//Pass this slug in to get the specific page data I am looking for
+const SLUG = 'home-page'
 
 //Home Page component
 //Later I want to break this down into a component specifically for home
@@ -12,42 +13,35 @@ class Home extends Page {
     super();
     this.state = {
       title: '',
-      pageData: [],
+      backgroundImage: '',
     };
   }
 
-  // getPageData() {
-  //   fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/?home-page')
-  //     .then(results => results.json())
-  //     .then(data => {
-  //       for (var i = 0; i < data.length; i++) {
-  //         if(data[i].slug === SLUG_HOME) {
-  //           this.setState({
-  //             pageData: data[i],
-  //             title: data[i].title.rendered
-  //           });
-  //           return;
-  //         }
-  //       }
-  //     });
-  // }
-
-  componentDidMount() {
-    this.getPageData(SLUG_HOME);
+  componentWillMount() {
+    this.getPageData(SLUG);
   }
 
   componentDidUpdate() {
 
   }
 
+  //Overwrite this callback from Page to get the data I need for this specific page
+  pageDataIsSet = () => {
+    this.setState({
+      title: this.state.pageData.title.rendered,
+      backgroundImage: this.state.pageData.background_image.url
+    });
+  }
+
+  const
+
   render() {
     return (
-      <div className="Home">
+      <div className="Home Page">
         <h1>{this.state.title}</h1>
       </div>
     )
   }
 }
-
 
 export default Home

@@ -16,23 +16,29 @@ export default class Page extends Component {
     };
   }
 
-  getPageData(pageSlug) {
+  getPageData(pageSlug, desiredProps) {
     fetch(API + PAGES + pageSlug)
       .then(results => results.json())
       .then(data => {
         for (var i = 0; i < data.length; i++) {
+          //If the slug in the page I'm searching through matches what Im looking for
           if(data[i].slug === pageSlug) {
-            //Set and structure basic site information here
-            console.log('page data');
-            console.log(data[i]);
+            //Set basic site data here
             this.setState({
-              pageData: data[i],
-              title: data[i].title.rendered
-            });
-            return;
+              pageData: data[i]
+            },
+            () => (
+                    this.pageDataIsSet()
+                  )
+            );
           }
         }
-      });
+      })
+  }
+
+  pageDataIsSet = () => {
+    console.log('Page data is set');
+    console.log(this.state.pageData);
   }
 
 }
