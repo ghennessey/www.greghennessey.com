@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 const API = "http://www.greghennessey.com/wp-json"
 const PAGES = "/wp/v2/pages/?"
 
-class Page extends Component {
+export default class Page extends Component {
 
   constructor() {
     super();
@@ -17,13 +17,17 @@ class Page extends Component {
   }
 
   getPageData(pageSlug) {
-    fetch(APU + PAGES + pageSlug)
+    fetch(API + PAGES + pageSlug)
       .then(results => results.json())
       .then(data => {
         for (var i = 0; i < data.length; i++) {
           if(data[i].slug === pageSlug) {
+            //Set and structure basic site information here
+            console.log('page data');
+            console.log(data[i]);
             this.setState({
               pageData: data[i],
+              title: data[i].title.rendered
             });
             return;
           }
@@ -32,6 +36,3 @@ class Page extends Component {
   }
 
 }
-
-
-export default Page

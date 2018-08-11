@@ -5,9 +5,6 @@ import Home from './pages/Home.js'
 //REMOVE - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';
 
-const API = "http://www.greghennessey.com/wp-json"
-const PAGES = "/wp/v2/pages/?"
-
 //This is the main rendering component for my App and basic structure of the site
 //It all starts here
 class App extends Component {
