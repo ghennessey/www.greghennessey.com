@@ -30,7 +30,8 @@ html, body {
   color: white;
 }
 .Home h1 {
-  font-size: 3em;
+  font-size: 40px;
+  text-transform: uppercase;
 }
 
 /*

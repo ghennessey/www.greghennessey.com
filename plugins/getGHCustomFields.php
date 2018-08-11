@@ -19,17 +19,12 @@
             }
         ) );
 
-        // register_rest_field( 'post', 'description', array(
-        //     'get_callback' => function( $post ) {
-        //         return get_field('description');
-        //     }
-        // ) );
-        //
-        // register_rest_field( 'post', 'image', array(
-        //     'get_callback' => function( $post ) {
-        //         return get_field('image');
-        //     }
-        // ) );
+        register_rest_field( 'page', 'logo_image', array(
+            'get_callback' => function( $post ) {
+                return get_field('logo_image');
+            }
+        ) );
+
     }
 
     add_action( 'rest_api_init', 'getCustomField_add_json' );
