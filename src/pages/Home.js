@@ -52,14 +52,16 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <ul>
-            {
-              this.state.menuItems.map(d =>
-                <li key={d.pageSlug}>
-                  <a key={d.pageSlug} href="#">{d.pageTitle}</a>
-                </li>)
-            }
-          </ul>
+          <div className="Menu">
+            <ul>
+              {
+                this.state.menuItems.map(d =>
+                  <li key={d.pageSlug}>
+                    <a key={d.pageSlug} href="#">{d.pageTitle}</a>
+                  </li>)
+              }
+            </ul>
+          </div>
         </div>
       </div>
     )

@@ -1,6 +1,50 @@
 /* Commenting out old App.css stuff so I can write my own from scratch */
 @import url('https://fonts.googleapis.com/css?family=Marcellus');
 
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
 *, html {
   margin: 0;
   padding: 0;
@@ -9,6 +53,15 @@
 html, body {
   height: 100%;
   font-family: 'Marcellus', serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1, img {
+  margin:0;
+  padding:0;
 }
 
 #root {
@@ -26,12 +79,59 @@ html, body {
   background-size: cover;
 }
 
-.Home {
+
+/*
+  Some more info on navbar styling https://www.w3schools.com/css/css_navbar.asp
+*/
+.Menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Menu li {
+  float: left;
+  display: inline;
+}
+
+.Menu li a {
+  display: block;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+
+/* HOME SCREEN */
+.Home, .Home a {
   color: white;
 }
+.Home .Menu li a:hover {
+  opacity: 0.8;
+}
+
 .Home h1 {
+  padding-top: 25px;
   font-size: 40px;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+.nav-container {
+  /* Good article on flex https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nav-container img {
+  /* I need align-self center for images inside of flex so they don't stretch */
+  align-self: center;
+  padding-top: 40px;
+}
+
+.Home .Menu ul {
+  padding-top: 25px;
+  display: inline-block;
 }
 
 /*
