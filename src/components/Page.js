@@ -13,10 +13,42 @@ export default class Page extends Component {
     this.state = {
       title: '',
       pageData: [],
+      menuItems: [],
     };
   }
 
-  getPageData(pageSlug, desiredProps) {
+  getMenuItems() {
+    //Get a list of all pages and their URL's
+    const findPages = (data) => {
+      var pages = [];
+      for(var i = 0; i < data.length; i++) {
+        pages.push({
+          pageTitle: data[i].title.rendered,
+          pageSlug: data[i].slug,
+        });
+      }
+      return pages;
+    }
+
+    fetch(API + PAGES)
+      .then(results => results.json())
+      .then(data => {
+        var menuArray = findPages(data);
+        this.setState({
+          menuItems: menuArray,
+        },
+        () => (
+                this.menuDataIsSet()
+              )
+        );
+      });
+  }
+
+  menuDataIsSet = () => {
+    console.log('Menu data is set');
+  }
+
+  getPageData(pageSlug) {
     fetch(API + PAGES + pageSlug)
       .then(results => results.json())
       .then(data => {
@@ -27,6 +59,7 @@ export default class Page extends Component {
             this.setState({
               pageData: data[i]
             },
+            //Callback on pageDataIsSet when we receive all data
             () => (
                     this.pageDataIsSet()
                   )
