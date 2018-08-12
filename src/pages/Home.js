@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Page from '../components/Page.js'
+//User react HTML parser to get HTML out of the json returns from wordpress
+import ReactHtmlParser from 'react-html-parser';
 
 //Pass this slug in to get the specific page data I am looking for
 const SLUG = 'home-page'
@@ -15,6 +17,7 @@ class Home extends Page {
       title: '',
       backgroundImage: '',
       menuItems: [],
+      pageContent: '',
     };
   }
 
@@ -35,9 +38,15 @@ class Home extends Page {
       title: this.state.pageData.title.rendered,
       backgroundImage: this.state.pageData.background_image.url,
       logoImage: this.state.pageData.logo_image.url,
+      pageContent: this.state.pageData.content.rendered,
     });
 
     console.log(this.state.pageData);
+  }
+
+  convertStringToHTML = (string) => {
+    var html = string;
+    return ReactHtmlParser(html)
   }
 
   //Overwrite menuDataIsSet to get the results I rendered
@@ -62,6 +71,9 @@ class Home extends Page {
               }
             </ul>
           </div>
+        </div>
+        <div className="page-content">
+          {this.convertStringToHTML(this.state.pageContent)}
         </div>
       </div>
     )

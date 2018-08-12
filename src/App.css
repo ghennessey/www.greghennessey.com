@@ -134,6 +134,46 @@ h1, img {
   display: inline-block;
 }
 
+.Home .page-content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 17vh;
+}
+
+.Home .page-content hr {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-top: 1px;
+  width: 30%;
+  align-self: center;
+}
+
+.Home .page-content blockquote {
+  width: 50%;
+  align-self: center;
+  font-size: 18px;
+}
+
+.Home .page-content > blockquote:first-child {
+  font-size: 72px;
+}
+
+.Home .page-content blockquote:last-child {
+}
+
+@media screen and (max-width: 400px) {
+  .Home .page-content {
+    padding-top: 7vh;
+  }
+  .Home .page-content blockquote {
+    width: 90%;
+    font-size: 12px;
+  }
+  .Home .page-content > blockquote:first-child {
+    font-size: 20px;
+  }
+}
+
 /*
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
