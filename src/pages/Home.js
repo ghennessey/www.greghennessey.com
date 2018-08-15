@@ -6,6 +6,22 @@ import ReactHtmlParser from 'react-html-parser';
 //Pass this slug in to get the specific page data I am looking for
 const SLUG = 'home-page'
 
+function ResumeButton () {
+  return (
+    <div className="resume-button">
+      <button>Download Resume</button>
+    </div>
+  )
+}
+
+function LoaderAnimation () {
+  return (
+    <div class="loader-wrapper">
+
+    </div>
+  )
+}
+
 //Home Page component
 //Later I want to break this down into a component specifically for home
 //and a component for Pages that Home extends
@@ -58,6 +74,9 @@ class Home extends Page {
   render() {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+        <div className="loader-page-overlay">
+          <LoaderAnimation />
+        </div>
         <div className="nav-container">
           <img className="logo" src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
@@ -75,6 +94,7 @@ class Home extends Page {
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}
         </div>
+        <ResumeButton />
       </div>
     )
   }
