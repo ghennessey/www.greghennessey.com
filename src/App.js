@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import '.styles/App.css'
+import './styles/App.css'
 import Home from './pages/Home.js'
 
 //REMOVE - Just leaving this here so I can see how they imported an SVG
