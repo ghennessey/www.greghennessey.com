@@ -198,41 +198,9 @@ h1, img {
 }
 
 /* LOADER */
-/* https://codepen.io/jonathansilva/pen/GhkAI */
-/* @import "compass/css3"; */
-/* ----- Base ----- */
-/* $body-bg: #55c1FA; */
-/* ----- Loader ----- */
-/* 1.2s: 1.2s;
-infinite: infinite;
-normal: normal; */
-
 .loader-page-overlay {
 	position: absolute;
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
-}
-
-/*
-* Infinite Loader
-*
-* Author: Jonathan Silva
-* Url: https://portfolio.jonathansilva.com.br
-*
-*/
-
-/* ----- Base ----- */
-
-
-
-/* ----- Loader ----- */
-
-.loader-wrapper{
-  width:148px;
-  height: 100px;
-  position: absolute;
-  margin: -50px 0 0 -74px;
-  left: 50%;
-  top: 60%;
 }

@@ -17,7 +17,7 @@ function ResumeButton () {
 function LoaderAnimation () {
   return (
     <div class="loader-wrapper">
-
+      <div class="Loader"></div>
     </div>
   )
 }
