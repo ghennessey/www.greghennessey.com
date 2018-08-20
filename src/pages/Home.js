@@ -16,8 +16,23 @@ function ResumeButton () {
 
 function LoaderAnimation () {
   return (
-    <div class="loader-wrapper">
-      <div class="Loader"></div>
+    <div className="loader-wrapper">
+      <div className="Loader"></div>
+    </div>
+  )
+}
+
+function MenuItems (props) {
+  console.log("MenuItems props")
+  console.log(props)
+  return(
+    <div className="Menu">
+      <ul>
+      // {this.props.items.map(d =>
+      //  <li key={d.title}>
+      //   <a key={d.ID} href="#">{d.title}</a>
+      //  </li>)}
+      </ul>
     </div>
   )
 }
@@ -66,10 +81,10 @@ class Home extends Page {
   }
 
   //Overwrite menuDataIsSet to get the results I rendered
-  menuDataIsSet = () => {
-    console.log('New meny data is set');
-    console.log(this.state.menuItems);
-  }
+  // menuDataIsSet = () => {
+  //   console.log('New menu data is set');
+  //   console.log(this.state.menuItems);
+  // }
 
   render() {
     return (
@@ -80,16 +95,7 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <div className="Menu">
-            <ul>
-              {
-                this.state.menuItems.map(d =>
-                  <li key={d.pageSlug}>
-                    <a key={d.pageSlug} href="#">{d.pageTitle}</a>
-                  </li>)
-              }
-            </ul>
-          </div>
+          <MenuItems menuItems={this.state.menuItems} />
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}

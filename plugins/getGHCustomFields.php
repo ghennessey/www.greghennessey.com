@@ -39,9 +39,9 @@ add_action( 'rest_api_init', 'getCustomField_add_json' );
 function getAllMenuItems() {
   //$pages = wp_get_pages();
   $menu = "Main";
-  $menuItems = wp_get_nav_menu_items( $menu, $args = array() );
+  $menuItems = wp_get_nav_menu_items( $menu );
 
-  if ( empty( $pages ) ) {
+  if ( empty( $menuItems ) ) {
     return null;
   }
 

@@ -19,33 +19,47 @@ export default class Page extends Component {
 
   getMenuItems() {
     //Get a list of all pages and their URL's
-    const findPages = (data) => {
-      var pages = [];
-      for(var i = 0; i < data.length; i++) {
-        pages.push({
-          pageTitle: data[i].title.rendered,
-          pageSlug: data[i].slug,
-        });
-      }
-      return pages;
-    }
+    // const findPages = (data) => {
+    //   var pages = [];
+    //   for(var i = 0; i < data.length; i++) {
+    //     pages.push({
+    //       pageTitle: data[i].title.rendered,
+    //       pageSlug: data[i].slug,
+    //     });
+    //   }
+    //   return pages;
+    // }
 
-    fetch(API + PAGES)
-      .then(results => results.json())
-      .then(data => {
-        var menuArray = findPages(data);
-        this.setState({
-          menuItems: menuArray,
-        },
-        () => (
-                this.menuDataIsSet()
-              )
-        );
-      });
-  }
+  //   fetch(API + PAGES)
+  //     .then(results => results.json())
+  //     .then(data => {
+  //       var menuArray = findPages(data);
+  //       this.setState({
+  //         menuItems: menuArray,
+  //       },
+  //       () => (
+  //               this.menuDataIsSet()
+  //             )
+  //       );
+  //     });
+  // }
+
+  fetch('http://www.greghennessey.com/wp-json/gh/v1/menu_items')
+    .then(results => results.json())
+    .then(data => {
+      this.setState({
+        menuItems: data,
+      },
+      () => (
+              this.menuDataIsSet()
+            )
+      );
+    });
+}
 
   menuDataIsSet = () => {
     console.log('Menu data is set');
+    console.log(this.state.menuItems);
   }
 
   getPageData(pageSlug) {
