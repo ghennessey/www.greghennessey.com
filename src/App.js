@@ -12,8 +12,17 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      hits: []
+      homePage: <Home />,
+      currentPage: null
     };
+  }
+
+  componentWillMount() {
+    //When we start up, if the currentPage is not yet set (because it's the first visit)
+    //set the page to the home page.
+    if(!this.state.currentPage) {
+      this.setState({currentPage: this.state.homePage});
+    }
   }
 
   componentDidMount() {
@@ -24,7 +33,7 @@ class App extends Component {
     return (
       <div className="App">
         <header></header>
-        <Home />
+        {this.state.currentPage}
       </div>
     );
   }

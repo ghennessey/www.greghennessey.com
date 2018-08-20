@@ -23,15 +23,20 @@ function LoaderAnimation () {
 }
 
 function MenuItems (props) {
-  console.log("MenuItems props")
-  console.log(props)
+  var items = [];
+
+  for(var i=0; i < props.menuItems.length; i++) {
+    items.push(
+      <li key={props.menuItems[i].title}>
+        <a key={props.menuItems[i].ID} href="#">{props.menuItems[i].title}</a>
+      </li>
+    );
+  }
+
   return(
     <div className="Menu">
       <ul>
-      // {this.props.items.map(d =>
-      //  <li key={d.title}>
-      //   <a key={d.ID} href="#">{d.title}</a>
-      //  </li>)}
+        {items}
       </ul>
     </div>
   )
@@ -80,12 +85,6 @@ class Home extends Page {
     return ReactHtmlParser(html)
   }
 
-  //Overwrite menuDataIsSet to get the results I rendered
-  // menuDataIsSet = () => {
-  //   console.log('New menu data is set');
-  //   console.log(this.state.menuItems);
-  // }
-
   render() {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
@@ -95,7 +94,9 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <MenuItems menuItems={this.state.menuItems} />
+          <MenuItems menuItems={this.state.menuItems}>
+            <div>This is just a test</div>
+          </MenuItems>
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}
