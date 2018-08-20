@@ -90,3 +90,5 @@ require_once(ABSPATH . 'wp-settings.php');
 
 // allow CORS
 header("Access-Control-Allow-Origin: *");
+
+define( 'WP_DEBUG_DISPLAY', true );
