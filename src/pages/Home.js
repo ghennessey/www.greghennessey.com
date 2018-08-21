@@ -94,9 +94,7 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <MenuItems menuItems={this.state.menuItems}>
-            <div>This is just a test</div>
-          </MenuItems>
+          <MenuItems menuItems={this.state.menuItems} />
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}
