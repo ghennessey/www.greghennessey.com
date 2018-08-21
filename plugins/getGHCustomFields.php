@@ -11,6 +11,14 @@
    License: MIT
    */
 
+    /* DEBUG STUFF */
+
+   function console_log( $data ){
+     echo '<script>';
+     echo 'console.log('. json_encode( $data ) .')';
+     echo '</script>';
+   }
+
 function getCustomField_add_json() {
 
     register_rest_field( 'page', 'background_image', array(
@@ -29,17 +37,15 @@ function getCustomField_add_json() {
 add_action( 'rest_api_init', 'getCustomField_add_json' );
 
 function getAllMenuItems() {
-  //Important page data that we want is...
-  // ID
-  // guid
-  // post_title
-  // menu_order
-  $pages = wp_get_nav_menu_items();
+  //$pages = wp_get_pages();
+  $menu = "Main";
+  $menuItems = wp_get_nav_menu_items( $menu, $args = array() );
+
   if ( empty( $pages ) ) {
     return null;
   }
 
-  return $pages;
+  return $menuItems;
 }
 
 add_action( 'rest_api_init', function() {
@@ -48,8 +54,5 @@ add_action( 'rest_api_init', function() {
     'callback' => 'getAllMenuItems'
   ) );
 } );
-
-// allow CORS
-header("Access-Control-Allow-Origin: *");
 
 ?>
