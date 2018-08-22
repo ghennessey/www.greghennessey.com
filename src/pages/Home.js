@@ -4,7 +4,7 @@ import Page from '../components/Page.js'
 import ReactHtmlParser from 'react-html-parser';
 
 //Pass this slug in to get the specific page data I am looking for
-const SLUG = 'home-page'
+const PAGE_ID = 10;
 
 function ResumeButton () {
   return (
@@ -24,11 +24,12 @@ function LoaderAnimation () {
 
 function MenuItems (props) {
   var items = [];
-
   for(var i=0; i < props.menuItems.length; i++) {
     items.push(
       <li key={props.menuItems[i].title}>
-        <a key={props.menuItems[i].ID} href="#">{props.menuItems[i].title}</a>
+        <a key={props.menuItems[i].ID} href="#" onClick={function() {
+          //Load the clicked page
+        }}>{props.menuItems[i].title}</a>
       </li>
     );
   }
@@ -58,7 +59,7 @@ class Home extends Page {
   }
 
   componentWillMount() {
-    this.getPageData(SLUG);
+    this.getPageData(PAGE_ID);
     this.getMenuItems();
   }
 
@@ -74,10 +75,8 @@ class Home extends Page {
       title: this.state.pageData.title.rendered,
       backgroundImage: this.state.pageData.background_image.url,
       logoImage: this.state.pageData.logo_image.url,
-      pageContent: this.state.pageData.content.rendered,
+      pageContent: this.state.pageData.post_content,
     });
-
-    console.log(this.state.pageData);
   }
 
   convertStringToHTML = (string) => {
@@ -88,11 +87,8 @@ class Home extends Page {
   render() {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <div className="loader-page-overlay">
-          <LoaderAnimation />
-        </div>
         <div className="nav-container">
-          <img className="logo" src={this.state.logoImage} />
+          <img className="logo" alt='Logo' src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
           <MenuItems menuItems={this.state.menuItems} />
         </div>
