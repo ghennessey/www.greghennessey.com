@@ -4,7 +4,7 @@ import Page from '../components/Page.js'
 import ReactHtmlParser from 'react-html-parser';
 
 //Pass this slug in to get the specific page data I am looking for
-const SLUG = 'home-page'
+const PAGE_ID = 10;
 
 function ResumeButton () {
   return (
@@ -16,8 +16,29 @@ function ResumeButton () {
 
 function LoaderAnimation () {
   return (
-    <div class="loader-wrapper">
-      <div class="Loader"></div>
+    <div className="loader-wrapper">
+      <div className="Loader"></div>
+    </div>
+  )
+}
+
+function MenuItems (props) {
+  var items = [];
+  for(var i=0; i < props.menuItems.length; i++) {
+    items.push(
+      <li key={props.menuItems[i].title}>
+        <a key={props.menuItems[i].ID} href="#" onClick={function() {
+          //Load the clicked page
+        }}>{props.menuItems[i].title}</a>
+      </li>
+    );
+  }
+
+  return(
+    <div className="Menu">
+      <ul>
+        {items}
+      </ul>
     </div>
   )
 }
@@ -38,7 +59,7 @@ class Home extends Page {
   }
 
   componentWillMount() {
-    this.getPageData(SLUG);
+    this.getPageData(PAGE_ID);
     this.getMenuItems();
   }
 
@@ -54,10 +75,8 @@ class Home extends Page {
       title: this.state.pageData.title.rendered,
       backgroundImage: this.state.pageData.background_image.url,
       logoImage: this.state.pageData.logo_image.url,
-      pageContent: this.state.pageData.content.rendered,
+      pageContent: this.state.pageData.post_content,
     });
-
-    console.log(this.state.pageData);
   }
 
   convertStringToHTML = (string) => {
@@ -65,31 +84,13 @@ class Home extends Page {
     return ReactHtmlParser(html)
   }
 
-  //Overwrite menuDataIsSet to get the results I rendered
-  menuDataIsSet = () => {
-    console.log('New meny data is set');
-    console.log(this.state.menuItems);
-  }
-
   render() {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <div className="loader-page-overlay">
-          <LoaderAnimation />
-        </div>
         <div className="nav-container">
-          <img className="logo" src={this.state.logoImage} />
+          <img className="logo" alt='Logo' src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <div className="Menu">
-            <ul>
-              {
-                this.state.menuItems.map(d =>
-                  <li key={d.pageSlug}>
-                    <a key={d.pageSlug} href="#">{d.pageTitle}</a>
-                  </li>)
-              }
-            </ul>
-          </div>
+          <MenuItems menuItems={this.state.menuItems} />
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}

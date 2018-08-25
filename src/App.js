@@ -12,8 +12,24 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      hits: []
+      page_home: {
+        component: <Home/>,
+        url: 'home-page',
+      },
+      page_about: {
+        component:<Home/>,
+        url: 'home-page',
+      },
+      currentPage: null
     };
+  }
+
+  componentWillMount() {
+    //When we start up, if the currentPage is not yet set (because it's the first visit)
+    //set the page to the home page.
+    if(!this.state.currentPage) {
+      this.setState({currentPage: this.state.page_home});
+    }
   }
 
   componentDidMount() {
@@ -23,8 +39,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header></header>
-        <Home />
+        <header>
+        </header>
+        {this.state.currentPage.component}
       </div>
     );
   }

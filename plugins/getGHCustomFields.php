@@ -36,12 +36,20 @@ function getCustomField_add_json() {
 }
 add_action( 'rest_api_init', 'getCustomField_add_json' );
 
+function getPageByID( WP_REST_Request $request ) {
+  $id = $request['id'];
+  $pages = get_pages(array(
+    'include' => $id
+  ));
+  return $pages;
+}
+
 function getAllMenuItems() {
   //$pages = wp_get_pages();
   $menu = "Main";
-  $menuItems = wp_get_nav_menu_items( $menu, $args = array() );
+  $menuItems = wp_get_nav_menu_items( $menu );
 
-  if ( empty( $pages ) ) {
+  if ( empty( $menuItems ) ) {
     return null;
   }
 
@@ -53,6 +61,12 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'getAllMenuItems'
   ) );
+
+  register_rest_route( 'gh/v1', '/page/(?P<id>[\d]+)', array(
+    'methods' => WP_REST_Server::READABLE,
+    'callback' => 'getPageByID'
+  ) );
+
 } );
 
 ?>
