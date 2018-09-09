@@ -22,27 +22,6 @@ function LoaderAnimation () {
   )
 }
 
-function MenuItems (props) {
-  var items = [];
-  for(var i=0; i < props.menuItems.length; i++) {
-    items.push(
-      <li key={props.menuItems[i].title}>
-        <a key={props.menuItems[i].ID} href="#" onClick={function() {
-          //Load the clicked page
-        }}>{props.menuItems[i].title}</a>
-      </li>
-    );
-  }
-
-  return(
-    <div className="Menu">
-      <ul>
-        {items}
-      </ul>
-    </div>
-  )
-}
-
 //Home Page component
 //Later I want to break this down into a component specifically for home
 //and a component for Pages that Home extends
@@ -53,14 +32,12 @@ class Home extends Page {
     this.state = {
       title: '',
       backgroundImage: '',
-      menuItems: [],
       pageContent: '',
     };
   }
 
   componentWillMount() {
     this.getPageData(PAGE_ID);
-    this.getMenuItems();
   }
 
   componentDidMount() {
@@ -90,7 +67,7 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" alt='Logo' src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          <MenuItems menuItems={this.state.menuItems} />
+          {this.props.menu}
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}

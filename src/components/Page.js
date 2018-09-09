@@ -17,24 +17,6 @@ export default class Page extends Component {
     };
   }
 
-  //TODO - Move this API call further up in the app. Maybe to App.js
-  getMenuItems() {
-    fetch('http://www.greghennessey.com/wp-json/gh/v1/menu_items')
-      .then(results => results.json())
-      .then(data => {
-        this.setState({
-          menuItems: data,
-        },
-        () => (
-                this.menuDataIsSet()
-              )
-        );
-      });
-  }
-
-  menuDataIsSet = () => {
-  }
-
   getPageData(ID) {
     fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + ID)
       .then(results => results.json())

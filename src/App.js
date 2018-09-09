@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import './styles/App.css'
 import Home from './pages/Home.js'
+import Menu from './components/Menu.js'
 
-//REMOVE - Just leaving this here so I can see how they imported an SVG
+//TODO - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';
 
 //This is the main rendering component for my App and basic structure of the site
@@ -18,13 +19,17 @@ class App extends Component {
       },
       page_about: {
         component:<Home/>,
-        url: 'home-page',
+        url: 'about',
       },
-      currentPage: null
+      currentPage: null,
+      menuItems: [],
     };
   }
 
   componentWillMount() {
+    //Get menu data
+    //this.getMenuItems();
+
     //When we start up, if the currentPage is not yet set (because it's the first visit)
     //set the page to the home page.
     if(!this.state.currentPage) {
@@ -41,7 +46,11 @@ class App extends Component {
       <div className="App">
         <header>
         </header>
-        {this.state.currentPage.component}
+        <Home
+          menu={
+            <Menu />
+          }
+        />
       </div>
     );
   }
