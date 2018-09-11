@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Page from '../components/Page.js'
+import Menu from '../components/Menu.js'
 //User react HTML parser to get HTML out of the json returns from wordpress
 import ReactHtmlParser from 'react-html-parser';
 
@@ -67,7 +68,7 @@ class Home extends Page {
         <div className="nav-container">
           <img className="logo" alt='Logo' src={this.state.logoImage} />
           <h1>{this.state.title}</h1>
-          {this.props.menu}
+          <Menu />
         </div>
         <div className="page-content">
           {this.convertStringToHTML(this.state.pageContent)}

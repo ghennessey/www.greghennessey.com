@@ -21,6 +21,7 @@ export default class Page extends Component {
     fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + ID)
       .then(results => results.json())
       .then(data => {
+        console.log('----Page data-----');
         console.log(data);
         if(data.id === ID) {
           //Set basic site data here

@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+//TODO - Set this up to dynamically interpret the site url
+const SITE_URL = 'http://www.greghennessey.com';
 
 export default class Menu extends Component {
+
+  getPagePath(page) {
+    var pagePath = page.slice(SITE_URL.length, page.length);
+    //console.log('pagePath: ' + pagePath);
+    return pagePath
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,10 +39,13 @@ export default class Menu extends Component {
   //this is ever called
   menuDataIsSet = () => {
     var menuStruct = [];
+    console.log('-----Menu Paths-----');
     for(var i=0; i < this.state.items.length; i++) {
+      var path = this.getPagePath(this.state.items[i].url);
+      console.log('path: ' + path);
       menuStruct.push(
         <li key={this.state.items[i].title}>
-          <a key={this.state.items[i].ID} href="#" onClick={this.handleClick}>{this.state.items[i].title}</a>
+          <Link key={this.state.items[i].ID} to={path}>{this.state.items[i].title}</Link>
         </li>
       );
     }
