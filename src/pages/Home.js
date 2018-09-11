@@ -26,7 +26,7 @@ function LoaderAnimation () {
 //Home Page component
 //Later I want to break this down into a component specifically for home
 //and a component for Pages that Home extends
-class Home extends Page {
+export default class Home extends Page {
 
   constructor() {
     super();
@@ -50,11 +50,14 @@ class Home extends Page {
   pageDataIsSet = () => {
     //Set the states
     this.setState({
-      title: this.state.pageData.title.rendered,
+      title: this.state.pageData.page_header,
       backgroundImage: this.state.pageData.background_image.url,
       logoImage: this.state.pageData.logo_image.url,
-      pageContent: this.state.pageData.post_content,
+      pageContent: this.state.pageData.content.rendered,
     });
+
+    console.log('----Page Content-----');
+    console.log(this.state.pageContent);
   }
 
   convertStringToHTML = (string) => {
@@ -78,5 +81,3 @@ class Home extends Page {
     )
   }
 }
-
-export default Home

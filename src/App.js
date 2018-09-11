@@ -12,7 +12,7 @@ import './styles/App.css'
 
 //This is the main rendering component for my App and basic structure of the site
 //It all starts here
-class App extends Component {
+export default class App extends Component {
 
   constructor() {
     super();
@@ -33,5 +33,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

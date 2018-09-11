@@ -1,23 +1,15 @@
 <?php
-  //A snip of code I found on this site to help me build my app
-  //https://snipcart.com/blog/reactjs-wordpress-rest-api-example
+//A snip of code I found on this site to help me build my app
+//https://snipcart.com/blog/reactjs-wordpress-rest-api-example
 
-   /*
-   Plugin Name: GetGHCustomFields
-   Description: Get the custom fiends I created for my site
-   Version: 1.0
-   Author: Greg Hennessey
-   Author URI: http://www.greghennessey.com
-   License: MIT
-   */
-
-    /* DEBUG STUFF */
-
-   function console_log( $data ){
-     echo '<script>';
-     echo 'console.log('. json_encode( $data ) .')';
-     echo '</script>';
-   }
+/*
+Plugin Name: GetGHCustomFields
+Description: Get the custom fiends I created for my site
+Version: 1.0
+Author: Greg Hennessey
+Author URI: http://www.greghennessey.com
+License: MIT
+*/
 
 function getCustomField_add_json() {
 
@@ -33,16 +25,14 @@ function getCustomField_add_json() {
         }
     ) );
 
+    register_rest_field( 'page', 'page_header', array(
+        'get_callback' => function( $post ) {
+            return get_field('page_header');
+        }
+    ) );
+
 }
 add_action( 'rest_api_init', 'getCustomField_add_json' );
-
-function getPageByID( WP_REST_Request $request ) {
-  $id = $request['id'];
-  $pages = get_pages(array(
-    'include' => $id
-  ));
-  return $pages;
-}
 
 function getAllMenuItems() {
   //$pages = wp_get_pages();
@@ -61,12 +51,6 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'getAllMenuItems'
   ) );
-
-  register_rest_route( 'gh/v1', '/page/(?P<id>[\d]+)', array(
-    'methods' => WP_REST_Server::READABLE,
-    'callback' => 'getPageByID'
-  ) );
-
 } );
 
 ?>
