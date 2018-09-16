@@ -36,16 +36,15 @@ export default class About extends Page {
   render() {
     return(
       <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <h1>This is the about page</h1>
-
-        <div className="page-content">
-          {this.convertStringToHTML(this.state.pageContent)}
-        </div>
-        <HamburgerMenu>
-          <Menu />
-        </HamburgerMenu>
         <ResumeButton />
-
+        <HamburgerMenu />
+        <section className='left-section'>
+          <div className="page-content">
+            {this.convertStringToHTML(this.state.pageContent)}
+          </div>
+        </section>
+        <section className='right-section'></section>
+        <h1>This is the about page</h1>
     </div>
 
     )
