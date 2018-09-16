@@ -1,19 +1,10 @@
 import React, { Component } from 'react'
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
-//User react HTML parser to get HTML out of the json returns from wordpress
-import ReactHtmlParser from 'react-html-parser';
+import ResumeButton from '../components/ResumeButton.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 10;
-
-function ResumeButton () {
-  return (
-    <div className="resume-button">
-      <button>Download Resume</button>
-    </div>
-  )
-}
 
 function LoaderAnimation () {
   return (
@@ -41,10 +32,6 @@ export default class Home extends Page {
     this.getPageData(PAGE_ID);
   }
 
-  componentDidMount() {
-
-  }
-
   //Overwrite this callback from Page.getPageData to get the data I need for
   //this specific page
   pageDataIsSet = () => {
@@ -55,14 +42,6 @@ export default class Home extends Page {
       logoImage: this.state.pageData.logo_image.url,
       pageContent: this.state.pageData.content.rendered,
     });
-
-    console.log('----Page Content-----');
-    console.log(this.state.pageContent);
-  }
-
-  convertStringToHTML = (string) => {
-    var html = string;
-    return ReactHtmlParser(html)
   }
 
   render() {

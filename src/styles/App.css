@@ -197,10 +197,40 @@ h1, img {
 	cursor: pointer;
 }
 
-/* LOADER */
-.loader-page-overlay {
-	/* position: absolute;
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5); */
+/* HAMBRUGER MENU */
+.HamburgerMenu button {
+	font-family: inherit;
+	border: none;
+	background: none;
+	border-radius: 0;
+	color: white;
+	font-size: 1.5em;
+	height: 40px;
+	width: 40px;
+}
+
+.HamburgerMenu {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+}
+
+.hburger {
+	display: inline-block;
+	cursor: pointer;
+}
+
+.upper-line, .mid-line, .lower-line {
+	width: 35px;
+	height: 5px;
+	background-color: #fff;
+	margin: 6px 0;
+	transition: 0.4s;
+}
+
+.fs-blackout {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
 }
