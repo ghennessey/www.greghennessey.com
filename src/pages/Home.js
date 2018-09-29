@@ -41,7 +41,7 @@ export default class Home extends Page {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <div className="nav-container">
-          <LogoMark title={this.state.title} logo={this.state.logoImage} />
+          <LogoMark title={this.state.title} logo={this.state.logoImage} style='centered'/>
           <Menu />
         </div>
         <div className="page-content">

@@ -42,9 +42,9 @@ export default class About extends Page {
         <ResumeButton />
         <HamburgerMenu />
         <section className='left-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
-          <h1>This is the about page</h1>
+          <LogoMark title={this.state.title} logo={this.state.logoImage} style='horizontal'/>
           <div className="page-content">
-            {this.convertStringToHTML(this.state.pageContent)}
+             {this.convertStringToHTML(this.state.pageContent)}
           </div>
         </section>
         <section className='right-section'></section>

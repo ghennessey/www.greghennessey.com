@@ -68,6 +68,8 @@ h1, img {
   height: 100%;
 }
 
+/* BASICS */
+
 .App {
   height: 100%;
   text-align: center;
@@ -77,6 +79,44 @@ h1, img {
   height: 100%;
   background-position: center;
   background-size: cover;
+}
+
+/* WIDGETS */
+.logo-mark {}
+.logo-mark h1 {
+	color: white;
+	text-transform: uppercase;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+
+.logo-mark .logo .horizontal {}
+
+.logo-mark.horizontal {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	height: 50px;
+	display: flex;
+}
+
+.logo-mark.horizontal h1 {
+	display: flex;
+	font-size: 24px;
+	vertical-align: middle;
+	line-height: 50px;
+	padding-left: 20px;
+}
+
+.logo-mark.horizontal .logo {
+	display: flex;
+	height: 50px;
+	width: 50px;
+}
+
+.Home .logo-mark.centered h1 {
+	padding-top: 25px;
+	font-size: 40px;
 }
 
 
@@ -109,21 +149,14 @@ h1, img {
   opacity: 0.8;
 }
 
-.Home h1 {
-  padding-top: 25px;
-  font-size: 40px;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 1);
-}
-
-.nav-container {
+.Home .nav-container {
   /* Good article on flex https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.nav-container img {
+.Home .nav-container img {
   /* I need align-self center for images inside of flex so they don't stretch */
   align-self: center;
   padding-top: 40px;
@@ -202,6 +235,28 @@ h1, img {
 .About {
 
 }
+
+/* .About .logo-mark {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	height: 50px;
+	display: flex;
+}
+
+.About .logo-mark h1 {
+	display: flex;
+	font-size: 24px;
+	vertical-align: middle;
+	line-height: 50px;
+	padding-left: 20px;
+}
+
+.About .logo-mark .logo {
+	display: flex;
+	height: 50px;
+	width: 50px;
+} */
 
 .About section {
 	float: left;
