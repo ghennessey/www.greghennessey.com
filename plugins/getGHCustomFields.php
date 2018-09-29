@@ -31,6 +31,12 @@ function getCustomField_add_json() {
         }
     ) );
 
+    register_rest_field( 'page', 'secondary_bg_image', array(
+        'get_callback' => function( $post ) {
+            return get_field('secondary_bg_image');
+        }
+    ) );
+
 }
 add_action( 'rest_api_init', 'getCustomField_add_json' );
 

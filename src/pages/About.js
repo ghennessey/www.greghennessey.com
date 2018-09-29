@@ -3,6 +3,7 @@ import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
+import LogoMark from '../components/Widgets.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 21;
@@ -13,6 +14,7 @@ export default class About extends Page {
     this.state = {
       title: '',
       backgroundImage: '',
+      secondaryBGImage: '',
       pageContent: '',
     };
   }
@@ -28,6 +30,7 @@ export default class About extends Page {
     this.setState({
       title: this.state.pageData.page_header,
       backgroundImage: this.state.pageData.background_image.url,
+      secondaryBGImage: this.state.pageData.secondary_bg_image.url,
       logoImage: this.state.pageData.logo_image.url,
       pageContent: this.state.pageData.content.rendered,
     });
@@ -38,13 +41,13 @@ export default class About extends Page {
       <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <ResumeButton />
         <HamburgerMenu />
-        <section className='left-section'>
+        <section className='left-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
+          <h1>This is the about page</h1>
           <div className="page-content">
             {this.convertStringToHTML(this.state.pageContent)}
           </div>
         </section>
         <section className='right-section'></section>
-        <h1>This is the about page</h1>
     </div>
 
     )

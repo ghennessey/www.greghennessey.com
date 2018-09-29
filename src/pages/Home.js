@@ -2,17 +2,10 @@ import React, { Component } from 'react'
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
+import LogoMark from '../components/Widgets.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 10;
-
-function LoaderAnimation () {
-  return (
-    <div className="loader-wrapper">
-      <div className="Loader"></div>
-    </div>
-  )
-}
 
 //Home Page component
 //Later I want to break this down into a component specifically for home
@@ -48,8 +41,7 @@ export default class Home extends Page {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <div className="nav-container">
-          <img className="logo" alt='Logo' src={this.state.logoImage} />
-          <h1>{this.state.title}</h1>
+          <LogoMark title={this.state.title} logo={this.state.logoImage} />
           <Menu />
         </div>
         <div className="page-content">
