@@ -37,6 +37,12 @@ function getCustomField_add_json() {
         }
     ) );
 
+    // register_rest_field( 'page', 'about_link_item', array(
+    //     'get_callback' => function( $post ) {
+    //         return get_field('link_item');
+    //     }
+    // ) );
+
 }
 add_action( 'rest_api_init', 'getCustomField_add_json' );
 
@@ -58,5 +64,12 @@ add_action( 'rest_api_init', function() {
     'callback' => 'getAllMenuItems'
   ) );
 } );
+
+add_filter('rest_prepare_post', 'append_acf');
+
+function append_acf($response) {
+  $response->data['acf'] = get_fields($response->data['id']);
+  return $response;
+};
 
 ?>

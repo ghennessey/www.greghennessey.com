@@ -1,5 +1,5 @@
-/* Commenting out old App.css stuff so I can write my own from scratch */
 @import url('https://fonts.googleapis.com/css?family=Marcellus');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -132,7 +132,7 @@ h1, img {
 	max-width: 250px;
 	height: 100%;
 	background-color: rgba(0,0,0,0.5);
-	padding: 100px 50px 5px 5px;
+	padding: 80px 5px 5px 50px;
 }
 
 .HamburgerMenu a {
@@ -164,8 +164,9 @@ h1, img {
 }
 
 .HamburgerMenu li {
-	float: none;
+	float: none !important;
 	margin-bottom: 7px;
+	text-align: left;
 }
 
 .upper-line, .mid-line, .lower-line {
@@ -355,9 +356,39 @@ h1, img {
 	font-size: 14px;
 	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
 	margin-bottom: 24px;
+	font-family:'Open Sans', sans-serif;
 }
 
 .About .left-section {
 		box-shadow: 0px 0px 15px 15px rgba(0,0,0,0.3);
 		background-size: cover;
+}
+.about-links {
+	padding-top: 16px;
+	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
+}
+.about-links .link-row-1 {
+	display: flex;
+	padding-bottom:5px;
+}
+.about-links .link-image, .about-links .link-title {
+	display: flex;
+}
+.about-links .about-link-container {
+	padding-bottom: 25px;
+}
+
+.about-links h2 {
+	display: flex;
+	vertical-align: middle;
+	line-height: 25px;
+	padding-left: 15px;
+	font-family: 'Marcellus', serif;
+	font-size: 20px;
+}
+
+.about-links a {
+	color: white;
+	font-family:'Open Sans', sans-serif;
+	font-size: 14px;
 }
