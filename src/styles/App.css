@@ -119,6 +119,72 @@ h1, img {
 	font-size: 40px;
 }
 
+/* HAMBRUGER MENU */
+.HamburgerMenu {
+
+}
+
+.HamburgerMenu .Menu {
+	position: fixed;
+	text-align: right;
+	right: 0;
+	width: 25%;
+	max-width: 250px;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	padding: 100px 50px 5px 5px;
+}
+
+.HamburgerMenu a {
+	color: #fff;
+	font-size: 20px;
+	line-height: 36px;
+	text-transform: uppercase;
+}
+
+.HamburgerMenu a:hover {
+	text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+.hburger {
+	position: absolute;
+	cursor: pointer;
+	border: none;
+	background: none;
+	border-radius: 0;
+	color: white;
+	height: 40px;
+	width: 40px;
+	top: 20px;
+	right: 20px;
+}
+
+.HamburgerMenu .open {
+	position: relative;
+}
+
+.HamburgerMenu li {
+	float: none;
+	margin-bottom: 7px;
+}
+
+.upper-line, .mid-line, .lower-line {
+	width: 35px;
+	height: 5px;
+	background-color: #fff;
+	margin: 6px 0;
+	transition: 0.4s;
+}
+
+.fs-blackout {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
 
 /*
   Some more info on navbar styling https://www.w3schools.com/css/css_navbar.asp
@@ -232,106 +298,66 @@ h1, img {
 }
 
 /* ABOUT SCREEN */
-.About {
-
-}
-
-/* .About .logo-mark {
-	position: fixed;
-	top: 20px;
-	left: 20px;
-	height: 50px;
-	display: flex;
-}
-
-.About .logo-mark h1 {
-	display: flex;
-	font-size: 24px;
-	vertical-align: middle;
-	line-height: 50px;
-	padding-left: 20px;
-}
-
-.About .logo-mark .logo {
-	display: flex;
-	height: 50px;
-	width: 50px;
-} */
+.About {}
 
 .About section {
 	float: left;
-	display: inline-block;
+	display: grid;
 	width: 50%;
 	height: 100%;
+	overflow: hidden;
+}
+
+.About .right-section {
+	color: white;
+	display: grid;
+	align-content: center;
+	justify-items: center;
+}
+
+@media screen and (max-width: 500px) {
+	.About .left-section {
+		display: none;
+	}
+	.About .right-section {
+		width: 500px;
+	}
+}
+
+.About .right-section .page-content {
+	width: 70%;
+	display: grid;
+	text-align: left;
+}
+
+.About .right-section .page-content h1 {
+	display: inline-block;
+	font-size: 64px;
+	padding-bottom: 40px;
+	padding-top: 40px;
+	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
+}
+
+.About .right-section .page-content .portrait {
+	max-width: 150px;
+	max-height: 150px;
+	overflow: hidden;
+	box-shadow: 0px 3px 15px 6px rgba(0, 0, 0, 0.3);
+}
+
+.About .right-section .page-content .portrait img {
+	max-width: 150px;
+	height: auto;
+}
+
+.About .right-section .page-content p {
+	line-height: 24px;
+	font-size: 14px;
+	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
+	margin-bottom: 24px;
 }
 
 .About .left-section {
 		box-shadow: 0px 0px 15px 15px rgba(0,0,0,0.3);
 		background-size: cover;
-}
-
-/* HAMBRUGER MENU */
-.HamburgerMenu {
-
-}
-
-.HamburgerMenu .Menu {
-	position: fixed;
-	text-align: right;
-	right: 0;
-	width: 25%;
-	max-width: 250px;
-	height: 100%;
-	background-color: rgba(0,0,0,0.5);
-	padding: 100px 50px 5px 5px;
-}
-
-.HamburgerMenu a {
-	color: #fff;
-	font-size: 20px;
-	line-height: 36px;
-	text-transform: uppercase;
-}
-
-.HamburgerMenu a:hover {
-	text-shadow: 0 0 10px rgba(255, 255, 255, 1);
-}
-
-.hburger {
-	position: absolute;
-	cursor: pointer;
-	border: none;
-	background: none;
-	border-radius: 0;
-	color: white;
-	height: 40px;
-	width: 40px;
-	top: 10px;
-	right: 10px;
-}
-
-.HamburgerMenu .open {
-	position: relative;
-}
-
-.HamburgerMenu li {
-	float: none;
-	margin-bottom: 7px;
-}
-
-.upper-line, .mid-line, .lower-line {
-	width: 35px;
-	height: 5px;
-	background-color: #fff;
-	margin: 6px 0;
-	transition: 0.4s;
-}
-
-.fs-blackout {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5);
 }
