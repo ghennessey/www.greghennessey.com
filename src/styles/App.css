@@ -128,6 +128,7 @@ h1, img {
 	position: fixed;
 	text-align: right;
 	right: 0;
+	top: 0;
 	width: 25%;
 	max-width: 250px;
 	height: 100%;
@@ -391,4 +392,87 @@ h1, img {
 	color: white;
 	font-family:'Open Sans', sans-serif;
 	font-size: 14px;
+}
+
+/* BLOGMAIN SECTION */
+.BlogMain, .BlogMain a {
+	color: white;
+}
+
+.BlogMain .top-section {
+	height: 293px;
+}
+
+.BlogMain .top-section .page-content h1 {
+	color: white;
+	font-size: 52px;
+	line-height: 293px;
+	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
+}
+
+.BlogMain .blog-list-container {
+	width: 50%;
+	min-width: 800px;
+	padding-top: 75px;
+	margin: 0 auto;
+}
+
+.BlogMain {
+	overflow: auto;
+}
+
+.blog-list-container .container {
+	display: grid;
+	grid-template-columns: 40% 5% 55%;
+	grid-template-rows: 253px;
+	margin-bottom: 50px;
+}
+
+.blog-list-container .container .right-side {
+	display: grid;
+	grid-template-rows: 32px 40px 113px 68px;
+	grid-column-start: 3;
+	text-align: left;
+	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
+}
+
+.blog-list-container .container .left-side {
+	box-shadow: 0px 3px 15px 6px rgba(0, 0, 0, 0.2);
+}
+
+.BlogMain .blog-list-container .right-side h1 {
+		text-align: left;
+		font-size: 32px;
+}
+
+.BlogMain .blog-list-container .right-side .row-3 {
+	text-align: right;
+	align-self: end;
+}
+
+.BlogMain .blog-list-container .right-side .row-3 a {
+	color: white;
+}
+
+.BlogMain .blog-list-container .right-side .row-3 a:hover {
+	text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+.BlogMain .content-snippet {
+	overflow: hidden;
+	font-family:'Open Sans', sans-serif;
+	font-size: 14px;
+	line-height: 16px;
+}
+
+.BlogMain .date {
+	align-self: center;
+}
+
+.BlogMain .blog-image {
+	width: auto;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	display: block;
 }

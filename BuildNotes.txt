@@ -1,0 +1,5 @@
+1) Do 'npm run build' in the command line
+2) The files will go into the build folder
+3) Upload these on the FTP to the root of my site, not into the theme folder
+4) Get the index.php file from the server in the theme folder
+5) Put the content from build/index.html in there an reupload it

@@ -66,10 +66,10 @@ export default class About extends Page {
           </a>
         </div>
       );
-      this.setState({
-        linkContent: linkContent,
-      });
     }
+    this.setState({
+      linkContent: linkContent,
+    });
   }
 
   //Overwrite this callback from Page.getPageData to get the data I need for

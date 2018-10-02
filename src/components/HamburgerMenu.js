@@ -1,22 +1,6 @@
 import React, { Component } from 'react'
 import Menu from '../components/Menu.js'
 
-// function RegMenu(props) {
-//   const isOpen = props.open;
-//   if(isOpen) {
-//     return <OpenMenu />
-//   }
-//   else {
-//     return ""
-//   }
-// }
-//
-// function OpenMenu(props) {
-//   return (
-//
-//   )
-// }
-
 export default class HamburgerMenu extends Component {
 
   constructor(props) {

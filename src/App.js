@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Home from './pages/Home.js'
 import About from './pages/About.js'
-import Menu from './components/Menu.js'
+import BlogMain from './pages/BlogMain.js'
 
 import './styles/App.css'
 
@@ -29,6 +29,7 @@ export default class App extends Component {
           </header>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/blog" component={BlogMain} />
         </div>
       </Router>
     );
