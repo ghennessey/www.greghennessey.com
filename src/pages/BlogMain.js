@@ -11,25 +11,30 @@ const PAGE_ID = 87;
 export default class BlogMain extends Page {
   constructor() {
     super();
+    this.handlePageNavClick = this.handlePageNavClick.bind(this);
     this.state = {
       title: '',
       backgroundImage: '',
       secondaryBGImage: '',
       pageContent: '',
       maxPostsPerPage: null,
-      pageIndex: 1,
+      pageIndex: 0,
+      pageBuildIndex: 0,
+      numPages: null,
     };
   }
 
   fetchPostData() {
-    console.log('Calling fetchPostData');
     //Get Blog Preview Data
     ///wp-json/acf/v3/posts
     fetch('http://www.greghennessey.com/wp-json/wp/v2/posts')
       .then(results => results.json())
       .then(data => {
         if(data) {
-          this.buildLinkContent(data)
+          this.buildLinkContent(data),
+          this.setState({
+            numPages: this.state.maxPostsPerPage % data.length,
+          });
         }
       })
   }
@@ -38,59 +43,72 @@ export default class BlogMain extends Page {
     this.getPageData(PAGE_ID);
   }
 
+  setPageNumber(increment) {
+    let currentPage = this.state.pageIndex;
+    let newPage = this.state.pageIndex + increment;
+    let maxPage = this.state.numPages;
+    //Check that the page we want to go to doesn't exceed the range of Pages
+    //we can navigate
+    if(newPage <= maxPage && newPage > 0) {
+      let pageDataOffset = newPage * maxPage;
+      console.log('pageDataOffset ' + pageDataOffset);
+      this.setState({
+        pageIndex: newPage,
+        pageBuildIndex: pageDataOffset
+      });
+      this.fetchPostData();
+    }
+  }
+
   //Once link data is grabbed, let's get the data and build the HTML content
   //structure
   buildLinkContent = (data) => {
-    console.log('building link content ' + this.state.maxPostsPerPage);
-    console.log(data);
     var blogPreviewContent = [];
 
-    //If the loop is shorter than the Max Posts per Page, then we accept the
-    //smaller number
-    var loopLength = this.state.maxPostsPerPage > data.length ? data.length : this.state.maxPostsPerPage;
+    var blogData = data;
 
-    //TODO - add a button so I can click into the next page of my blog
 
-    for(var i=0; i < loopLength; i++) {
-      //TODO - Remove these logs
-      // console.log('---- Blog Data ' + i + ' ------');
-      // console.log(data[i]);
-      let blogPreviewData = data[i];
 
-      let previewImage = blogPreviewData.acf.header_image.url;
-      let blogTitle = blogPreviewData.title.rendered;
-      let blogDate = blogPreviewData.date;
-      let blogExcerpt = blogPreviewData.excerpt.rendered;
-      let blogLink = blogPreviewData.link;
+    for(var i=0; i < this.state.maxPostsPerPage; i++) {
 
-      let blogBlock = [
+      let blogPreviewData = blogData[i];
 
-        <div key={'blog-preview-'+i} className={'blog-preview-'+ i + ' container'}>
-          <div className='left-side'>
-            <a href={blogLink}>
-              <div className='blog-image' style={{ backgroundImage: `url(${previewImage})` }}></div>
-            </a>
-          </div>
-          <div className='right-side'>
-            <div className='row-0'>
+      if(blogPreviewData) {
+        let previewImage = blogPreviewData.acf.header_image.url;
+        let blogTitle = blogPreviewData.title.rendered;
+        let blogDate = blogPreviewData.date;
+        let blogExcerpt = blogPreviewData.excerpt.rendered;
+        let blogLink = blogPreviewData.link;
+
+        let blogBlock = [
+
+          <div key={'blog-preview-'+i} className={'blog-preview-'+ i + ' container'}>
+            <div className='left-side'>
               <a href={blogLink}>
-                <h1>{blogTitle}</h1>
+                <div className='blog-image' style={{ backgroundImage: `url(${previewImage})` }}></div>
               </a>
             </div>
-            <div className='date row-1'>
-              {blogDate}
-            </div>
-            <div className='content-snippet row-2'>
-                {this.convertStringToHTML(blogExcerpt)}
-            </div>
-            <div className='row-3'>
-              <a href={blogLink}>Read More >></a>
+            <div className='right-side'>
+              <div className='row-0'>
+                <a href={blogLink}>
+                  <h1>{blogTitle}</h1>
+                </a>
+              </div>
+              <div className='date row-1'>
+                {blogDate}
+              </div>
+              <div className='content-snippet row-2'>
+                  {this.convertStringToHTML(blogExcerpt)}
+              </div>
+              <div className='read-more row-3'>
+                <a href={blogLink}>Read More >></a>
+              </div>
             </div>
           </div>
-        </div>
 
-      ];
-      blogPreviewContent.push(blogBlock);
+        ];
+        blogPreviewContent.push(blogBlock);
+      }
     }
     this.setState({
       blogPreviewContent: blogPreviewContent,
@@ -116,6 +134,22 @@ export default class BlogMain extends Page {
     this.fetchPostData();
   }
 
+  //Handle CLICK of Pagination Buttons
+  handlePageNavClick (e) {
+    let clickedButton = e.target.className;
+    let back = 'button-back';
+    let forward = 'button-forward';
+    if(clickedButton === forward) {
+      console.log(forward + ' was pushed');
+      this.setPageNumber(1)
+    } else if (clickedButton === back) {
+      console.log(back + ' was pushed');
+      this.setPageNumber(-1);
+    } else {
+      console.log('There seems to be an issue detecting which button was pressed.');
+    }
+  }
+
   render() {
     return(
       <div className="BlogMain Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
@@ -128,9 +162,17 @@ export default class BlogMain extends Page {
         <section className='bottom-section'>
           <div className='page-content'>
             <div className='blog-list-container'>
-
               {this.state.blogPreviewContent}
-
+            </div>
+            <div className='pagination'>
+              <div className='debug'>
+                <h3>Max Pages {this.state.numPages}</h3>
+                <h3>Page Index {this.state.pageIndex}</h3>
+                <h3>Max Posts per Page {this.state.maxPostsPerPage}</h3>
+              </div>
+              <button className='button-back' onClick={this.handlePageNavClick}>Back</button>
+              {this.state.numPages}
+              <button className='button-forward' onClick={this.handlePageNavClick}>Forward</button>
             </div>
           </div>
         </section>
