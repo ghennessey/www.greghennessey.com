@@ -53,6 +53,7 @@ table {
 html, body {
   height: 100%;
   font-family: 'Marcellus', serif;
+	background-color: #2b2728;
 }
 
 a {
@@ -282,6 +283,7 @@ h1, img {
 	margin-right: 20px;
 	margin-bottom: 20px;
 	z-index: 0;
+	visibility: hidden;
 }
 
 .resume-button button {

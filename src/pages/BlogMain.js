@@ -18,8 +18,7 @@ export default class BlogMain extends Page {
       secondaryBGImage: '',
       pageContent: '',
       maxPostsPerPage: null,
-      pageIndex: 0,
-      pageBuildIndex: 0,
+      pageIndex: 1,
       numPages: null,
     };
   }
@@ -33,7 +32,7 @@ export default class BlogMain extends Page {
         if(data) {
           this.buildLinkContent(data),
           this.setState({
-            numPages: this.state.maxPostsPerPage % data.length,
+            numPages: Math.round(data.length / this.state.maxPostsPerPage),
           });
         }
       })
@@ -51,10 +50,8 @@ export default class BlogMain extends Page {
     //we can navigate
     if(newPage <= maxPage && newPage > 0) {
       let pageDataOffset = newPage * maxPage;
-      console.log('pageDataOffset ' + pageDataOffset);
       this.setState({
         pageIndex: newPage,
-        pageBuildIndex: pageDataOffset
       });
       this.fetchPostData();
     }
@@ -66,10 +63,12 @@ export default class BlogMain extends Page {
     var blogPreviewContent = [];
 
     var blogData = data;
+    //This is the index of where the loop will start
+    var pageIndexOffset = this.state.pageIndex - 1;
+    var loopStart = pageIndexOffset * this.state.maxPostsPerPage;
+    var loopEnd = Number(this.state.maxPostsPerPage) + Number(loopStart);
 
-
-
-    for(var i=0; i < this.state.maxPostsPerPage; i++) {
+    for(var i=loopStart; i < loopEnd; i++) {
 
       let blogPreviewData = blogData[i];
 
@@ -140,10 +139,8 @@ export default class BlogMain extends Page {
     let back = 'button-back';
     let forward = 'button-forward';
     if(clickedButton === forward) {
-      console.log(forward + ' was pushed');
       this.setPageNumber(1)
     } else if (clickedButton === back) {
-      console.log(back + ' was pushed');
       this.setPageNumber(-1);
     } else {
       console.log('There seems to be an issue detecting which button was pressed.');
@@ -165,13 +162,8 @@ export default class BlogMain extends Page {
               {this.state.blogPreviewContent}
             </div>
             <div className='pagination'>
-              <div className='debug'>
-                <h3>Max Pages {this.state.numPages}</h3>
-                <h3>Page Index {this.state.pageIndex}</h3>
-                <h3>Max Posts per Page {this.state.maxPostsPerPage}</h3>
-              </div>
               <button className='button-back' onClick={this.handlePageNavClick}>Back</button>
-              {this.state.numPages}
+              {this.state.pageIndex + "/" + this.state.numPages}
               <button className='button-forward' onClick={this.handlePageNavClick}>Forward</button>
             </div>
           </div>
