@@ -20,22 +20,38 @@ export default class BlogMain extends Page {
       maxPostsPerPage: null,
       pageIndex: 1,
       numPages: null,
+      loaderVisibility: 'hidden',
     };
   }
 
   fetchPostData() {
     //Get Blog Preview Data
     ///wp-json/acf/v3/posts
+    this.switchLoaderVisibility();
     fetch('http://www.greghennessey.com/wp-json/wp/v2/posts')
       .then(results => results.json())
       .then(data => {
         if(data) {
           this.buildLinkContent(data),
+          this.switchLoaderVisibility(),
           this.setState({
             numPages: Math.round(data.length / this.state.maxPostsPerPage),
           });
         }
-      })
+      });
+  }
+
+  switchLoaderVisibility() {
+    var visibility = this.state.loaderVisibility;
+    var newVisibility;
+    if(visibility === 'hidden') {
+      newVisibility = 'visible';
+    } else {
+      newVisibility = 'hidden'
+    }
+    this.setState({
+      loaderVisibility: newVisibility,
+    });
   }
 
   componentWillMount() {
@@ -81,7 +97,7 @@ export default class BlogMain extends Page {
 
         let blogBlock = [
 
-          <div key={'blog-preview-'+i} className={'blog-preview-'+ i + ' container'}>
+          <div key={'blog-preview-'+i} className={'blog-preview-'+ i + ' container ' + 'slide-in'}>
             <div className='left-side'>
               <a href={blogLink}>
                 <div className='blog-image' style={{ backgroundImage: `url(${previewImage})` }}></div>
@@ -148,6 +164,7 @@ export default class BlogMain extends Page {
   }
 
   render() {
+    var loaderVisibility = this.state.loaderVisibility;
     return(
       <div className="BlogMain Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <section className='top-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
@@ -159,12 +176,15 @@ export default class BlogMain extends Page {
         <section className='bottom-section'>
           <div className='page-content'>
             <div className='blog-list-container'>
+              <div className='loader' style={{visibility: loaderVisibility}}>
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+              </div>
               {this.state.blogPreviewContent}
             </div>
             <div className='pagination'>
-              <button className='button-back' onClick={this.handlePageNavClick}>Back</button>
+              <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
               {this.state.pageIndex + "/" + this.state.numPages}
-              <button className='button-forward' onClick={this.handlePageNavClick}>Forward</button>
+              <a className='button-forward' onClick={this.handlePageNavClick}>Forward &gt;</a>
             </div>
           </div>
         </section>
