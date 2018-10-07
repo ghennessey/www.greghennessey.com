@@ -4,9 +4,50 @@ import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
+import $ from "jquery";
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
+
+class BlogPreview extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      classes: '',
+    };
+  }
+
+  render() {
+    return(
+      <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in ' + this.state.classes} style={{
+        animationDelay: this.props.animDelay}}>
+        <div className='left-side'>
+          <a href={this.props.blogLink}>
+            <div className='blog-image'>
+              <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
+            </div>
+          </a>
+        </div>
+        <div className='right-side'>
+          <div className='row-0'>
+            <a href={this.props.blogLink}>
+              <h1>{this.props.blogTitle}</h1>
+            </a>
+          </div>
+          <div className='date row-1'>
+            {this.props.blogDate}
+          </div>
+          <div className='content-snippet row-2'>
+              {this.props.blogExcerpt}
+          </div>
+          <div className='read-more row-3'>
+            <a href={this.props.blogLink}>Read More >></a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
 
 export default class BlogMain extends Page {
   constructor() {
@@ -16,7 +57,10 @@ export default class BlogMain extends Page {
       title: '',
       backgroundImage: '',
       secondaryBGImage: '',
+      //This is actually just the title of the blog
       pageContent: '',
+      //This is the blog preview content HTML
+      blogPreviewContent: null,
       maxPostsPerPage: null,
       pageIndex: 1,
       numPages: null,
@@ -25,6 +69,7 @@ export default class BlogMain extends Page {
   }
 
   fetchPostData() {
+    this.fadeContentOut();
     //Get Blog Preview Data
     ///wp-json/acf/v3/posts
     this.switchLoaderVisibility();
@@ -71,58 +116,50 @@ export default class BlogMain extends Page {
       });
       this.fetchPostData();
     }
+
+  }
+
+  fadeContentOut() {
+    var contentContainers = this.state.blogPreviewContent;
+    if(contentContainers) {
+      for(var i=0; i < contentContainers.length; i++) {
+        let bClass = '.'+contentContainers[i].props.blogClass;
+        //$(bClass).addClass('transition-out');
+        $(bClass).removeClass('transition-in').css({visibility: 'hidden', animationDelay: '0s', opacity: '0'});
+      }
+    }
   }
 
   //Once link data is grabbed, let's get the data and build the HTML content
   //structure
   buildLinkContent = (data) => {
     var blogPreviewContent = [];
-
     var blogData = data;
     //This is the index of where the loop will start
     var pageIndexOffset = this.state.pageIndex - 1;
     var loopStart = pageIndexOffset * this.state.maxPostsPerPage;
     var loopEnd = Number(this.state.maxPostsPerPage) + Number(loopStart);
 
+    //Animation Settings
+    var transitionDelay = 0.05;
+
     for(var i=loopStart; i < loopEnd; i++) {
 
       let blogPreviewData = blogData[i];
 
       if(blogPreviewData) {
-        let previewImage = blogPreviewData.acf.header_image.url;
-        let blogTitle = blogPreviewData.title.rendered;
-        let blogDate = blogPreviewData.date;
-        let blogExcerpt = blogPreviewData.excerpt.rendered;
-        let blogLink = blogPreviewData.link;
-
-        let blogBlock = [
-
-          <div key={'blog-preview-'+i} className={'blog-preview-'+ i + ' container ' + 'slide-in'}>
-            <div className='left-side'>
-              <a href={blogLink}>
-                <div className='blog-image' style={{ backgroundImage: `url(${previewImage})` }}></div>
-              </a>
-            </div>
-            <div className='right-side'>
-              <div className='row-0'>
-                <a href={blogLink}>
-                  <h1>{blogTitle}</h1>
-                </a>
-              </div>
-              <div className='date row-1'>
-                {blogDate}
-              </div>
-              <div className='content-snippet row-2'>
-                  {this.convertStringToHTML(blogExcerpt)}
-              </div>
-              <div className='read-more row-3'>
-                <a href={blogLink}>Read More >></a>
-              </div>
-            </div>
-          </div>
-
-        ];
-        blogPreviewContent.push(blogBlock);
+        blogPreviewContent.push(
+          <BlogPreview
+            key = {i}
+            blogTitle = {blogPreviewData.title.rendered}
+            blogDate = {blogPreviewData.date}
+            blogClass = {'blog-preview-'+i}
+            animDelay = {transitionDelay * (i - loopStart) + 's'}
+            previewImage = {blogPreviewData.acf.header_image.url}
+            blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
+            blogLink = {blogPreviewData.link}
+            fadeOut = {false}
+          />);
       }
     }
     this.setState({

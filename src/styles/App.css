@@ -277,8 +277,6 @@ h1, img {
   }
 }
 
-
-
 /*
   Some more info on navbar styling https://www.w3schools.com/css/css_navbar.asp
 */
@@ -507,6 +505,7 @@ h1, img {
 	min-width: 800px;
 	padding-top: 75px;
 	margin: 0 auto;
+	position: relative;
 }
 
 .BlogMain {
@@ -518,6 +517,9 @@ h1, img {
 	grid-template-columns: 40% 5% 55%;
 	grid-template-rows: 253px;
 	margin-bottom: 50px;
+	opacity: 0;
+	transition:all 0.3s ease;
+
 }
 
 .blog-list-container .container .right-side {
@@ -564,15 +566,21 @@ h1, img {
 .BlogMain .blog-image {
 	width: auto;
 	height: 100%;
-	background-size: cover;
-	background-position: center;
 	display: block;
 	transition:all 0.3s ease;
+	background-color: #231f20;
 }
 .BlogMain .blog-image:hover {
 		-webkit-transform: scale(1.2);
 		-ms-transform: scale(1.2);
 		transform: scale(1.2);
+}
+.BlogMain .blog-image-inner {
+	position: relative;
+	width: auto;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
 }
 
 .BlogMain .pagination a {
@@ -589,21 +597,54 @@ h1, img {
 	cursor: pointer;
 }
 
-.BlogMain .slide-in {
-	animation: slide-in 1.2s;
+.BlogMain .loader {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: flex;
+	position: absolute;
+	align-items: center;
+	justify-content: center;
 }
 
-.BlogMain .slide-out {
-
+.BlogMain .transition-in {
+	animation: slide-left 0.2s;
+	animation-fill-mode: both;
 }
 
-@keyframes slide-in {
-  0% {
+.BlogMain .transition-out {
+	/* animation: fade-out 0.2s; */
+	animation-fill-mode: both;
+	opacity: 0;
+}
+
+@keyframes fade-out {
+	from {
+		opacity: 1;
+	}
+	to {
 		opacity: 0;
+	}
+}
+
+@keyframes slide-left {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+		transform: translate(-100px,0px);
+	}
+}
+
+@keyframes slide-right {
+  from {
+		opacity: 1;
     transform: translate(100px,0px);
   }
-  100% {
-		opacity: 1;
+  to {
+		opacity: 0;
     transform: translate(0px,0px);
   }
 }
