@@ -1,25 +1,52 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
+import BlogPost from '../components/BlogPost.js'
+import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
+import createBrowserHistory from 'history/createBrowserHistory'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
+
+//Routes
+const routes = {
+  blogPost: {
+    base_path: '/blog/post'
+  }
+}
+
+const customHistory = createBrowserHistory();
+
+const BlogPostRoute = ({ match }) => {
+  return <BlogPost postID={match} postSlug={match.params.post_id} history={customHistory}></BlogPost>
+}
 
 class BlogPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      classes: '',
+      blogClick: this.props.onClick,
+      //Set a dummy route until the data is ready
+      blogRoute: '/blog/some-post'
     };
+  }
+
+  componentWillMount() {
+    //When the data is ready set our proper route
+    var blogRoute = routes.blogPost.base_path + '/' + this.props.pageSlug;
+    this.setState({
+      blogRoute: blogRoute,
+    });
   }
 
   render() {
     return(
-      <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in ' + this.state.classes} style={{
+      <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in'} style={{
         animationDelay: this.props.animDelay}}>
         <div className='left-side'>
           <a href={this.props.blogLink}>
@@ -30,9 +57,7 @@ class BlogPreview extends Component {
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <a href={this.props.blogLink}>
-              <h1>{this.props.blogTitle}</h1>
-            </a>
+            <Link id={this.props.id} to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -64,7 +89,11 @@ export default class BlogMain extends Page {
       maxPostsPerPage: null,
       pageIndex: 1,
       numPages: null,
-      loaderVisibility: 'hidden',
+      loaderVisibility: null,
+      blogPost: null,
+      //This is a list of slug to id key value pairs for the purpose of routing
+      //and sending the correct data through the router
+      blogIDs: {}
     };
   }
 
@@ -77,6 +106,8 @@ export default class BlogMain extends Page {
       .then(results => results.json())
       .then(data => {
         if(data) {
+          console.log('----- Post Data -----');
+          console.log(data);
           this.buildLinkContent(data),
           this.switchLoaderVisibility(),
           this.setState({
@@ -89,10 +120,10 @@ export default class BlogMain extends Page {
   switchLoaderVisibility() {
     var visibility = this.state.loaderVisibility;
     var newVisibility;
-    if(visibility === 'hidden') {
-      newVisibility = 'visible';
+    if(visibility === null) {
+      newVisibility = <LoadingSpinner />;
     } else {
-      newVisibility = 'hidden'
+      newVisibility = null
     }
     this.setState({
       loaderVisibility: newVisibility,
@@ -124,7 +155,6 @@ export default class BlogMain extends Page {
     if(contentContainers) {
       for(var i=0; i < contentContainers.length; i++) {
         let bClass = '.'+contentContainers[i].props.blogClass;
-        //$(bClass).addClass('transition-out');
         $(bClass).removeClass('transition-in').css({visibility: 'hidden', animationDelay: '0s', opacity: '0'});
       }
     }
@@ -151,6 +181,7 @@ export default class BlogMain extends Page {
         blogPreviewContent.push(
           <BlogPreview
             key = {i}
+            id = {blogPreviewData.id}
             blogTitle = {blogPreviewData.title.rendered}
             blogDate = {blogPreviewData.date}
             blogClass = {'blog-preview-'+i}
@@ -158,8 +189,25 @@ export default class BlogMain extends Page {
             previewImage = {blogPreviewData.acf.header_image.url}
             blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
-            fadeOut = {false}
+            pageSlug = {blogPreviewData.slug}
+            onClick = {this.setupBlogPost}
           />);
+
+          let blogRoutingData = {}
+
+          blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
+
+          
+
+          // let oldIDsState = this.state.blogIDs;
+          // let newIDsState = [...oldIDsState, blogRoutingData];
+          //
+          // this.setState({
+          //   blogIDs: newIDsState
+          // });
+          //
+          // console.log("----- blogPreviewData blogID's updated ------");
+          // console.log(this.state.blogIDs);
       }
     }
     this.setState({
@@ -187,7 +235,7 @@ export default class BlogMain extends Page {
   }
 
   //Handle CLICK of Pagination Buttons
-  handlePageNavClick (e) {
+  handlePageNavClick(e) {
     let clickedButton = e.target.className;
     let back = 'button-back';
     let forward = 'button-forward';
@@ -198,6 +246,10 @@ export default class BlogMain extends Page {
     } else {
       console.log('There seems to be an issue detecting which button was pressed.');
     }
+  }
+
+  setupBlogPost(e) {
+
   }
 
   render() {
@@ -213,10 +265,13 @@ export default class BlogMain extends Page {
         <section className='bottom-section'>
           <div className='page-content'>
             <div className='blog-list-container'>
-              <div className='loader' style={{visibility: loaderVisibility}}>
-                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+              <div className='loader' style={{}}>
+                {this.state.loaderVisibility}
               </div>
-              {this.state.blogPreviewContent}
+              {
+                /* This is where all of the preview content is generated */
+                this.state.blogPreviewContent
+              }
             </div>
             <div className='pagination'>
               <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
@@ -227,8 +282,14 @@ export default class BlogMain extends Page {
         </section>
         <ResumeButton />
         <HamburgerMenu />
+        <Route
+          path="/blog/post/:post_slug"
+          component={BlogPostRoute}
+          history={customHistory}
+          postID={12}
+        />
       </div>
-
     )
   }
 }
+//  <Route strict={true} exact={false} path={routes.blogPost.base_path + routes.blogPost.wildcard} component={BlogPost}/>

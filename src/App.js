@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import createBrowserHistory from 'history/createBrowserHistory'
 
 import Home from './pages/Home.js'
 import About from './pages/About.js'
@@ -29,7 +30,7 @@ export default class App extends Component {
           </header>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
-          <Route path="/blog" component={BlogMain} />
+          <Route strict={true} path="/blog" component={BlogMain} />
         </div>
       </Router>
     );

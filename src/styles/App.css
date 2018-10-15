@@ -1,3 +1,5 @@
+/* MOVE THIS ALL TO SCSS http://sass-lang.com/guide */
+
 @import url('https://fonts.googleapis.com/css?family=Marcellus');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
@@ -500,7 +502,7 @@ h1, img {
 	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
 }
 
-.BlogMain .blog-list-container {
+.blog-list-container {
 	width: 50%;
 	min-width: 800px;
 	padding-top: 75px;
@@ -563,7 +565,7 @@ h1, img {
 	align-self: center;
 }
 
-.BlogMain .blog-image {
+.blog-image {
 	width: auto;
 	height: 100%;
 	display: block;
@@ -638,13 +640,33 @@ h1, img {
 	}
 }
 
-@keyframes slide-right {
-  from {
-		opacity: 1;
-    transform: translate(100px,0px);
-  }
-  to {
-		opacity: 0;
-    transform: translate(0px,0px);
-  }
+.transition-out {
+	/* animation: fade-out 0.2s; */
+	animation-fill-mode: both;
+	opacity: 0;
+}
+
+/* BLOG POST */
+.blog-post .blog-container {
+	width: 50%;
+	min-width: 800px;
+	margin: 0 auto;
+	position: relative;
+}
+.blog-post .top-section {
+	background-color: #646464;
+	position: relative;
+}
+.blog-post .top-section button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 5px;
+	margin: 10px;
+}
+.blog-post .blog-body {
+	color: black;
+	width: auto;
+	height: 100%;
+	background-color: #EFEFEF;
 }
