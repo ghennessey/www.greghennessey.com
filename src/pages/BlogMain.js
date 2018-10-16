@@ -23,7 +23,7 @@ const routes = {
 const customHistory = createBrowserHistory();
 
 const BlogPostRoute = ({ match }) => {
-  return <BlogPost postID={match} postSlug={match.params.post_id} history={customHistory}></BlogPost>
+  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
 }
 
 class BlogPreview extends Component {
@@ -57,7 +57,7 @@ class BlogPreview extends Component {
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <Link id={this.props.id} to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
+            <Link to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -147,7 +147,6 @@ export default class BlogMain extends Page {
       });
       this.fetchPostData();
     }
-
   }
 
   fadeContentOut() {
@@ -173,6 +172,10 @@ export default class BlogMain extends Page {
     //Animation Settings
     var transitionDelay = 0.05;
 
+    //Key value pairs of the blog slug and blog ID will be assigned to this object
+    //so that I can grab the ID during routing and still keep a fancy slug
+    let blogRoutingData = {}
+
     for(var i=loopStart; i < loopEnd; i++) {
 
       let blogPreviewData = blogData[i];
@@ -190,28 +193,15 @@ export default class BlogMain extends Page {
             blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
             pageSlug = {blogPreviewData.slug}
-            onClick = {this.setupBlogPost}
           />);
 
-          let blogRoutingData = {}
-
-          blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
-
-          
-
-          // let oldIDsState = this.state.blogIDs;
-          // let newIDsState = [...oldIDsState, blogRoutingData];
-          //
-          // this.setState({
-          //   blogIDs: newIDsState
-          // });
-          //
-          // console.log("----- blogPreviewData blogID's updated ------");
-          // console.log(this.state.blogIDs);
+          blogRoutingData[blogPreviewData.slug] = blogPreviewData.id;
       }
     }
+
     this.setState({
       blogPreviewContent: blogPreviewContent,
+      blogIDs: blogRoutingData
     });
   }
 
@@ -283,13 +273,13 @@ export default class BlogMain extends Page {
         <ResumeButton />
         <HamburgerMenu />
         <Route
-          path="/blog/post/:post_slug"
-          component={BlogPostRoute}
-          history={customHistory}
-          postID={12}
+          path = "/blog/post/:post_slug"
+          render = {BlogPostRoute}
+          history = {customHistory}
         />
       </div>
     )
   }
 }
-//  <Route strict={true} exact={false} path={routes.blogPost.base_path + routes.blogPost.wildcard} component={BlogPost}/>
+
+//<RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />

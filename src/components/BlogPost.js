@@ -5,6 +5,7 @@ import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
 import $ from "jquery";
+import ReactHtmlParser from 'react-html-parser';
 
 const LoremIpsum = () => {
   return(
@@ -33,12 +34,20 @@ export default class BlogPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      blogTitle: '',
+      headerImageURL: '',
+      blogContent: ''
     };
   }
 
+  convertStringToHTML = (string) => {
+    if(string) {
+      var html = string;
+      return ReactHtmlParser(html)
+    }
+  }
+
   componentWillMount () {
-    console.log('BlogPost Props');
-    console.log(this.props);
     if(this.props.postSlug) {
       this.fetchPostData(this.props.postSlug);
     } else {
@@ -48,17 +57,22 @@ export default class BlogPost extends Component {
   }
 
   fetchPostData(postSlug) {
-    //Get Blog Preview Data
-    ///wp-json/acf/v3/posts
-    let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
-    console.log(api);
+    let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug='+postSlug;
     fetch(api)
       .then(results => results.json())
       .then(data => {
         if(data) {
-
+          this.setState({
+            headerImageURL: data[0].acf.header_image.url,
+            blogTitle: data[0].title.rendered,
+            blogContent: data[0].content.rendered,
+          })
         }
       });
+  }
+
+  buildBlogContent = (data) => {
+
   }
 
   backClick = () => {
@@ -72,16 +86,17 @@ export default class BlogPost extends Component {
   render() {
     return(
       <div className='blog-post'>
-        <div className='fs-blackout'>
+        <div className='fs-blackout' onClick={this.backClick}>
           <div className='blog-container'>
-          <section className='top-section' style={{  }}>
+          <section className='top-section' style={{ backgroundImage: `url(${this.state.headerImageURL})` }}>
             <div className="page-content">
               <button onClick={this.backClick}>Back</button>
-              <h1>{this.props.children}</h1>
-              <h1>{this.props.id}</h1>
+              <h1>{this.state.blogTitle}</h1>
             </div>
           </section>
-          <section className='blog-body'>{<LoremIpsum/>}</section>
+          <section className='blog-body'>
+            {this.convertStringToHTML(this.state.blogContent)}
+          </section>
           </div>
         </div>
       </div>

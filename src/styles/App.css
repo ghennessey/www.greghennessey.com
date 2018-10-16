@@ -651,11 +651,12 @@ h1, img {
 	width: 50%;
 	min-width: 800px;
 	margin: 0 auto;
-	position: relative;
+	display: flex;
+	flex-direction: column;
 }
 .blog-post .top-section {
 	background-color: #646464;
-	position: relative;
+	height: 293px;
 }
 .blog-post .top-section button {
 	position: absolute;
