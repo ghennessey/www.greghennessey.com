@@ -72,6 +72,9 @@ h1, img {
 }
 
 /* BASICS */
+.noscroll {
+	overflow: hidden;
+}
 
 .App {
   height: 100%;
@@ -85,7 +88,9 @@ h1, img {
 }
 
 /* WIDGETS */
-.logo-mark {}
+.logo-mark {
+	z-index: 1001;
+}
 .logo-mark h1 {
 	color: white;
 	text-transform: uppercase;
@@ -647,16 +652,33 @@ h1, img {
 }
 
 /* BLOG POST */
+
+.blog-post {
+	position: absolute;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	height: 100%;
+	z-index: 1000;
+	display: grid;
+	grid-template-columns: 1fr minmax(800px, 2fr) 1fr;
+	overflow-y: none;
+	background-color: rgba(0,0,0,0.5);
+}
+
 .blog-post .blog-container {
-	width: 50%;
-	min-width: 800px;
+	width: 100%;
 	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
 }
 .blog-post .top-section {
 	background-color: #646464;
 	height: 293px;
+	position: relative;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-position: top;
 }
 .blog-post .top-section button {
 	position: absolute;
@@ -670,4 +692,77 @@ h1, img {
 	width: auto;
 	height: 100%;
 	background-color: #EFEFEF;
+	padding-top: 40px;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+.blog-post .blog-container {
+	animation: slide-bottom 0.3s;
+
+}
+.blog-post .blog-container .trans-in {
+
+}
+@keyframes slide-bottom {
+	from {
+		opacity: 0;
+		transform: translate(0, 100vh);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0,0px);
+	}
+}
+.blog-post .blog-body a {
+	color: #9b3715;
+	font-family: 'Marcellus', serif;
+}
+
+.blog-post .blog-body a:hover {
+	color: #e35b11;
+	text-decoration: underline;
+}
+
+.blog-post .blog-body p {
+	font-family:'Open Sans', sans-serif;
+	font-size: 18px;
+	text-align: justify;
+	/* text-indent: 20px; */
+	line-height: 20px;
+	/* grid-column-start: 2;
+	grid-column-end: 12; */
+}
+
+.blog-post .blog-body p + p {
+	margin-top: 20px;
+}
+
+.blog-post .blog-body img.size-full {
+	width: 100%;
+	height: auto;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+.blog-post .blog-body img.size-medium {
+
+}
+.blog-post .blog-body img.size-thumbnail {
+
+}
+.blog-post .blog-body img.alignnone {
+	float: none;
+}
+.blog-post .blog-body img.alignright {
+	float: right;
+	padding-left: 20px;
+}
+.blog-post .blog-body img.alignleft {
+	float: left;
+	padding-right: 20px;
+}
+.blog-post .blog-body img.aligncenter {
+	display: block;
+	float: none;
+	margin: 0 auto;
+	text-align: center;
 }

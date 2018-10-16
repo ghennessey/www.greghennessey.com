@@ -53,7 +53,15 @@ export default class BlogPost extends Component {
     } else {
       console.warn('Post ID was not received, so data cannot be fetched');
     }
+    $('body, .Page, .App').addClass('noscroll');
+  }
 
+  componentDidMount() {
+    $('.blog-container').addClass('trans-in');
+  }
+
+  componentWillUnmount() {
+    $('body, .Page, .App').removeClass('noscroll');
   }
 
   fetchPostData(postSlug) {
@@ -86,19 +94,19 @@ export default class BlogPost extends Component {
   render() {
     return(
       <div className='blog-post'>
-        <div className='fs-blackout' onClick={this.backClick}>
-          <div className='blog-container'>
-          <section className='top-section' style={{ backgroundImage: `url(${this.state.headerImageURL})` }}>
-            <div className="page-content">
-              <button onClick={this.backClick}>Back</button>
-              <h1>{this.state.blogTitle}</h1>
-            </div>
-          </section>
-          <section className='blog-body'>
-            {this.convertStringToHTML(this.state.blogContent)}
-          </section>
+        <div className='blog-spacer left' onClick={this.backClick}></div>
+        <div className='blog-container'>
+        <section className='top-section' style={{ backgroundImage: `url(${this.state.headerImageURL})` }}>
+          <div className="page-content">
+            <button onClick={this.backClick}>Back</button>
+            <h1>{this.state.blogTitle}</h1>
           </div>
+        </section>
+        <section className='blog-body'>
+          {this.convertStringToHTML(this.state.blogContent)}
+        </section>
         </div>
+        <div className='blog-spacer right' onClick={this.backClick}></div>
       </div>
     )
   }
