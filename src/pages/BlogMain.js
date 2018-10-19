@@ -97,6 +97,17 @@ export default class BlogMain extends Page {
     };
   }
 
+  shortenBlogTitle(title) {
+    let maxLength = 30;
+    let shortTitle;
+    if(title.length > maxLength) {
+      shortTitle = title.slice(0, maxLength) + '...'
+    } else {
+      shortTitle = title;
+    }
+    return shortTitle;
+  }
+
   fetchPostData() {
     this.fadeContentOut();
     //Get Blog Preview Data
@@ -185,7 +196,7 @@ export default class BlogMain extends Page {
           <BlogPreview
             key = {i}
             id = {blogPreviewData.id}
-            blogTitle = {blogPreviewData.title.rendered}
+            blogTitle = {this.shortenBlogTitle(blogPreviewData.title.rendered)}
             blogDate = {blogPreviewData.date}
             blogClass = {'blog-preview-'+i}
             animDelay = {transitionDelay * (i - loopStart) + 's'}
@@ -255,7 +266,7 @@ export default class BlogMain extends Page {
         <section className='bottom-section'>
           <div className='page-content'>
             <div className='blog-list-container'>
-              <div className='loader' style={{}}>
+              <div className='loader'>
                 {this.state.loaderVisibility}
               </div>
               {
