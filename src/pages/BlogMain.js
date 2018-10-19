@@ -49,11 +49,13 @@ class BlogPreview extends Component {
       <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in'} style={{
         animationDelay: this.props.animDelay}}>
         <div className='left-side'>
-          <a href={this.props.blogLink}>
+
+          <Link to={this.state.blogRoute}>
             <div className='blog-image'>
               <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
             </div>
-          </a>
+          </Link>
+          
         </div>
         <div className='right-side'>
           <div className='row-0'>
