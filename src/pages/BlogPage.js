@@ -76,7 +76,7 @@ class BlogPreview extends Component {
   }
 }
 
-export default class BlogMain extends Page {
+export default class BlogPage extends Page {
   constructor() {
     super();
     this.handlePageNavClick = this.handlePageNavClick.bind(this);

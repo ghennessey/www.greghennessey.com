@@ -4,7 +4,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 
 import Home from './pages/Home.js'
 import About from './pages/About.js'
-import BlogMain from './pages/BlogMain.js'
+import BlogPage from './pages/BlogPage.js'
 import BlogPost from './components/BlogPost.js'
 
 import './styles/App.css'
