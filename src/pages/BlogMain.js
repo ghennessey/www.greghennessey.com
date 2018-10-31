@@ -16,15 +16,15 @@ const PAGE_ID = 87;
 //Routes
 const routes = {
   blogPost: {
-    base_path: '/blog/post'
+    base_path: '/post'
   }
 }
 
-const customHistory = createBrowserHistory();
+//const customHistory = createBrowserHistory();
 
-const BlogPostRoute = ({ match }) => {
-  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
-}
+// const BlogPostRoute = ({ match }) => {
+//   return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
+// }
 
 class BlogPreview extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class BlogPreview extends Component {
     this.state = {
       blogClick: this.props.onClick,
       //Set a dummy route until the data is ready
-      blogRoute: '/blog/some-post'
+      blogRoute: '/some-post'
     };
   }
 
@@ -55,7 +55,7 @@ class BlogPreview extends Component {
               <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
             </div>
           </Link>
-          
+
         </div>
         <div className='right-side'>
           <div className='row-0'>
@@ -251,10 +251,6 @@ export default class BlogMain extends Page {
     }
   }
 
-  setupBlogPost(e) {
-
-  }
-
   render() {
     var loaderVisibility = this.state.loaderVisibility;
     return(
@@ -285,14 +281,15 @@ export default class BlogMain extends Page {
         </section>
         <ResumeButton />
         <HamburgerMenu />
-        <Route
-          path = "/blog/post/:post_slug"
-          render = {BlogPostRoute}
-          history = {customHistory}
-        />
       </div>
     )
   }
 }
+
+// <Route
+//   path = "/blog/post/:post_slug"
+//   render = {BlogPostRoute}
+//   history = {customHistory}
+// />
 
 //<RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />

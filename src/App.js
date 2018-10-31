@@ -5,14 +5,23 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import Home from './pages/Home.js'
 import About from './pages/About.js'
 import BlogMain from './pages/BlogMain.js'
+import BlogPost from './components/BlogPost.js'
 
 import './styles/App.css'
 
 //TODO - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';
 
-const poop = ({ match }) => {
-  return <div><h1>POOP</h1></div>
+const customHistory = createBrowserHistory();
+
+const BlogPostRoute = ({ match }) => {
+  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
+}
+
+const BlogRoute = ({history}) => {
+  console.log('<----- BlogRoute ----->');
+  console.log(history.location.pathname);
+  return <div></div>
 }
 
 //This is the main rendering component for my App and basic structure of the site
@@ -21,24 +30,19 @@ export default class App extends Component {
 
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
     return (
       <Router>
-
         <div className="App">
           <header>
           </header>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
-          <Route strict={true} path="/blog" component={BlogMain} />
-          <Route
-            path = "/blog/post/:post_slug"
-            render = {poop}
-          />
+          <Route exact path="/blog" component={BlogMain} />
+          <BlogRoute path="/post/:post_slug" history={customHistory} />
         </div>
       </Router>
     );

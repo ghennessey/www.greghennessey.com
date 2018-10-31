@@ -15,10 +15,7 @@ function LogoMark(props) {
 
   //Is this a centered style logo mark or horizontal? For instance home uses
   //centered and About uses horizontal
-
   let style = props.style;
-
-
 
   return (
     <div className={'logo-mark ' + style}>
