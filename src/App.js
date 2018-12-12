@@ -24,13 +24,12 @@ export default class App extends Component {
   render() {
     return (
       <Router>
-
         <div className="App">
           <header>
           </header>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
-          <Route strict={true} path="/blog" component={BlogMain} />
+          <Route exact path="/blog" component={BlogMain} />
         </div>
       </Router>
     );

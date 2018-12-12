@@ -12,6 +12,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
+const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
 
 //Routes
 const routes = {
@@ -86,9 +87,9 @@ export default class BlogMain extends Page {
       pageContent: '',
       //This is the blog preview content HTML
       blogPreviewContent: null,
-      maxPostsPerPage: null,
+      maxPostsPerPage: 3,
       pageIndex: 1,
-      numPages: null,
+      numPages: '',
       loaderVisibility: null,
       blogPost: null,
       //This is a list of slug to id key value pairs for the purpose of routing
@@ -97,26 +98,50 @@ export default class BlogMain extends Page {
     };
   }
 
-  fetchPostData() {
-    this.fadeContentOut();
-    //Get Blog Preview Data
-    ///wp-json/acf/v3/posts
-    this.switchLoaderVisibility();
-    fetch('http://www.greghennessey.com/wp-json/wp/v2/posts')
-      .then(results => results.json())
-      .then(data => {
-        if(data) {
-          console.log('----- Post Data -----');
-          console.log(data);
-          this.buildLinkContent(data),
-          this.switchLoaderVisibility(),
-          this.setState({
-            numPages: Math.round(data.length / this.state.maxPostsPerPage),
-          });
-        }
-      });
+  componentWillMount() {
+    this.getPageData(PAGE_ID);
+    //Set the max number of pages we can view
+    this.setMaxNumPages(PAGES_API);
   }
 
+  //When a page button is clicked, set the page number so we know which data to grab
+  setPageNumber(increment) {
+    let currentPage = this.state.pageIndex;
+    let newPage = this.state.pageIndex + increment;
+    let maxPage = this.state.numPages;
+
+    //Check that the page we want to go to doesn't exceed the range of Pages
+    //we can navigate
+    if(newPage <= maxPage && newPage > 0 && maxPage) {
+      //Set New Page & Clear old page content
+      this.setState({
+        pageIndex: newPage,
+        blogPreviewContent: null,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    //When the state pageIndex is updated, I do a new data call to fetch page data
+    if(prevState.pageIndex != this.state.pageIndex) {
+      console.log('PAGE INDEX IS UPDATED');
+      this.fetchPostData();
+    }
+  }
+
+//This method fades out blog preview content in a transition when content is
+//loading
+  fadeContentOut() {
+    var contentContainers = this.state.blogPreviewContent;
+    if(contentContainers) {
+      for(var i=0; i < contentContainers.length; i++) {
+        let bClass = '.'+contentContainers[i].props.blogClass;
+        $(bClass).removeClass('transition-in').css({visibility: 'hidden', animationDelay: '0s', opacity: '0'});
+      }
+    }
+  }
+  //This method shows or removes a spinning loader component depending on if
+  //data is loading or not
   switchLoaderVisibility() {
     var visibility = this.state.loaderVisibility;
     var newVisibility;
@@ -130,52 +155,70 @@ export default class BlogMain extends Page {
     });
   }
 
-  componentWillMount() {
-    this.getPageData(PAGE_ID);
-  }
+  //This method fetches blog data that will be displayed as a blog preview
+  fetchPostData() {
+    //Fade content out while I'm loading, so I can show the loading spinner
+    //this.fadeContentOut();
+    //Show the "Loading Spinner" while I'm getting post data
+    this.switchLoaderVisibility();
 
-  setPageNumber(increment) {
-    let currentPage = this.state.pageIndex;
-    let newPage = this.state.pageIndex + increment;
-    let maxPage = this.state.numPages;
-    //Check that the page we want to go to doesn't exceed the range of Pages
-    //we can navigate
-    if(newPage <= maxPage && newPage > 0) {
-      let pageDataOffset = newPage * maxPage;
-      this.setState({
-        pageIndex: newPage,
+    //Let's construct the API call here. Get the base, plus the number of posts per page
+    //And the page we're on
+    let api_Base = PAGES_API;
+    let api_PostsPerPage = '?per_page=' + this.state.maxPostsPerPage;
+    let api_CurrentPage = '&page=' + this.state.pageIndex;
+    let api_Final = api_Base + api_PostsPerPage + api_CurrentPage;
+
+    fetch(api_Final)
+      .then(results => results.json())
+      .then(data => {
+        if(data) {
+          //Turn the loader off again since data is loaded
+          this.switchLoaderVisibility();
+
+          console.log('----- Post Data ----- \n' +
+          'Data being called here is being used in the blog previews we are generating');
+          console.log(data);
+
+          this.buildLinkContent(data);
+        }
       });
-      this.fetchPostData();
-    }
-
   }
 
-  fadeContentOut() {
-    var contentContainers = this.state.blogPreviewContent;
-    if(contentContainers) {
-      for(var i=0; i < contentContainers.length; i++) {
-        let bClass = '.'+contentContainers[i].props.blogClass;
-        $(bClass).removeClass('transition-in').css({visibility: 'hidden', animationDelay: '0s', opacity: '0'});
-      }
-    }
+  //TODO - This needs to be made more efficient. I don't like loading all Data
+  //just to get how many pages are in the blog. I might need to build my own
+  //PHP callback for this
+  setMaxNumPages = (api) => {
+    fetch(api)
+      .then(results => results.json())
+      .then(data => {
+        if(data) {
+          this.setState({
+            numPages: Math.round(data.length / this.state.maxPostsPerPage),
+          });
+        }
+      });
   }
 
-  //Once link data is grabbed, let's get the data and build the HTML content
+  //Once post data is grabbed, let's get the data and build the HTML content
   //structure
   buildLinkContent = (data) => {
     var blogPreviewContent = [];
     var blogData = data;
-    //This is the index of where the loop will start
-    var pageIndexOffset = this.state.pageIndex - 1;
-    var loopStart = pageIndexOffset * this.state.maxPostsPerPage;
-    var loopEnd = Number(this.state.maxPostsPerPage) + Number(loopStart);
+
+    console.log('\nBuild link Content');
+    console.log(blogData);
 
     //Animation Settings
     var transitionDelay = 0.05;
 
-    for(var i=loopStart; i < loopEnd; i++) {
+    for(var i=0; i < blogData.length; i++) {
+
+      console.log(i);
 
       let blogPreviewData = blogData[i];
+
+      console.log(blogPreviewData);
 
       if(blogPreviewData) {
         blogPreviewContent.push(
@@ -185,7 +228,7 @@ export default class BlogMain extends Page {
             blogTitle = {blogPreviewData.title.rendered}
             blogDate = {blogPreviewData.date}
             blogClass = {'blog-preview-'+i}
-            animDelay = {transitionDelay * (i - loopStart) + 's'}
+            animDelay = {transitionDelay * (i) + 's'}
             previewImage = {blogPreviewData.acf.header_image.url}
             blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
@@ -195,19 +238,7 @@ export default class BlogMain extends Page {
 
           let blogRoutingData = {}
 
-          blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
-
-          
-
-          // let oldIDsState = this.state.blogIDs;
-          // let newIDsState = [...oldIDsState, blogRoutingData];
-          //
-          // this.setState({
-          //   blogIDs: newIDsState
-          // });
-          //
-          // console.log("----- blogPreviewData blogID's updated ------");
-          // console.log(this.state.blogIDs);
+          //blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
       }
     }
     this.setState({
@@ -248,10 +279,6 @@ export default class BlogMain extends Page {
     }
   }
 
-  setupBlogPost(e) {
-
-  }
-
   render() {
     var loaderVisibility = this.state.loaderVisibility;
     return(
@@ -275,7 +302,7 @@ export default class BlogMain extends Page {
             </div>
             <div className='pagination'>
               <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
-              {this.state.pageIndex + "/" + this.state.numPages}
+              <span>{this.state.pageIndex + "/" + this.state.numPages}</span>
               <a className='button-forward' onClick={this.handlePageNavClick}>Forward &gt;</a>
             </div>
           </div>
