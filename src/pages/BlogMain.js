@@ -17,15 +17,15 @@ const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
 //Routes
 const routes = {
   blogPost: {
-    base_path: '/blog/post'
+    base_path: '/post'
   }
 }
 
-const customHistory = createBrowserHistory();
+//const customHistory = createBrowserHistory();
 
-const BlogPostRoute = ({ match }) => {
-  return <BlogPost postID={match} postSlug={match.params.post_id} history={customHistory}></BlogPost>
-}
+// const BlogPostRoute = ({ match }) => {
+//   return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
+// }
 
 class BlogPreview extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class BlogPreview extends Component {
     this.state = {
       blogClick: this.props.onClick,
       //Set a dummy route until the data is ready
-      blogRoute: '/blog/some-post'
+      blogRoute: '/some-post'
     };
   }
 
@@ -50,15 +50,17 @@ class BlogPreview extends Component {
       <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in'} style={{
         animationDelay: this.props.animDelay}}>
         <div className='left-side'>
-          <a href={this.props.blogLink}>
+
+          <Link to={this.state.blogRoute}>
             <div className='blog-image'>
               <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
             </div>
-          </a>
+          </Link>
+
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <Link id={this.props.id} to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
+            <Link to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -225,7 +227,7 @@ export default class BlogMain extends Page {
           <BlogPreview
             key = {i}
             id = {blogPreviewData.id}
-            blogTitle = {blogPreviewData.title.rendered}
+            blogTitle = {this.shortenBlogTitle(blogPreviewData.title.rendered)}
             blogDate = {blogPreviewData.date}
             blogClass = {'blog-preview-'+i}
             animDelay = {transitionDelay * (i) + 's'}
@@ -233,7 +235,6 @@ export default class BlogMain extends Page {
             blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
             pageSlug = {blogPreviewData.slug}
-            onClick = {this.setupBlogPost}
           />);
 
           let blogRoutingData = {}
@@ -241,8 +242,10 @@ export default class BlogMain extends Page {
           //blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
       }
     }
+
     this.setState({
       blogPreviewContent: blogPreviewContent,
+      blogIDs: blogRoutingData
     });
   }
 
@@ -292,7 +295,7 @@ export default class BlogMain extends Page {
         <section className='bottom-section'>
           <div className='page-content'>
             <div className='blog-list-container'>
-              <div className='loader' style={{}}>
+              <div className='loader'>
                 {this.state.loaderVisibility}
               </div>
               {
@@ -309,14 +312,15 @@ export default class BlogMain extends Page {
         </section>
         <ResumeButton />
         <HamburgerMenu />
-        <Route
-          path="/blog/post/:post_slug"
-          component={BlogPostRoute}
-          history={customHistory}
-          postID={12}
-        />
       </div>
     )
   }
 }
-//  <Route strict={true} exact={false} path={routes.blogPost.base_path + routes.blogPost.wildcard} component={BlogPost}/>
+
+// <Route
+//   path = "/blog/post/:post_slug"
+//   render = {BlogPostRoute}
+//   history = {customHistory}
+// />
+
+//<RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />

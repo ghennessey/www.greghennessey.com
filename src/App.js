@@ -5,11 +5,24 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import Home from './pages/Home.js'
 import About from './pages/About.js'
 import BlogMain from './pages/BlogMain.js'
+import BlogPost from './components/BlogPost.js'
 
 import './styles/App.css'
 
 //TODO - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';
+
+const customHistory = createBrowserHistory();
+
+const BlogPostRoute = ({ match }) => {
+  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
+}
+
+const BlogRoute = ({history}) => {
+  console.log('<----- BlogRoute ----->');
+  console.log(history.location.pathname);
+  return <div></div>
+}
 
 //This is the main rendering component for my App and basic structure of the site
 //It all starts here
@@ -17,8 +30,7 @@ export default class App extends Component {
 
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {

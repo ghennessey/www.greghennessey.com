@@ -4,6 +4,7 @@ import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
+import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 21;
@@ -54,7 +55,7 @@ export default class About extends Page {
           <a href={linkData.link_url}>
           <div className='link-row-1'>
             <div className={'link-image ' + 'image-'+i}>
-              <img src={linkData.link_image} />
+              <ImgFadeInOnLoad className='blog-header-image' src={linkData.link_image} />
             </div>
             <div className={'link-title ' + 'link-title-'+i}>
               <h2>{linkData.link_title}</h2>
@@ -84,13 +85,15 @@ export default class About extends Page {
       pageContent: this.state.pageData.content.rendered,
     });
   }
-
+//style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}
   render() {
     return(
       <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <section className='left-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
+        <section className='left-section'>
           <LogoMark title={this.state.title} logo={this.state.logoImage} style='horizontal'/>
-          <div className="page-content"></div>
+          <div className="page-content">
+            <ImgFadeInOnLoad className='bg-image' src={this.state.secondaryBGImage} />
+          </div>
         </section>
         <section className='right-section'>
           <div className='page-content'>
