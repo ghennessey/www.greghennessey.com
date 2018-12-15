@@ -382,7 +382,7 @@ button {
 	margin-right: 20px;
 	margin-bottom: 20px;
 	z-index: 0;
-	visibility: hidden;
+	visibility: visible;
 }
 
 .resume-button button {
@@ -600,11 +600,10 @@ button {
 }
 
 .BlogMain .pagination {
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	height: 25px;
-	transform: translateX(-50%);
+	width: 50%;
+	margin: 0 auto;
+
+	height: 30px;
 
 	background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.6) 40%,rgba(0,0,0,0.6) 50%,rgba(0,0,0,0.6) 60%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -613,12 +612,11 @@ button {
 }
 
 .BlogMain .pagination a, .BlogMain .pagination span {
+	line-height: 30px;
 	font-family: inherit;
-	border: none;
-	background: none;
 	color: white;
 	font-size: 1em;
-	padding: 0.25em 1em;
+	padding: 0 1em 0 0;
 	text-align: center;
 	vertical-align: middle;
 }

@@ -96,7 +96,9 @@ export default class BlogMain extends Page {
       blogPost: null,
       //This is a list of slug to id key value pairs for the purpose of routing
       //and sending the correct data through the router
-      blogIDs: {}
+      blogIDs: {},
+      maxBlogTitleLength: 30,
+      paginationVisibility: false,
     };
   }
 
@@ -126,22 +128,10 @@ export default class BlogMain extends Page {
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     if(prevState.pageIndex != this.state.pageIndex) {
-      console.log('PAGE INDEX IS UPDATED');
       this.fetchPostData();
     }
   }
 
-//This method fades out blog preview content in a transition when content is
-//loading
-  fadeContentOut() {
-    var contentContainers = this.state.blogPreviewContent;
-    if(contentContainers) {
-      for(var i=0; i < contentContainers.length; i++) {
-        let bClass = '.'+contentContainers[i].props.blogClass;
-        $(bClass).removeClass('transition-in').css({visibility: 'hidden', animationDelay: '0s', opacity: '0'});
-      }
-    }
-  }
   //This method shows or removes a spinning loader component depending on if
   //data is loading or not
   switchLoaderVisibility() {
@@ -159,10 +149,11 @@ export default class BlogMain extends Page {
 
   //This method fetches blog data that will be displayed as a blog preview
   fetchPostData() {
-    //Fade content out while I'm loading, so I can show the loading spinner
-    //this.fadeContentOut();
     //Show the "Loading Spinner" while I'm getting post data
     this.switchLoaderVisibility();
+    this.setState({
+      paginationVisibility: false,
+    });
 
     //Let's construct the API call here. Get the base, plus the number of posts per page
     //And the page we're on
@@ -181,7 +172,6 @@ export default class BlogMain extends Page {
           console.log('----- Post Data ----- \n' +
           'Data being called here is being used in the blog previews we are generating');
           console.log(data);
-
           this.buildLinkContent(data);
         }
       });
@@ -202,25 +192,29 @@ export default class BlogMain extends Page {
       });
   }
 
+  shortenBlogTitle = (blogTitle) => {
+    let oldBlogTitle = blogTitle;
+    let newBlogTitle;
+    if(oldBlogTitle.length > 30) {
+      newBlogTitle = oldBlogTitle.slice(0, this.state.maxBlogTitleLength) + "...";
+
+    } else {
+      newBlogTitle = oldBlogTitle;
+    }
+    return newBlogTitle;
+  }
+
   //Once post data is grabbed, let's get the data and build the HTML content
   //structure
   buildLinkContent = (data) => {
     var blogPreviewContent = [];
     var blogData = data;
 
-    console.log('\nBuild link Content');
-    console.log(blogData);
-
     //Animation Settings
     var transitionDelay = 0.05;
 
     for(var i=0; i < blogData.length; i++) {
-
-      console.log(i);
-
       let blogPreviewData = blogData[i];
-
-      console.log(blogPreviewData);
 
       if(blogPreviewData) {
         blogPreviewContent.push(
@@ -241,11 +235,16 @@ export default class BlogMain extends Page {
 
           //blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
       }
+
+      //Show pagination nav again, since we were hiding it
+      this.setState({
+        paginationVisibility: true,
+      });
     }
 
     this.setState({
       blogPreviewContent: blogPreviewContent,
-      blogIDs: blogRoutingData
+      //blogIDs: blogRoutingData
     });
   }
 
@@ -273,6 +272,7 @@ export default class BlogMain extends Page {
     let clickedButton = e.target.className;
     let back = 'button-back';
     let forward = 'button-forward';
+
     if(clickedButton === forward) {
       this.setPageNumber(1)
     } else if (clickedButton === back) {
@@ -303,11 +303,11 @@ export default class BlogMain extends Page {
                 this.state.blogPreviewContent
               }
             </div>
-            <div className='pagination'>
-              <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
-              <span>{this.state.pageIndex + "/" + this.state.numPages}</span>
-              <a className='button-forward' onClick={this.handlePageNavClick}>Forward &gt;</a>
-            </div>
+          </div>
+          <div className='pagination' style={{ visibility: this.state.paginationVisibility ? 'visible' : 'hidden' }}>
+            <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
+            <span>{this.state.pageIndex + "/" + this.state.numPages}</span>
+            <a className='button-forward' onClick={this.handlePageNavClick}>Forward &gt;</a>
           </div>
         </section>
         <ResumeButton />
