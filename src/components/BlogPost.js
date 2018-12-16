@@ -10,6 +10,7 @@ import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
 export default class BlogPost extends Component {
   constructor(props) {
+    console.log('BlogPost class is being constructed');
     super(props);
     this.state = {
       blogTitle: '',

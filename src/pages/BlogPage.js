@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom"
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
@@ -14,19 +14,27 @@ import createBrowserHistory from 'history/createBrowserHistory'
 const PAGE_ID = 87;
 const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
 
-//Routes
+///////////////////////////////////////////////////////////////////////////////
+// ROUTING
+///////////////////////////////////////////////////////////////////////////////
 const routes = {
   blogPost: {
-    base_path: '/post'
+    base_path: '/blog'
   }
 }
 
-//const customHistory = createBrowserHistory();
+const customHistory = createBrowserHistory();
 
-// const BlogPostRoute = ({ match }) => {
-//   return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
-// }
+const BlogPostRoute = ({ match }) => {
+  console.log('BlogPostRoute being called');
+  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
+}
 
+// <RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />
+
+///////////////////////////////////////////////////////////////////////////////
+// BLOG PREVIEW CLASS
+///////////////////////////////////////////////////////////////////////////////
 class BlogPreview extends Component {
   constructor(props) {
     super(props);
@@ -77,6 +85,28 @@ class BlogPreview extends Component {
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// BLOG PREVIEW AREA CLASS
+///////////////////////////////////////////////////////////////////////////////
+
+class BlogPreviewArea extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  render() {
+    return <div className="debug-blogpreview" style={{ width: '400px', height: '100px', backgroundColor: 'blue' }}>
+      
+    </div>
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// BLOG PAGE CLASS
+///////////////////////////////////////////////////////////////////////////////
+
 export default class BlogPage extends Page {
   constructor() {
     super();
@@ -106,6 +136,9 @@ export default class BlogPage extends Page {
     this.getPageData(PAGE_ID);
     //Set the max number of pages we can view
     this.setMaxNumPages(PAGES_API);
+
+    console.log('\nBlog Page Props');
+    console.log(this.props);
   }
 
   //When a page button is clicked, set the page number so we know which data to grab
@@ -169,7 +202,7 @@ export default class BlogPage extends Page {
           //Turn the loader off again since data is loaded
           this.switchLoaderVisibility();
 
-          console.log('----- Post Data ----- \n' +
+          console.log('\n----- Post Data ----- \n' +
           'Data being called here is being used in the blog previews we are generating');
           console.log(data);
           this.buildLinkContent(data);
@@ -300,7 +333,8 @@ export default class BlogPage extends Page {
               </div>
               {
                 /* This is where all of the preview content is generated */
-                this.state.blogPreviewContent
+                //this.state.blogPreviewContent
+                <BlogPreviewArea />
               }
             </div>
           </div>
@@ -316,11 +350,3 @@ export default class BlogPage extends Page {
     )
   }
 }
-
-// <Route
-//   path = "/blog/post/:post_slug"
-//   render = {BlogPostRoute}
-//   history = {customHistory}
-// />
-
-//<RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />
