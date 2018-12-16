@@ -42,7 +42,6 @@ export default class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route exact path="/blog" component={BlogMain} />
-          <BlogRoute path="/post/:post_slug" history={customHistory} />
         </div>
       </Router>
     );
