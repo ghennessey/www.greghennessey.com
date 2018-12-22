@@ -20,48 +20,31 @@ export default class Menu extends Component {
     };
   }
 
-  getMenuItems() {
-    fetch('http://www.greghennessey.com/wp-json/gh/v1/menu_items')
-      .then(results => results.json())
-      .then(data => {
-        this.setState({
-          items: data,
-        },
-        () => (
-                this.menuDataIsSet()
-              )
-        );
-      });
-  }
-
-  //Callback - When the menu data is set, then build the rendering structure
-  //for the menu items so that we have something to iterate through before
-  //this is ever called
-  menuDataIsSet = () => {
-    var menuStruct = [];
-    console.log('-----Menu Paths-----');
-    for(var i=0; i < this.state.items.length; i++) {
-      var path = this.getPagePath(this.state.items[i].url);
-      console.log('path: ' + path);
-      menuStruct.push(
-        <li key={this.state.items[i].title}>
-          <Link key={this.state.items[i].ID} to={path}>{this.state.items[i].title}</Link>
-        </li>
-      );
-    }
-
+  async componentDidMount() {
+    const menuData = await(await(fetch('http://www.greghennessey.com/wp-json/gh/v1/menu_items'))).json();
     this.setState({
-      display: menuStruct,
+      items: menuData
     });
   }
 
-  handleClick(e) {
-    //TODO - Build handling for selecting menu items
-    console.log(e);
-  }
-
-  componentWillMount() {
-    this.getMenuItems();
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    //When the state pageIndex is updated, I do a new data call to fetch page data
+    if(prevState.items != this.state.items) {
+      var menuStruct = [];
+      console.log('\n-----Menu Paths (Menu.js)-----');
+      for(var i=0; i < this.state.items.length; i++) {
+        var path = this.getPagePath(this.state.items[i].url);
+        console.log('path: ' + path);
+        menuStruct.push(
+          <li key={this.state.items[i].title}>
+            <Link key={this.state.items[i].ID} to={path}>{this.state.items[i].title}</Link>
+          </li>
+        );
+      }
+      this.setState({
+        display: menuStruct,
+      });
+    }
   }
 
   render() {

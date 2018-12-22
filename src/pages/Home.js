@@ -3,6 +3,7 @@ import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import LogoMark from '../components/Widgets.js'
+import convertStringToHTML from '../components/Helpers.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 10;
@@ -10,7 +11,7 @@ const PAGE_ID = 10;
 //Home Page component
 //Later I want to break this down into a component specifically for home
 //and a component for Pages that Home extends
-export default class Home extends Page {
+export default class Home extends Component {
 
   constructor() {
     super();
@@ -21,19 +22,14 @@ export default class Home extends Page {
     };
   }
 
-  componentWillMount() {
-    this.getPageData(PAGE_ID);
-  }
+  async componentDidMount() {
+    const pageData = await (await fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID)).json();
 
-  //Overwrite this callback from Page.getPageData to get the data I need for
-  //this specific page
-  pageDataIsSet = () => {
-    //Set the states
     this.setState({
-      title: this.state.pageData.page_header,
-      backgroundImage: this.state.pageData.background_image.url,
-      logoImage: this.state.pageData.logo_image.url,
-      pageContent: this.state.pageData.content.rendered,
+      title: pageData.page_header,
+      backgroundImage: pageData.background_image.url,
+      logoImage: pageData.logo_image.url,
+      pageContent: pageData.content.rendered,
     });
   }
 
@@ -45,7 +41,7 @@ export default class Home extends Page {
           <Menu />
         </div>
         <div className="page-content">
-          {this.convertStringToHTML(this.state.pageContent)}
+          {convertStringToHTML(this.state.pageContent)}
         </div>
         <ResumeButton />
       </div>

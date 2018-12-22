@@ -12,7 +12,7 @@ import './styles/App.css'
 //TODO - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';
 
-// const customHistory = createBrowserHistory();
+const customHistory = createBrowserHistory();
 //
 // const BlogPostRoute = ({ match }) => {
 //   return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
@@ -42,15 +42,9 @@ export default class App extends Component {
           <Fragment>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/about" component={About} />
-              <Route exact path="/blog" render={ ({match, history}) => (
-                match.url === '/blog/' ? (
-                <Redirect to={`${match.path}?page=1`} />
-                ) : (
-                  <BlogPage queryString={history.location.search} />
-                )
-              )} />
-              // <Route path="/blog/:post" component={BlogPost} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/blog" render={({match, history}) =>
+                <BlogPage match={match} history={history} />} />
             </Switch>
           </Fragment>
         </Router>
@@ -58,3 +52,18 @@ export default class App extends Component {
     );
   }
 }
+
+// <Route exact path='/blog' render={({match, history}) => (
+//   history.location.search === "" ? (<Redirect to={`${match.url}?page=1`} />) :
+//     (<BlogPage {...match} {...history} />)
+// )} />
+
+// <Route exact strict path="/blog" render={ ({match, history}) => (
+//   match.url === '/blog/' || match.url === '/blog' ? (
+//     console.log(match),
+//     <Redirect to={`${match.path}?page=1`} />
+//   ) : (
+//     <BlogPage query={history.location.search} />
+//   )
+// )} />
+// <Route path="/blog/:post" component={BlogPost} />

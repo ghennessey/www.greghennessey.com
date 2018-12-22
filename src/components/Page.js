@@ -19,13 +19,6 @@ export default class Page extends Component {
     };
   }
 
-  convertStringToHTML = (string) => {
-    if(string) {
-      var html = string;
-      return ReactHtmlParser(html)
-    }
-  }
-
   getPageData(ID) {
     fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + ID)
       .then(results => results.json())

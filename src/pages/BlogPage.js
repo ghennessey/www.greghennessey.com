@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom"
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
@@ -9,28 +9,13 @@ import BlogPost from '../components/BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
 import createBrowserHistory from 'history/createBrowserHistory'
+import convertStringToHTML from '../components/Helpers.js'
+
+const queryString = require('query-string');
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
 const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
-
-///////////////////////////////////////////////////////////////////////////////
-// ROUTING
-///////////////////////////////////////////////////////////////////////////////
-const routes = {
-  blogPost: {
-    base_path: '/blog'
-  }
-}
-
-const customHistory = createBrowserHistory();
-
-const BlogPostRoute = ({ match }) => {
-  console.log('BlogPostRoute being called');
-  return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
-}
-
-// <RouteWithProps path={"/blog/post/:post_slug"} component={BlogPost} blogIDs={this.state.blogIDs} history={customHistory} />
 
 ///////////////////////////////////////////////////////////////////////////////
 // BLOG PREVIEW CLASS
@@ -43,14 +28,6 @@ class BlogPreview extends Component {
       //Set a dummy route until the data is ready
       blogRoute: '/some-post'
     };
-  }
-
-  componentWillMount() {
-    //When the data is ready set our proper route
-    var blogRoute = routes.blogPost.base_path + '/' + this.props.pageSlug;
-    this.setState({
-      blogRoute: blogRoute,
-    });
   }
 
   render() {
@@ -95,73 +72,123 @@ class BlogPreviewArea extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+  }
+
   render() {
     return <div className="debug-blogpreview" style={{ width: '400px', height: '100px', backgroundColor: 'blue' }}>
-      
+      Current Page {this.props.currentPage}
     </div>
   }
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // BLOG PAGE CLASS
 ///////////////////////////////////////////////////////////////////////////////
 
-export default class BlogPage extends Page {
-  constructor() {
-    super();
+export default class BlogPage extends Component {
+  constructor(props) {
+    super(props);
     this.handlePageNavClick = this.handlePageNavClick.bind(this);
     this.state = {
       title: '',
       backgroundImage: '',
       secondaryBGImage: '',
-      //This is actually just the title of the blog
+      //pageContent is actually just the title of the blog
       pageContent: '',
-      //This is the blog preview content HTML
+      //blogPreviewContent is the blog preview content HTML
       blogPreviewContent: null,
       maxPostsPerPage: 3,
-      pageIndex: 1,
+      //pageIndex is the current page we're on and will be set by the query param of the URL
+      pageIndex: null,
       numPages: '',
       loaderVisibility: null,
       blogPost: null,
-      //This is a list of slug to id key value pairs for the purpose of routing
+      //blogIDs is a list of slug to id key value pairs for the purpose of routing
       //and sending the correct data through the router
       blogIDs: {},
       maxBlogTitleLength: 30,
       paginationVisibility: false,
     };
-  }
 
-  componentWillMount() {
-    this.getPageData(PAGE_ID);
-    //Set the max number of pages we can view
-    this.setMaxNumPages(PAGES_API);
-
-    console.log('\nBlog Page Props');
-    console.log(this.props);
-  }
-
-  //When a page button is clicked, set the page number so we know which data to grab
-  setPageNumber(increment) {
-    let currentPage = this.state.pageIndex;
-    let newPage = this.state.pageIndex + increment;
-    let maxPage = this.state.numPages;
-
-    //Check that the page we want to go to doesn't exceed the range of Pages
-    //we can navigate
-    if(newPage <= maxPage && newPage > 0 && maxPage) {
-      //Set New Page & Clear old page content
-      this.setState({
-        pageIndex: newPage,
-        blogPreviewContent: null,
-      });
+    //If there is no query param for the BlogPage, then we replace the current url
+    //in the window with a query param for page 1
+    if(!this.props.history.location.search) {
+      this.updateURL(1, true);
     }
+  }
+
+  updateURL(pageQueryID, replace=false) {
+    let url = this.props.match.url;
+    let pageQuery = '?page=';
+    let newURL = url + pageQuery + pageQueryID;
+
+    //If false, we push a new entry (this is useful when we're navigating back and forth
+    //through different blog pages)
+    if(!replace) {
+      this.props.history.push(newURL);
+    } else {
+    //Otherwise, we replace the current url. This is so that we can update the current url
+      this.props.history.replace(newURL);
+    }
+  }
+
+  async componentDidMount() {
+
+    const maxPages = await(await(fetch(PAGES_API))).json();
+    const pageData = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
+
+    console.log('\n----- Blog Page Mounted - Async -----\nBlog Page data is retrieved as follows:');
+    console.log(pageData);
+    console.log(this.props);
+
+    //When the component mounts, parse the query string to get what page we are on and set it as the index
+    let pageIndex = this.parseQueryString(this.props);
+
+    this.setState({
+      //This title is used for the Logo Mark
+      title: pageData.page_header,
+      backgroundImage: pageData.background_image.url,
+      secondaryBGImage: pageData.secondary_bg_image.url,
+      logoImage: pageData.logo_image.url,
+      //This is just the title of the page
+      pageContent: pageData.content.rendered,
+      //Blog posts per page shows how many will be loaded and displayed
+      maxPostsPerPage: pageData.acf.max_posts,
+      numPages: Math.round(maxPages.length / this.state.maxPostsPerPage),
+      paginationVisibility: 'visible',
+      pageIndex: pageIndex,
+    });
+  }
+
+  parseQueryString = ({history: {location: {search}}}) => {
+    const parsedQuery = queryString.parse(search);
+    let queryStringID = parsedQuery.page;
+
+    return queryStringID
+  }
+
+  setPageIndex = (index) => {
+    let newIndex = index;
+
+    console.log(this.props);
+
+    //This is to safeguard someone from going over or under the min/max number of pages
+    if(newIndex <= 0) {
+      newIndex = 1;
+    } else if(newIndex >= this.state.numPages) {
+      newIndex = this.state.numPages;
+    }
+
+    this.setState({
+      pageIndex: newIndex,
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     if(prevState.pageIndex != this.state.pageIndex) {
-      this.fetchPostData();
+      //this.fetchPostData();
     }
   }
 
@@ -210,21 +237,6 @@ export default class BlogPage extends Page {
       });
   }
 
-  //TODO - This needs to be made more efficient. I don't like loading all Data
-  //just to get how many pages are in the blog. I might need to build my own
-  //PHP callback for this
-  setMaxNumPages = (api) => {
-    fetch(api)
-      .then(results => results.json())
-      .then(data => {
-        if(data) {
-          this.setState({
-            numPages: Math.round(data.length / this.state.maxPostsPerPage),
-          });
-        }
-      });
-  }
-
   shortenBlogTitle = (blogTitle) => {
     let oldBlogTitle = blogTitle;
     let newBlogTitle;
@@ -259,7 +271,7 @@ export default class BlogPage extends Page {
             blogClass = {'blog-preview-'+i}
             animDelay = {transitionDelay * (i) + 's'}
             previewImage = {blogPreviewData.acf.header_image.url}
-            blogExcerpt = {this.convertStringToHTML(blogPreviewData.excerpt.rendered)}
+            blogExcerpt = {convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
             pageSlug = {blogPreviewData.slug}
           />);
@@ -281,35 +293,18 @@ export default class BlogPage extends Page {
     });
   }
 
-  //Overwrite this callback from Page.getPageData to get the data I need for
-  //this specific page
-  pageDataIsSet = () => {
-    //Set the states
-    this.setState({
-      //This title is used for the Logo Mark
-      title: this.state.pageData.page_header,
-      backgroundImage: this.state.pageData.background_image.url,
-      secondaryBGImage: this.state.pageData.secondary_bg_image.url,
-      logoImage: this.state.pageData.logo_image.url,
-      //This is just the title of the page
-      pageContent: this.state.pageData.content.rendered,
-      //Blog posts per page shows how many will be loaded and displayed
-      maxPostsPerPage: this.state.pageData.acf.max_posts,
-    });
-
-    this.fetchPostData();
-  }
-
   //Handle CLICK of Pagination Buttons
   handlePageNavClick(e) {
     let clickedButton = e.target.className;
     let back = 'button-back';
     let forward = 'button-forward';
 
+    let currentIndex = parseInt(this.state.pageIndex);
+
     if(clickedButton === forward) {
-      this.setPageNumber(1)
+      this.setPageIndex(currentIndex + 1);
     } else if (clickedButton === back) {
-      this.setPageNumber(-1);
+      this.setPageIndex(currentIndex - 1);
     } else {
       console.log('There seems to be an issue detecting which button was pressed.');
     }
@@ -322,7 +317,7 @@ export default class BlogPage extends Page {
         <section className='top-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
           <LogoMark title={this.state.title} logo={this.state.logoImage} style='horizontal'/>
           <div className="page-content">
-            {this.convertStringToHTML(this.state.pageContent)}
+            {convertStringToHTML(this.state.pageContent)}
           </div>
         </section>
         <section className='bottom-section'>
@@ -331,11 +326,7 @@ export default class BlogPage extends Page {
               <div className='loader'>
                 {this.state.loaderVisibility}
               </div>
-              {
-                /* This is where all of the preview content is generated */
-                //this.state.blogPreviewContent
-                <BlogPreviewArea />
-              }
+                {<BlogPreviewArea currentPage={this.state.pageIndex} />}
             </div>
           </div>
           <div className='pagination' style={{ visibility: this.state.paginationVisibility ? 'visible' : 'hidden' }}>
