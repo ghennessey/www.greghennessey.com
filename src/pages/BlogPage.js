@@ -65,20 +65,104 @@ class BlogPreview extends Component {
 ///////////////////////////////////////////////////////////////////////////////
 // BLOG PREVIEW AREA CLASS
 ///////////////////////////////////////////////////////////////////////////////
-
 class BlogPreviewArea extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      //A state to show or hide the loading spinner
+      loaderVisibility: false,
+      //Once we build HTML content for the previews, we store it in this state
+      blogPreviewData: undefined,
+      //Set the maximum number of characters allowed in a blog title post so we can truncate it
+      maxBlogTitleLength: 30,
+    };
+  }
+
+  //This method fetches blog data that will be displayed as a blog preview
+  async fetchPostData() {
+    //Let's construct the API call here. Get the base, plus the number of posts per page
+    //And the page we're on
+    let api_Base = PAGES_API;
+    let api_PostsPerPage = '?per_page=' + this.props.maxPosts;
+    let api_CurrentPage = '&page=' + this.props.currentPage;
+    let api_Final = api_Base + api_PostsPerPage + api_CurrentPage;
+
+    const data = await(await(fetch(api_Final))).json();
+
+    //Once we have retrieved data, build appropriate content
+    this.buildLinkContent(data);
+  }
+
+  //Once post data is grabbed, let's get the data and build the HTML content
+  //structure
+  buildLinkContent = (data) => {
+    var blogPreviewContent = [];
+    var blogData = data;
+
+    //Animation Settings
+    var transitionDelay = 0.05;
+
+    for(var i=0; i < blogData.length; i++) {
+      let blogPreviewData = blogData[i];
+
+      if(blogPreviewData) {
+        blogPreviewContent.push(
+          <BlogPreview
+            key = {i}
+            id = {blogPreviewData.id}
+            blogTitle = {this.shortenBlogTitle(blogPreviewData.title.rendered)}
+            blogDate = {blogPreviewData.date}
+            blogClass = {'blog-preview-'+i}
+            animDelay = {transitionDelay * (i) + 's'}
+            previewImage = {blogPreviewData.acf.header_image.url}
+            blogExcerpt = {convertStringToHTML(blogPreviewData.excerpt.rendered)}
+            blogLink = {blogPreviewData.link}
+            pageSlug = {blogPreviewData.slug}
+          />);
+      }
+    }
+
+    this.setState({
+      blogPreviewContent: blogPreviewContent,
+      loaderVisibility: false,
+    });
+  }
+
+  shortenBlogTitle = (blogTitle) => {
+    let oldBlogTitle = blogTitle;
+    let newBlogTitle;
+    if(oldBlogTitle.length > this.state.maxBlogTitleLength) {
+      newBlogTitle = oldBlogTitle.slice(0, this.state.maxBlogTitleLength) + "...";
+    } else {
+      newBlogTitle = oldBlogTitle;
+    }
+    return newBlogTitle;
   }
 
   componentDidMount() {
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    //When the state pageIndex is updated, I do a new data call to fetch page data
+    if(prevProps.currentPage != this.props.currentPage) {
+      console.log('The current page is: ' + this.props.currentPage);
+      this.fetchPostData();
+      this.setState({
+        blogPreviewData: null,
+        loaderVisibility: true,
+      });
+    }
+  }
+
   render() {
-    return <div className="debug-blogpreview" style={{ width: '400px', height: '100px', backgroundColor: 'blue' }}>
-      Current Page {this.props.currentPage}
-    </div>
+    return (
+      <div className='blog-list-container'>
+        <div className='loader'>
+          <LoadingSpinner display={this.state.loaderVisibility} />
+        </div>
+        {this.state.blogPreviewContent}
+      </div>
+    );
   }
 }
 
@@ -102,7 +186,6 @@ export default class BlogPage extends Component {
       //pageIndex is the current page we're on and will be set by the query param of the URL
       pageIndex: null,
       numPages: '',
-      loaderVisibility: null,
       blogPost: null,
       //blogIDs is a list of slug to id key value pairs for the purpose of routing
       //and sending the correct data through the router
@@ -144,6 +227,7 @@ export default class BlogPage extends Component {
 
     //When the component mounts, parse the query string to get what page we are on and set it as the index
     let pageIndex = this.parseQueryString(this.props);
+    //TODO - If pageIndex ends up returning null because its not an int, then I need to redirect
 
     this.setState({
       //This title is used for the Logo Mark
@@ -163,15 +247,21 @@ export default class BlogPage extends Component {
 
   parseQueryString = ({history: {location: {search}}}) => {
     const parsedQuery = queryString.parse(search);
-    let queryStringID = parsedQuery.page;
+    let queryStringID = parseInt(parsedQuery.page, 10);
 
-    return queryStringID
+    //If the queryString is valid then return it
+    if(queryStringID === parseInt(queryStringID, 10)) {
+      return queryStringID
+    //Otherwise return null and recommend a redirect
+    } else {
+      return null
+    }
   }
 
+  //This function sets the page index (What page we're on) and is usually called When
+  //I click on the back/next buttons
   setPageIndex = (index) => {
     let newIndex = index;
-
-    console.log(this.props);
 
     //This is to safeguard someone from going over or under the min/max number of pages
     if(newIndex <= 0) {
@@ -188,109 +278,8 @@ export default class BlogPage extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     if(prevState.pageIndex != this.state.pageIndex) {
-      //this.fetchPostData();
+      this.updateURL(this.state.pageIndex);
     }
-  }
-
-  //This method shows or removes a spinning loader component depending on if
-  //data is loading or not
-  switchLoaderVisibility() {
-    var visibility = this.state.loaderVisibility;
-    var newVisibility;
-    if(visibility === null) {
-      newVisibility = <LoadingSpinner />;
-    } else {
-      newVisibility = null
-    }
-    this.setState({
-      loaderVisibility: newVisibility,
-    });
-  }
-
-  //This method fetches blog data that will be displayed as a blog preview
-  fetchPostData() {
-    //Show the "Loading Spinner" while I'm getting post data
-    this.switchLoaderVisibility();
-    this.setState({
-      paginationVisibility: false,
-    });
-
-    //Let's construct the API call here. Get the base, plus the number of posts per page
-    //And the page we're on
-    let api_Base = PAGES_API;
-    let api_PostsPerPage = '?per_page=' + this.state.maxPostsPerPage;
-    let api_CurrentPage = '&page=' + this.state.pageIndex;
-    let api_Final = api_Base + api_PostsPerPage + api_CurrentPage;
-
-    fetch(api_Final)
-      .then(results => results.json())
-      .then(data => {
-        if(data) {
-          //Turn the loader off again since data is loaded
-          this.switchLoaderVisibility();
-
-          console.log('\n----- Post Data ----- \n' +
-          'Data being called here is being used in the blog previews we are generating');
-          console.log(data);
-          this.buildLinkContent(data);
-        }
-      });
-  }
-
-  shortenBlogTitle = (blogTitle) => {
-    let oldBlogTitle = blogTitle;
-    let newBlogTitle;
-    if(oldBlogTitle.length > 30) {
-      newBlogTitle = oldBlogTitle.slice(0, this.state.maxBlogTitleLength) + "...";
-
-    } else {
-      newBlogTitle = oldBlogTitle;
-    }
-    return newBlogTitle;
-  }
-
-  //Once post data is grabbed, let's get the data and build the HTML content
-  //structure
-  buildLinkContent = (data) => {
-    var blogPreviewContent = [];
-    var blogData = data;
-
-    //Animation Settings
-    var transitionDelay = 0.05;
-
-    for(var i=0; i < blogData.length; i++) {
-      let blogPreviewData = blogData[i];
-
-      if(blogPreviewData) {
-        blogPreviewContent.push(
-          <BlogPreview
-            key = {i}
-            id = {blogPreviewData.id}
-            blogTitle = {this.shortenBlogTitle(blogPreviewData.title.rendered)}
-            blogDate = {blogPreviewData.date}
-            blogClass = {'blog-preview-'+i}
-            animDelay = {transitionDelay * (i) + 's'}
-            previewImage = {blogPreviewData.acf.header_image.url}
-            blogExcerpt = {convertStringToHTML(blogPreviewData.excerpt.rendered)}
-            blogLink = {blogPreviewData.link}
-            pageSlug = {blogPreviewData.slug}
-          />);
-
-          let blogRoutingData = {}
-
-          //blogRoutingData[blogPreviewData.slug].id = blogPreviewData.id;
-      }
-
-      //Show pagination nav again, since we were hiding it
-      this.setState({
-        paginationVisibility: true,
-      });
-    }
-
-    this.setState({
-      blogPreviewContent: blogPreviewContent,
-      //blogIDs: blogRoutingData
-    });
   }
 
   //Handle CLICK of Pagination Buttons
@@ -311,7 +300,6 @@ export default class BlogPage extends Component {
   }
 
   render() {
-    var loaderVisibility = this.state.loaderVisibility;
     return(
       <div className="BlogMain Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <section className='top-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
@@ -322,12 +310,7 @@ export default class BlogPage extends Component {
         </section>
         <section className='bottom-section'>
           <div className='page-content'>
-            <div className='blog-list-container'>
-              <div className='loader'>
-                {this.state.loaderVisibility}
-              </div>
-                {<BlogPreviewArea currentPage={this.state.pageIndex} />}
-            </div>
+            {<BlogPreviewArea currentPage={this.state.pageIndex} maxPosts={this.state.maxPostsPerPage} />}
           </div>
           <div className='pagination' style={{ visibility: this.state.paginationVisibility ? 'visible' : 'hidden' }}>
             <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
