@@ -13,19 +13,7 @@ import './styles/App.css'
 //import logo from './logo.svg';
 
 const customHistory = createBrowserHistory();
-//
-// const BlogPostRoute = ({ match }) => {
-//   return <BlogPost postSlug={match.params.post_slug} history={customHistory} />
-// }
-//
-// const BlogRoute = ({history}) => {
-//   console.log('<----- BlogRoute ----->');
-//   console.log(history.location.pathname);
-//   return <div></div>
-// }
 
-//This is the main rendering component for my App and basic structure of the site
-//It all starts here
 export default class App extends Component {
 
   constructor() {
@@ -52,18 +40,3 @@ export default class App extends Component {
     );
   }
 }
-
-// <Route exact path='/blog' render={({match, history}) => (
-//   history.location.search === "" ? (<Redirect to={`${match.url}?page=1`} />) :
-//     (<BlogPage {...match} {...history} />)
-// )} />
-
-// <Route exact strict path="/blog" render={ ({match, history}) => (
-//   match.url === '/blog/' || match.url === '/blog' ? (
-//     console.log(match),
-//     <Redirect to={`${match.path}?page=1`} />
-//   ) : (
-//     <BlogPage query={history.location.search} />
-//   )
-// )} />
-// <Route path="/blog/:post" component={BlogPost} />

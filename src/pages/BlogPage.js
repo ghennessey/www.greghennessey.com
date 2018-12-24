@@ -145,7 +145,6 @@ class BlogPreviewArea extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     if(prevProps.currentPage != this.props.currentPage) {
-      console.log('The current page is: ' + this.props.currentPage);
       this.fetchPostData();
       this.setState({
         blogPreviewData: null,
@@ -180,18 +179,11 @@ export default class BlogPage extends Component {
       secondaryBGImage: '',
       //pageContent is actually just the title of the blog
       pageContent: '',
-      //blogPreviewContent is the blog preview content HTML
-      blogPreviewContent: null,
       maxPostsPerPage: 3,
       //pageIndex is the current page we're on and will be set by the query param of the URL
-      pageIndex: null,
-      numPages: '',
-      blogPost: null,
-      //blogIDs is a list of slug to id key value pairs for the purpose of routing
-      //and sending the correct data through the router
-      blogIDs: {},
-      maxBlogTitleLength: 30,
-      paginationVisibility: false,
+      pageIndex: 1,
+      numPages: undefined,
+      paginationVisibility: 'hidden',
     };
 
     //If there is no query param for the BlogPage, then we replace the current url
@@ -243,6 +235,14 @@ export default class BlogPage extends Component {
       paginationVisibility: 'visible',
       pageIndex: pageIndex,
     });
+
+    //This will set the current page to the max page available in the case that
+    //Someone entered a huge query param that is out of scope
+    if(this.state.pageIndex > this.state.numPages) {
+      this.setState({
+        pageIndex: this.state.numPages
+      });
+    }
   }
 
   parseQueryString = ({history: {location: {search}}}) => {
