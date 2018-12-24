@@ -140,6 +140,9 @@ class BlogPreviewArea extends Component {
   }
 
   componentDidMount() {
+    if(this.props.currentPage) {
+      this.fetchPostData();
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -166,6 +169,29 @@ class BlogPreviewArea extends Component {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Pagination
+// A stateless component for pagination that just accepts props from the
+// BlogPage class and renders a small component.
+///////////////////////////////////////////////////////////////////////////////
+
+const Pagination = ({paginationVisibility, handlePageNavClick, pageIndex, numPages}) => {
+
+  //If there is no page, then do not show the pagination
+  //OR if there is only one or less pages, hide the pagination
+  if(!pageIndex || numPages <= 1) {
+    paginationVisibility = false;
+  }
+
+  return (
+  <div className='pagination' style={{ visibility: paginationVisibility ? 'visible' : 'hidden' }}>
+    <a className='button-back' onClick={handlePageNavClick}>&lt; Back</a>
+    <span>{pageIndex + "/" + numPages}</span>
+    <a className='button-forward' onClick={handlePageNavClick}>Forward &gt;</a>
+  </div>
+  )
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // BLOG PAGE CLASS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -181,9 +207,9 @@ export default class BlogPage extends Component {
       pageContent: '',
       maxPostsPerPage: 3,
       //pageIndex is the current page we're on and will be set by the query param of the URL
-      pageIndex: 1,
+      pageIndex: null,
       numPages: undefined,
-      paginationVisibility: 'hidden',
+      paginationVisibility: false,
     };
 
     //If there is no query param for the BlogPage, then we replace the current url
@@ -215,7 +241,6 @@ export default class BlogPage extends Component {
 
     console.log('\n----- Blog Page Mounted - Async -----\nBlog Page data is retrieved as follows:');
     console.log(pageData);
-    console.log(this.props);
 
     //When the component mounts, parse the query string to get what page we are on and set it as the index
     let pageIndex = this.parseQueryString(this.props);
@@ -310,16 +335,19 @@ export default class BlogPage extends Component {
         </section>
         <section className='bottom-section'>
           <div className='page-content'>
-            {<BlogPreviewArea currentPage={this.state.pageIndex} maxPosts={this.state.maxPostsPerPage} />}
+            <BlogPreviewArea currentPage={this.state.pageIndex} maxPosts={this.state.maxPostsPerPage} />
           </div>
-          <div className='pagination' style={{ visibility: this.state.paginationVisibility ? 'visible' : 'hidden' }}>
-            <a className='button-back' onClick={this.handlePageNavClick}>&lt; Back</a>
-            <span>{this.state.pageIndex + "/" + this.state.numPages}</span>
-            <a className='button-forward' onClick={this.handlePageNavClick}>Forward &gt;</a>
-          </div>
+          <Pagination
+            paginationVisibility={this.state.paginationVisibility}
+            handlePageNavClick={this.handlePageNavClick}
+            pageIndex={this.state.pageIndex}
+            numPages={this.state.numPages}
+          />
         </section>
         <ResumeButton />
         <HamburgerMenu />
+        <Switch>
+        </Switch>
       </div>
     )
   }
