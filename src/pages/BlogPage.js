@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
-import BlogPost from '../components/BlogPost.js'
+// import BlogPost from 'BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -71,15 +71,19 @@ class BlogPreviewArea extends Component {
     this.state = {
       //A state to show or hide the loading spinner
       loaderVisibility: false,
-      //Once we build HTML content for the previews, we store it in this state
-      blogPreviewData: undefined,
       //Set the maximum number of characters allowed in a blog title post so we can truncate it
       maxBlogTitleLength: 30,
+      //This is the content for the HTML preview area that holds multiple blog previews
+      blogPreviewContent: undefined,
     };
   }
 
   //This method fetches blog data that will be displayed as a blog preview
   async fetchPostData() {
+    if(this.state.blogPreviewContent != undefined) {
+      this.setState({blogPreviewContent: undefined});
+    }
+
     //Let's construct the API call here. Get the base, plus the number of posts per page
     //And the page we're on
     let api_Base = PAGES_API;
@@ -126,6 +130,9 @@ class BlogPreviewArea extends Component {
       blogPreviewContent: blogPreviewContent,
       loaderVisibility: false,
     });
+
+    //Show pagination once content is built
+    this.props.handlePaginationVisibility(true);
   }
 
   shortenBlogTitle = (blogTitle) => {
@@ -150,7 +157,7 @@ class BlogPreviewArea extends Component {
     if(prevProps.currentPage != this.props.currentPage) {
       this.fetchPostData();
       this.setState({
-        blogPreviewData: null,
+        blogPreviewData: undefined,
         loaderVisibility: true,
       });
     }
@@ -174,16 +181,15 @@ class BlogPreviewArea extends Component {
 // BlogPage class and renders a small component.
 ///////////////////////////////////////////////////////////////////////////////
 
-const Pagination = ({paginationVisibility, handlePageNavClick, pageIndex, numPages}) => {
-
+const Pagination = ({visibility, handlePageNavClick, pageIndex, numPages}) => {
   //If there is no page, then do not show the pagination
   //OR if there is only one or less pages, hide the pagination
   if(!pageIndex || numPages <= 1) {
-    paginationVisibility = false;
+    visibility = false;
   }
 
   return (
-  <div className='pagination' style={{ visibility: paginationVisibility ? 'visible' : 'hidden' }}>
+  <div className='pagination' style={{ visibility: visibility ? 'visible' : 'hidden' }}>
     <a className='button-back' onClick={handlePageNavClick}>&lt; Back</a>
     <span>{pageIndex + "/" + numPages}</span>
     <a className='button-forward' onClick={handlePageNavClick}>Forward &gt;</a>
@@ -257,7 +263,6 @@ export default class BlogPage extends Component {
       //Blog posts per page shows how many will be loaded and displayed
       maxPostsPerPage: pageData.acf.max_posts,
       numPages: Math.round(maxPages.length / this.state.maxPostsPerPage),
-      paginationVisibility: 'visible',
       pageIndex: pageIndex,
     });
 
@@ -302,26 +307,44 @@ export default class BlogPage extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
+    //I also hide the pagination since this is the safest place to do it
     if(prevState.pageIndex != this.state.pageIndex) {
       this.updateURL(this.state.pageIndex);
+      this.handlePaginationVisibility(false);
     }
   }
 
   //Handle CLICK of Pagination Buttons
-  handlePageNavClick(e) {
+  handlePageNavClick = (e) => {
     let clickedButton = e.target.className;
     let back = 'button-back';
     let forward = 'button-forward';
 
     let currentIndex = parseInt(this.state.pageIndex);
+    let newIndex = currentIndex;
 
     if(clickedButton === forward) {
-      this.setPageIndex(currentIndex + 1);
+      newIndex++
     } else if (clickedButton === back) {
-      this.setPageIndex(currentIndex - 1);
+      newIndex--;
     } else {
       console.log('There seems to be an issue detecting which button was pressed.');
     }
+
+    //This is to safeguard someone from going over or under the min/max number of pages
+    if(newIndex <= 0) {
+      newIndex = 1;
+    } else if(newIndex >= this.state.numPages) {
+      newIndex = this.state.numPages;
+    }
+
+    this.setState({
+      pageIndex: newIndex,
+    });
+  }
+
+  handlePaginationVisibility = (visibility) => {
+    this.setState({paginationVisibility: visibility});
   }
 
   render() {
@@ -335,10 +358,14 @@ export default class BlogPage extends Component {
         </section>
         <section className='bottom-section'>
           <div className='page-content'>
-            <BlogPreviewArea currentPage={this.state.pageIndex} maxPosts={this.state.maxPostsPerPage} />
+            <BlogPreviewArea
+              currentPage={this.state.pageIndex}
+              maxPosts={this.state.maxPostsPerPage}
+              handlePaginationVisibility={this.handlePaginationVisibility}
+            />
           </div>
           <Pagination
-            paginationVisibility={this.state.paginationVisibility}
+            visibility={this.state.paginationVisibility}
             handlePageNavClick={this.handlePageNavClick}
             pageIndex={this.state.pageIndex}
             numPages={this.state.numPages}
@@ -346,8 +373,6 @@ export default class BlogPage extends Component {
         </section>
         <ResumeButton />
         <HamburgerMenu />
-        <Switch>
-        </Switch>
       </div>
     )
   }

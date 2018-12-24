@@ -5,7 +5,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import Home from './pages/Home.js'
 import About from './pages/About.js'
 import BlogPage from './pages/BlogPage.js'
-import BlogPost from './components/BlogPost.js'
+import BlogPost from './pages/BlogPost.js'
 
 import './styles/App.css'
 
@@ -32,7 +32,11 @@ export default class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
               <Route exact path="/blog" render={({match, history}) =>
-                <BlogPage match={match} history={history} />} />
+                <BlogPage match={match} history={history} />}
+              />
+              <Route path="" render={() =>
+                <div></div> }
+              />
             </Switch>
           </Fragment>
         </Router>
