@@ -5,6 +5,7 @@ import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
+import convertStringToHTML from '../components/Helpers.js'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 21;
@@ -97,7 +98,7 @@ export default class About extends Page {
         </section>
         <section className='right-section'>
           <div className='page-content'>
-            {this.convertStringToHTML(this.state.pageContent)}
+            {convertStringToHTML(this.state.pageContent)}
             <div className='about-links'>
             {this.state.linkContent}
             </div>

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Link } from "react-router-dom"
+import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom"
 import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
-// import BlogPost from 'BlogPost.js'
+import BlogPost from '../pages/BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -17,35 +17,75 @@ const queryString = require('query-string');
 const PAGE_ID = 87;
 const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
 
+class BlogPostModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      blogSlug: undefined,
+      blogPost: null,
+      handleClosePost: undefined,
+    };
+  }
+
+  handleClosePost = () => {
+    console.log('\n<BlogPostModal> is calling handleClosePost');
+    this.setState({
+      blogPost: undefined
+    });
+
+    //Call goBack() to return to the previous URL
+    this.props.history.goBack();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.blogSlug != this.props.blogSlug) {
+      //Open modal component
+      this.setState({
+        blogPost: <BlogPost
+                    handleClosePost={this.handleClosePost}
+                    {...this.props}
+                  />
+      });
+
+      //Update the URL to the URL of the blog post
+      let newURL = this.props.history.location.pathname + '/post/' + this.props.blogSlug;
+      this.props.history.push(newURL);
+    }
+  }
+
+  render() {
+    return <div>{this.state.blogPost}</div>
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // BLOG PREVIEW CLASS
 ///////////////////////////////////////////////////////////////////////////////
 class BlogPreview extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       blogClick: this.props.onClick,
-      //Set a dummy route until the data is ready
-      blogRoute: '/some-post'
+      blogRoute: this.props.pageSlug
     };
   }
 
   render() {
     return(
-      <div key={this.props.uniqueKey} className={this.props.blogClass + ' container transition-in'} style={{
+      <div key={this.props.uniqueKey} className={'blog-preview '+ this.props.blogClass + ' container transition-in'} style={{
         animationDelay: this.props.animDelay}}>
         <div className='left-side'>
-
-          <Link to={this.state.blogRoute}>
+          <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}>
             <div className='blog-image'>
               <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
             </div>
-          </Link>
+          </a>
 
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <Link to={this.state.blogRoute}><h1>{this.props.blogTitle}</h1></Link>
+            <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}><h1>{this.props.blogTitle}</h1></a>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -54,7 +94,7 @@ class BlogPreview extends Component {
               {this.props.blogExcerpt}
           </div>
           <div className='read-more row-3'>
-            <a href={this.props.blogLink}>Read More >></a>
+            <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}>Read More >></a>
           </div>
         </div>
       </div>
@@ -122,6 +162,7 @@ class BlogPreviewArea extends Component {
             blogExcerpt = {convertStringToHTML(blogPreviewData.excerpt.rendered)}
             blogLink = {blogPreviewData.link}
             pageSlug = {blogPreviewData.slug}
+            handleBlogPostData={this.props.handleBlogPostData}
           />);
       }
     }
@@ -205,6 +246,7 @@ export default class BlogPage extends Component {
   constructor(props) {
     super(props);
     this.handlePageNavClick = this.handlePageNavClick.bind(this);
+
     this.state = {
       title: '',
       backgroundImage: '',
@@ -216,6 +258,8 @@ export default class BlogPage extends Component {
       pageIndex: null,
       numPages: undefined,
       paginationVisibility: false,
+      //Lets get the router history from our Router so we can save its state and manipulate it
+      history: this.props.history,
     };
 
     //If there is no query param for the BlogPage, then we replace the current url
@@ -226,22 +270,35 @@ export default class BlogPage extends Component {
   }
 
   updateURL(pageQueryID, replace=false) {
-    let url = this.props.match.url;
-    let pageQuery = '?page=';
-    let newURL = url + pageQuery + pageQueryID;
+    const url = this.props.match.url;
+    const pageQuery = '?page=';
+    const newURL = url + pageQuery + pageQueryID;
 
     //If false, we push a new entry (this is useful when we're navigating back and forth
     //through different blog pages)
     if(!replace) {
-      this.props.history.push(newURL);
+      this.state.history.push({
+        pathname: url,
+        search: pageQuery + pageQueryID
+      });
     } else {
-    //Otherwise, we replace the current url. This is so that we can update the current url
-      this.props.history.replace(newURL);
+      //Otherwise, we replace the current url. This is so that we can update the current url
+      this.state.history.replace({
+        pathname: url,
+        search: pageQuery + pageQueryID
+      });
     }
+
+    this.setState({
+      history: this.state.history
+    });
+
+    // console.log('\n<BlogPage> - URL updated to: ');
+    // console.log('pathname: ' + this.state.history.location.pathname);
+    // console.log('search: ' + this.state.history.location.search);
   }
 
   async componentDidMount() {
-
     const maxPages = await(await(fetch(PAGES_API))).json();
     const pageData = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
 
@@ -264,6 +321,7 @@ export default class BlogPage extends Component {
       maxPostsPerPage: pageData.acf.max_posts,
       numPages: Math.round(maxPages.length / this.state.maxPostsPerPage),
       pageIndex: pageIndex,
+      blogSlug: undefined,
     });
 
     //This will set the current page to the max page available in the case that
@@ -347,6 +405,12 @@ export default class BlogPage extends Component {
     this.setState({paginationVisibility: visibility});
   }
 
+  handleBlogPostData = (slug) => {
+    this.setState({
+      blogSlug: slug
+    });
+  }
+
   render() {
     return(
       <div className="BlogMain Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
@@ -362,6 +426,7 @@ export default class BlogPage extends Component {
               currentPage={this.state.pageIndex}
               maxPosts={this.state.maxPostsPerPage}
               handlePaginationVisibility={this.handlePaginationVisibility}
+              handleBlogPostData={this.handleBlogPostData}
             />
           </div>
           <Pagination
@@ -371,6 +436,10 @@ export default class BlogPage extends Component {
             numPages={this.state.numPages}
           />
         </section>
+        <BlogPostModal
+          history={this.state.history}
+          blogSlug={this.state.blogSlug}
+         />
         <ResumeButton />
         <HamburgerMenu />
       </div>

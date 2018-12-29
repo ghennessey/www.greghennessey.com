@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import $ from "jquery";
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
@@ -10,7 +9,7 @@ import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
 export default class BlogPost extends Component {
   constructor(props) {
-    console.log('BlogPost class is being constructed');
+    console.log('\n<BlogPost> class is being constructed');
     super(props);
     this.state = {
       blogTitle: '',
@@ -26,12 +25,20 @@ export default class BlogPost extends Component {
     }
   }
 
-  componentWillMount () {
-    if(this.props.postSlug) {
-      this.fetchPostData(this.props.postSlug);
-    } else {
-      console.warn('Post ID was not received, so data cannot be fetched');
-    }
+  async componentDidMount() {
+      console.log('\n<BlogPost> Props');
+      console.log(this.props);
+
+      let slug = this.props.blogSlug ? this.props.blogSlug : this.props.match.params.postID;
+      let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug=' + slug;
+      let data = await(await(fetch(api))).json();
+
+      this.setState({
+        headerImageURL: data[0].acf.header_image.url,
+        blogTitle: data[0].title.rendered,
+        blogContent: data[0].content.rendered,
+      })
+
     $('body, .Page, .App').addClass('noscroll');
   }
 
@@ -39,28 +46,10 @@ export default class BlogPost extends Component {
     $('body, .Page, .App').removeClass('noscroll');
   }
 
-  fetchPostData(postSlug) {
-    let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug='+postSlug;
-    fetch(api)
-      .then(results => results.json())
-      .then(data => {
-        if(data) {
-          this.setState({
-            headerImageURL: data[0].acf.header_image.url,
-            blogTitle: data[0].title.rendered,
-            blogContent: data[0].content.rendered,
-          })
-        }
-      });
-  }
-
-  buildBlogContent = (data) => {
-
-  }
-
   backClick = () => {
-    if(this.props.history) {
-      this.props.history.goBack();
+    if(this.props.handleClosePost) {
+      console.log('Closing post');
+      this.props.handleClosePost();
     } else {
       console.warn('It appears that no history state has been passed in to the BlogPost component, back will not work');
     }

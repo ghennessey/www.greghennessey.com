@@ -31,10 +31,10 @@ export default class Menu extends Component {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     if(prevState.items != this.state.items) {
       var menuStruct = [];
-      console.log('\n-----Menu Paths (Menu.js)-----');
+      //console.log('\n-----Menu Paths (Menu.js)-----');
       for(var i=0; i < this.state.items.length; i++) {
         var path = this.getPagePath(this.state.items[i].url);
-        console.log('path: ' + path);
+        //console.log('path: ' + path);
         menuStruct.push(
           <li key={this.state.items[i].title}>
             <Link key={this.state.items[i].ID} to={path}>{this.state.items[i].title}</Link>
