@@ -6,6 +6,7 @@ import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
 import BlogPost from '../pages/BlogPost.js'
+import BlogPostModalWrapper from '../pages/BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -16,6 +17,18 @@ const queryString = require('query-string');
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
 const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
+
+export class BlogPostModal2 extends Component {
+  constructor() {
+    super();
+  }
+  componentDidMount() {
+    console.log('<BlogPostModal2> mounted');
+  }
+  render() {
+    return <div style={{height: '100px', width: '100px', backgroundColor: 'blue', position: 'float'}}></div>
+  }
+}
 
 class BlogPostModal extends Component {
   constructor(props) {
@@ -48,8 +61,9 @@ class BlogPostModal extends Component {
       });
 
       //Update the URL to the URL of the blog post
-      let newURL = this.props.history.location.pathname + '/post/' + this.props.blogSlug;
-      this.props.history.push(newURL);
+      //let newURL = this.props.history.location.pathname + '/post/' + this.props.blogSlug;
+      let newURL = '/blog/post/' + this.props.blogSlug;
+      this.props.history.replace(newURL);
     }
   }
 
@@ -85,7 +99,7 @@ class BlogPreview extends Component {
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}><h1>{this.props.blogTitle}</h1></a>
+            <Link to='/blog/123'><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -264,13 +278,13 @@ export default class BlogPage extends Component {
 
     //If there is no query param for the BlogPage, then we replace the current url
     //in the window with a query param for page 1
-    if(!this.props.history.location.search) {
+    if(!this.props.history.location.search && this.props.match.path != '/blog/:postID') {
       this.updateURL(1, true);
     }
   }
 
   updateURL(pageQueryID, replace=false) {
-    const url = this.props.match.url;
+    const url = this.props.match.path;
     const pageQuery = '?page=';
     const newURL = url + pageQuery + pageQueryID;
 
@@ -302,8 +316,10 @@ export default class BlogPage extends Component {
     const maxPages = await(await(fetch(PAGES_API))).json();
     const pageData = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
 
-    console.log('\n----- Blog Page Mounted - Async -----\nBlog Page data is retrieved as follows:');
-    console.log(pageData);
+    console.log('\n----- <BlogPage Mounted> - Async -----\n<BlogPage> data is retrieved as follows:');
+    //console.log(pageData);
+    console.log('Props from route:');
+    console.log(this.props);
 
     //When the component mounts, parse the query string to get what page we are on and set it as the index
     let pageIndex = this.parseQueryString(this.props);

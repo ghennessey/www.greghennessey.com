@@ -7,6 +7,22 @@ import LogoMark from '../components/Widgets.js'
 import ReactHtmlParser from 'react-html-parser';
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
+export class BlogPostModalWrapper extends Component {
+  constructor(props) {
+    super(props);
+    console.log('<BlogPostModalWrapper> is constructing');
+    this.state = {}
+  }
+
+  render() {
+    return (
+      <div className='blog-modal-wrapper'>
+        <BlogPost {...this.props} />
+      </div>
+    );
+  }
+}
+
 export default class BlogPost extends Component {
   constructor(props) {
     console.log('\n<BlogPost> class is being constructed');
@@ -58,7 +74,7 @@ export default class BlogPost extends Component {
   render() {
     return(
       <div className='blog-post'>
-        <div className='blog-spacer left' onClick={this.backClick}></div>
+        <div className='blog-spacer left' onClick={() => this.backClick()}></div>
         <div className='blog-container'>
         <section className='top-section'>
           <div className="page-content">
