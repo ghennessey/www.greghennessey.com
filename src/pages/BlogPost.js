@@ -7,17 +7,25 @@ import LogoMark from '../components/Widgets.js'
 import ReactHtmlParser from 'react-html-parser';
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
-export class BlogPostModalWrapper extends Component {
+export class BlogPostModal extends Component {
   constructor(props) {
     super(props);
-    console.log('<BlogPostModalWrapper> is constructing');
-    this.state = {}
+    // console.log('>>>>>>>>>>>>>>>>>>>>><BlogPostModalWrapper> constructing');
+  }
+
+  backClick = (e) => {
+    this.props.history.goBack();
+  }
+
+  componentDidMount() {
   }
 
   render() {
     return (
       <div className='blog-modal-wrapper'>
-        <BlogPost {...this.props} />
+        <BlogPost {...this.props}>
+          <button className='back-button' onClick={this.backClick}>Back</button>
+        </BlogPost>
       </div>
     );
   }
@@ -41,13 +49,30 @@ export default class BlogPost extends Component {
     }
   }
 
+  parseBlogSlug = ({ location, match }) => {
+    const urlPrefix = match.url + '/';
+    let slug = location.pathname.slice(urlPrefix.length, location.pathname.length);
+    return slug
+  }
+
+  backClick = (e) => {
+    let {history} = this.props
+    console.log(history);
+    if(history.action !== "POP") {
+      history.goBack();
+    }
+  }
+
   async componentDidMount() {
       console.log('\n<BlogPost> Props');
       console.log(this.props);
 
-      let slug = this.props.blogSlug ? this.props.blogSlug : this.props.match.params.postID;
+      let slug = this.parseBlogSlug(this.props);
       let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug=' + slug;
       let data = await(await(fetch(api))).json();
+
+      console.log('\n<BlogPost> Data');
+      console.log(data);
 
       this.setState({
         headerImageURL: data[0].acf.header_image.url,
@@ -62,23 +87,16 @@ export default class BlogPost extends Component {
     $('body, .Page, .App').removeClass('noscroll');
   }
 
-  backClick = () => {
-    if(this.props.handleClosePost) {
-      console.log('Closing post');
-      this.props.handleClosePost();
-    } else {
-      console.warn('It appears that no history state has been passed in to the BlogPost component, back will not work');
-    }
-  }
-
   render() {
+    let { children, history } = this.props;
+
     return(
       <div className='blog-post'>
-        <div className='blog-spacer left' onClick={() => this.backClick()}></div>
+        <div className='blog-spacer left' onClick={this.backClick}></div>
         <div className='blog-container'>
         <section className='top-section'>
+          {children}
           <div className="page-content">
-            <button onClick={this.backClick}>Back</button>
             <ImgFadeInOnLoad className='blog-header-image' src={this.state.headerImageURL} />
             <div className='title-block'>
               <h1>{this.state.blogTitle}</h1>

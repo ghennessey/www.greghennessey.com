@@ -6,7 +6,6 @@ import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
 import BlogPost from '../pages/BlogPost.js'
-import BlogPostModalWrapper from '../pages/BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
 import $ from "jquery";
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -17,60 +16,6 @@ const queryString = require('query-string');
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 87;
 const PAGES_API = 'http://www.greghennessey.com/wp-json/wp/v2/posts';
-
-export class BlogPostModal2 extends Component {
-  constructor() {
-    super();
-  }
-  componentDidMount() {
-    console.log('<BlogPostModal2> mounted');
-  }
-  render() {
-    return <div style={{height: '100px', width: '100px', backgroundColor: 'blue', position: 'float'}}></div>
-  }
-}
-
-class BlogPostModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      blogSlug: undefined,
-      blogPost: null,
-      handleClosePost: undefined,
-    };
-  }
-
-  handleClosePost = () => {
-    console.log('\n<BlogPostModal> is calling handleClosePost');
-    this.setState({
-      blogPost: undefined
-    });
-
-    //Call goBack() to return to the previous URL
-    this.props.history.goBack();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(prevProps.blogSlug != this.props.blogSlug) {
-      //Open modal component
-      this.setState({
-        blogPost: <BlogPost
-                    handleClosePost={this.handleClosePost}
-                    {...this.props}
-                  />
-      });
-
-      //Update the URL to the URL of the blog post
-      //let newURL = this.props.history.location.pathname + '/post/' + this.props.blogSlug;
-      let newURL = '/blog/post/' + this.props.blogSlug;
-      this.props.history.replace(newURL);
-    }
-  }
-
-  render() {
-    return <div>{this.state.blogPost}</div>
-  }
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // BLOG PREVIEW CLASS
@@ -99,7 +44,7 @@ class BlogPreview extends Component {
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <Link to='/blog/123'><h1>{this.props.blogTitle}</h1></Link>
+            <Link onClick={() => (console.log('TEST'))}to={{pathname: '/blog/' + this.props.pageSlug, state: {modal: true}}}><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
             {this.props.blogDate}
@@ -279,7 +224,7 @@ export default class BlogPage extends Component {
     //If there is no query param for the BlogPage, then we replace the current url
     //in the window with a query param for page 1
     if(!this.props.history.location.search && this.props.match.path != '/blog/:postID') {
-      this.updateURL(1, true);
+      //this.updateURL(1, true);
     }
   }
 
@@ -383,8 +328,9 @@ export default class BlogPage extends Component {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     //I also hide the pagination since this is the safest place to do it
     if(prevState.pageIndex != this.state.pageIndex) {
-      this.updateURL(this.state.pageIndex);
+      //this.updateURL(this.state.pageIndex);
       this.handlePaginationVisibility(false);
+      this.props.updateQueryString(this.state.pageIndex);
     }
   }
 
@@ -452,13 +398,13 @@ export default class BlogPage extends Component {
             numPages={this.state.numPages}
           />
         </section>
-        <BlogPostModal
-          history={this.state.history}
-          blogSlug={this.state.blogSlug}
-         />
         <ResumeButton />
         <HamburgerMenu />
       </div>
     )
   }
 }
+// <BlogPostModal
+ //  history={this.state.history}
+ //  blogSlug={this.state.blogSlug}
+ // />
