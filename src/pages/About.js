@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Page from '../components/Page.js'
-import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
@@ -10,7 +8,7 @@ import convertStringToHTML from '../components/Helpers.js'
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 21;
 
-export default class About extends Page {
+export default class About extends Component {
   constructor() {
     super();
     this.state = {
@@ -91,7 +89,7 @@ export default class About extends Page {
     return(
       <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <section className='left-section'>
-          <LogoMark title={this.state.title} logo={this.state.logoImage} style='horizontal'/>
+          <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='horizontal'/>
           <div className="page-content">
             <ImgFadeInOnLoad className='bg-image' src={this.state.secondaryBGImage} />
           </div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Page from '../components/Page.js'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
 import LogoMark from '../components/Widgets.js'
@@ -37,7 +36,7 @@ export default class Home extends Component {
     return (
       <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <div className="nav-container">
-          <LogoMark title={this.state.title} logo={this.state.logoImage} style='centered'/>
+          <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='centered'/>
           <Menu />
         </div>
         <div className="page-content">

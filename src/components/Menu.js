@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //TODO - Set this up to dynamically interpret the site url
 const SITE_URL = 'http://www.greghennessey.com';
@@ -29,7 +29,7 @@ export default class Menu extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
-    if(prevState.items != this.state.items) {
+    if(prevState.items !== this.state.items) {
       var menuStruct = [];
       //console.log('\n-----Menu Paths (Menu.js)-----');
       for(var i=0; i < this.state.items.length; i++) {

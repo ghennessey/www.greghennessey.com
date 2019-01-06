@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
 import $ from "jquery";
-import Menu from '../components/Menu.js'
-import ResumeButton from '../components/ResumeButton.js'
-import HamburgerMenu from '../components/HamburgerMenu.js'
-import LogoMark from '../components/Widgets.js'
 import ReactHtmlParser from 'react-html-parser';
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
 export class BlogPostModal extends Component {
-  constructor(props) {
-    super(props);
-    // console.log('>>>>>>>>>>>>>>>>>>>>><BlogPostModalWrapper> constructing');
-  }
 
   backClick = (e) => {
     this.props.history.goBack();
@@ -28,6 +20,16 @@ export class BlogPostModal extends Component {
         </BlogPost>
       </div>
     );
+  }
+}
+
+export class BlogPostNoModal extends Component {
+  render() {
+    return (
+      <div className='blog-no-modal-wrapper'>
+        <BlogPost {...this.props} />
+      </div>
+    )
   }
 }
 
@@ -88,7 +90,7 @@ export default class BlogPost extends Component {
   }
 
   render() {
-    let { children, history } = this.props;
+    let { children } = this.props;
 
     return(
       <div className='blog-post'>

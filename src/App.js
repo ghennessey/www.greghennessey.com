@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
-import { ModalContainer, ModalRoute } from 'react-router-modal'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from './pages/Home.js'
 import About from './pages/About.js'
 import BlogPage from './pages/BlogPage.js'
 import BlogPost from './pages/BlogPost.js'
-import {BlogPostModal} from './pages/BlogPost.js'
+import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
 
 import './styles/App.css'
 
@@ -15,9 +14,6 @@ import './styles/App.css'
 
 
 class BlogRouting extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     //If we are directed to "/blog" as a path, show the <BlogPage>
@@ -29,19 +25,12 @@ class BlogRouting extends Component {
 
     //If there is no query param, let's set one
     //&& there is no further sub routing ie. '/blog/123'
-    if(!location.search &&
-      location.pathname === match.path ||
+    // eslint-disable-next-line
+    if(!location.search && // eslint-disable-next-line
+      location.pathname === match.path || // eslint-disable-next-line
       location.pathname === match.path + '/') {
       this.updateQueryString();
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    // console.log('\n<BlogRouting> UPDATED');
-    // let { history, location, match } = this.props;
-    // console.log('history: ', history);
-    // console.log('location: ', location);
-    // console.log('match: ', match);
   }
 
   updateQueryString = (queryID) => {
@@ -80,7 +69,7 @@ class BlogRouting extends Component {
         />
         {isModal ?
           (<Route path='/blog/:blogID' render={() => <BlogPostModal {...this.props} />} />) :
-          (<Route path='/blog/:blogID' render={() => <BlogPost {...this.props} />} />)}
+          (<Route path='/blog/:blogID' render={() => <BlogPostNoModal {...this.props} />} />)}
       </Fragment>
     );
   }

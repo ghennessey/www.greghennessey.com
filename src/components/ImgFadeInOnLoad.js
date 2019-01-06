@@ -17,6 +17,7 @@ export default class ImgFadeInOnLoad extends Component {
       src={this.props.src}
       onLoad={this.fadeInOnLoad}
       style={{'opacity': '0'}}
+      alt=""
      />
   }
 }

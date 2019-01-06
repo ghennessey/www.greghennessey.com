@@ -1,14 +1,11 @@
-import React, { Component, Fragment } from 'react'
-import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom"
-import Page from '../components/Page.js'
-import Menu from '../components/Menu.js'
+import React, { Component } from 'react'
+import { Link } from "react-router-dom"
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
-import BlogPost from '../pages/BlogPost.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
-import $ from "jquery";
-import createBrowserHistory from 'history/createBrowserHistory'
+// import $ from "jquery";
+// import createBrowserHistory from 'history/createBrowserHistory'
 import convertStringToHTML from '../components/Helpers.js'
 
 const queryString = require('query-string');
@@ -79,7 +76,7 @@ class BlogPreviewArea extends Component {
 
   //This method fetches blog data that will be displayed as a blog preview
   async fetchPostData() {
-    if(this.state.blogPreviewContent != undefined) {
+    if(this.state.blogPreviewContent !== undefined) {
       this.setState({blogPreviewContent: undefined});
     }
 
@@ -154,7 +151,7 @@ class BlogPreviewArea extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
-    if(prevProps.currentPage != this.props.currentPage) {
+    if(prevProps.currentPage !== this.props.currentPage) {
       this.fetchPostData();
       this.setState({
         blogPreviewData: undefined,
@@ -223,7 +220,7 @@ export default class BlogPage extends Component {
 
     //If there is no query param for the BlogPage, then we replace the current url
     //in the window with a query param for page 1
-    if(!this.props.history.location.search && this.props.match.path != '/blog/:postID') {
+    if(!this.props.history.location.search && this.props.match.path !== '/blog/:postID') {
       //this.updateURL(1, true);
     }
   }
@@ -231,7 +228,6 @@ export default class BlogPage extends Component {
   updateURL(pageQueryID, replace=false) {
     const url = this.props.match.path;
     const pageQuery = '?page=';
-    const newURL = url + pageQuery + pageQueryID;
 
     //If false, we push a new entry (this is useful when we're navigating back and forth
     //through different blog pages)
@@ -327,7 +323,7 @@ export default class BlogPage extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     //When the state pageIndex is updated, I do a new data call to fetch page data
     //I also hide the pagination since this is the safest place to do it
-    if(prevState.pageIndex != this.state.pageIndex) {
+    if(prevState.pageIndex !== this.state.pageIndex) {
       //this.updateURL(this.state.pageIndex);
       this.handlePaginationVisibility(false);
       this.props.updateQueryString(this.state.pageIndex);
@@ -340,7 +336,7 @@ export default class BlogPage extends Component {
     let back = 'button-back';
     let forward = 'button-forward';
 
-    let currentIndex = parseInt(this.state.pageIndex);
+    let currentIndex = parseInt(this.state.pageIndex, 0);
     let newIndex = currentIndex;
 
     if(clickedButton === forward) {
@@ -377,7 +373,7 @@ export default class BlogPage extends Component {
     return(
       <div className="BlogMain Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
         <section className='top-section' style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}>
-          <LogoMark title={this.state.title} logo={this.state.logoImage} style='horizontal'/>
+          <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='horizontal'/>
           <div className="page-content">
             {convertStringToHTML(this.state.pageContent)}
           </div>
