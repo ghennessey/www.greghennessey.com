@@ -20,9 +20,7 @@ class BlogRouting extends Component {
     //If we are directed to "/blog" as a path, show the <BlogPage>
     let { history, location, match } = this.props;
     console.log('<BlogRouting> MOUNTED');
-    console.log('history: ', history);
-    console.log('location: ', location);
-    console.log('match: ', match);
+    console.log('history: ', history, 'location: ', location, 'match: ', match);
 
     //If there is no query param, let's set one
     //&& there is no further sub routing ie. '/blog/123'
@@ -44,16 +42,13 @@ class BlogRouting extends Component {
     });
   }
 
-  returnPostComponent = (isModal) => {
-    console.log('???isModal: ' + isModal);
-    return isModal ? <BlogPostModal {...this.props} /> : <BlogPost {...this.props} />
-  }
-
   render() {
     //Check if I have passed 'modal=true' into the Link. If it doesn't exist, then this is not a Modal
     //and it will render separately from the main blog page
+    //actiom 'POP' is when the website is first loaded, not when a page is encountered when its browsed
+    let { history } = this.props;
     let { state } = this.props.location;
-    let isModal = !!( state && state.modal )
+    let isModal = !!( state && state.modal && history.action !== 'POP');
 
     return(
       <Fragment>

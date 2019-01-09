@@ -33,9 +33,6 @@ export class BlogPostNoModal extends Component {
 
   async componentDidMount() {
     const { background_image } = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
-    // let { background_image } = data.acf;
-    console.log('<<<<<<<<<<<<<<<<<<<< MODAL DATA');
-    console.log(background_image);
 
     this.setState({
       background_image: background_image.url
@@ -53,7 +50,6 @@ export class BlogPostNoModal extends Component {
 
 export default class BlogPost extends Component {
   constructor(props) {
-    console.log('\n<BlogPost> class is being constructed');
     super(props);
     this.state = {
       blogTitle: '',
@@ -84,15 +80,13 @@ export default class BlogPost extends Component {
   }
 
   async componentDidMount() {
-      console.log('\n<BlogPost> Props');
-      console.log(this.props);
+      console.log('\n<BlogPost> Mounted. <BlogPost> Props: ', this.props);
 
       let slug = this.parseBlogSlug(this.props);
       let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug=' + slug;
       let data = await(await(fetch(api))).json();
 
-      console.log('\n<BlogPost> Data');
-      console.log(data);
+      console.log('\n<BlogPost> Data', data);
 
       this.setState({
         headerImageURL: data[0].acf.header_image.url,

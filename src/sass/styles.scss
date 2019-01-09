@@ -219,6 +219,7 @@ $xIndex_modalOverlay: 150;
         color: $darkFont0;
         max-width: 1024px;
         min-width: 762px;
+        min-height: 50vh;
 
         justify-self: stretch;
 
@@ -245,16 +246,7 @@ $xIndex_modalOverlay: 150;
   p {
     font-size: 1.2rem;
     text-align: justify;
-    // line-height: 20px;
     margin-bottom: 1.2rem;
-  }
-
-  p > img {
-    // margin: 1.2rem;
-  }
-
-  p + p + p {
-    // margin-top: 20px;
   }
 
   img {
@@ -262,11 +254,22 @@ $xIndex_modalOverlay: 150;
     margin: 2rem;
   }
 
+  //Image sizes
   img.size-thumbnail {
     width: 200px;
     height: 200px;
   }
+  img.size-full {
+  }
+  img.size-medium {
+  }
 
+
+  //Image alignments
+  img.alignnone {
+    clear: both;
+    float: none;
+  }
   img.alignleft {
     float: left;
     margin-left: -80px;

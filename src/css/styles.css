@@ -163,6 +163,7 @@
       color: #000;
       max-width: 1024px;
       min-width: 762px;
+      min-height: 50vh;
       justify-self: stretch;
       grid-column: 2 / 3;
       grid-row-start: 2; }
@@ -188,6 +189,9 @@
   .blog-post .blog-body img.size-thumbnail {
     width: 200px;
     height: 200px; }
+  .blog-post .blog-body img.alignnone {
+    clear: both;
+    float: none; }
   .blog-post .blog-body img.alignleft {
     float: left;
     margin-left: -80px; }

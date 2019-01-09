@@ -4,10 +4,9 @@ import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/Widgets.js'
 import LoadingSpinner from '../components/LoadingSpinner.js'
-// import $ from "jquery";
-// import createBrowserHistory from 'history/createBrowserHistory'
 import convertStringToHTML from '../components/Helpers.js'
 
+const dateFormat = require('dateformat');
 const queryString = require('query-string');
 
 //Pass this slug in to get the specific page data I am looking for
@@ -28,29 +27,30 @@ class BlogPreview extends Component {
   }
 
   render() {
+    let date = dateFormat(this.props.blogDate, "mmmm dS, yyyy");
+
     return(
-      <div key={this.props.uniqueKey} className={'blog-preview '+ this.props.blogClass + ' container transition-in'} style={{
-        animationDelay: this.props.animDelay}}>
+      <div key={this.props.uniqueKey} className={'blog-preview '+ this.props.blogClass + ' container transition-in'}
+        style={{animationDelay: this.props.animDelay}}>
         <div className='left-side'>
-          <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}>
+          <Link to={{pathname: '/blog/' + this.props.pageSlug, state: {modal: true}}}>
             <div className='blog-image'>
               <div className='blog-image-inner' style={{ backgroundImage: `url(${this.props.previewImage})` }}></div>
             </div>
-          </a>
-
+          </Link>
         </div>
         <div className='right-side'>
           <div className='row-0'>
-            <Link onClick={() => (console.log('TEST'))}to={{pathname: '/blog/' + this.props.pageSlug, state: {modal: true}}}><h1>{this.props.blogTitle}</h1></Link>
+            <Link to={{pathname: '/blog/' + this.props.pageSlug, state: {modal: true}}}><h1>{this.props.blogTitle}</h1></Link>
           </div>
           <div className='date row-1'>
-            {this.props.blogDate}
+            {date}
           </div>
           <div className='content-snippet row-2'>
               {this.props.blogExcerpt}
           </div>
           <div className='read-more row-3'>
-            <a onClick={() => this.props.handleBlogPostData(this.props.pageSlug)}>Read More >></a>
+            <Link to={{pathname: '/blog/' + this.props.pageSlug, state: {modal: true}}}>Read More >></Link>
           </div>
         </div>
       </div>
