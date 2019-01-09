@@ -1,0 +1,295 @@
+@import url("https://fonts.googleapis.com/css?family=Marcellus");
+
+//Font Colours
+$lightFont0: #fff;
+$darkFont0: #000;
+
+$offWhite: #EFEFEF;
+
+//Font Sizes
+$titleFontH1Size0: 3em;
+
+//Shadows
+$lightTextShadow0: 0 0 10px $lightFont0;
+$darkBoxShadow0: 1px 1px 100px rgba(0, 0, 0, 1);
+$darkBoxShadow1: 1px 1px 10px rgba(0, 0, 0, 1);
+
+
+$zIndex_basePage:     0;
+$zIndex_baseOverlay:  50;
+$zIndex_modal:        100;
+$xIndex_modalOverlay: 150;
+
+//MIXINS
+@mixin buttonLight0($fontSize) {
+  font-family: inherit;
+  border: 2px solid white;
+  background: none;
+  border-radius: 3px;
+  color: $lightFont0;
+  font-size: $fontSize;
+  padding: 0.25em 1em;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+  }
+}
+
+.Menu {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    float: left;
+    display: inline;
+
+    a {
+      display: block;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+  }
+}
+
+.Home {
+  color: $lightFont0;
+
+  a {
+    color: inherit;
+  }
+  a:hover {
+    opacity: 0.5;
+  }
+
+  h1 {
+    padding-top: 25px;
+    font-size: 40px;
+    text-transform: uppercase;
+    text-shadow: $lightTextShadow0;
+  }
+
+  .nav-container {
+    //* Good article on flex https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    img {
+      /* I need align-self center for images inside of flex so they don't stretch */
+      align-self: center;
+      padding-top: 40px;
+    }
+  }
+}
+
+.blog-modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+
+  .blog-post {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr auto;
+    max-height: 100vh;
+    z-index: $zIndex_modal;
+    justify-content: center;
+    overflow-y: scroll;
+    background-color: rgba(0,0,0,0.5);
+
+    .blog-body {
+    	color: $darkFont0;
+    	background-color: $offWhite;
+    	padding: 40px;
+    }
+
+    .blog-container {
+      animation: slide-bottom 0.3s;
+      display: grid;
+    	box-shadow: $darkBoxShadow0;
+      box-sizing: border-box;
+      grid-template-rows: auto 1fr;
+    	min-width: 800px;
+    }
+
+    .top-section {
+    	height: 310px;
+    	position: relative;
+    	text-shadow: $lightTextShadow0;
+    	background: #646464;
+    	overflow: hidden;
+
+      h1 {
+        line-height: 50px !important;
+        color: $lightFont0;
+        text-shadow: $lightTextShadow0;
+        font-size: $titleFontH1Size0;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .back-button {
+        @include buttonLight0(1em);
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        margin: 10px;
+        padding: 5px;
+
+        z-index: $xIndex_modalOverlay;
+      }
+
+      .title-block {
+      	display: flex;
+      	position: absolute;
+      	width: 100%;
+      	height: 100%;
+      	left: 0;
+      	top: 0;
+      	vertical-align: middle;
+      	align-items: center;
+      	justify-content: center;
+      }
+    }
+
+    .blog-spacer {
+    	min-height: 100vh
+    }
+  }
+}
+
+//No Modal Blog Post
+.blog-no-modal-wrapper {
+  overflow-y: auto;
+  position: absolute;
+  height: 100%;
+  min-width: 100vw;
+
+  .blog-post {
+
+    .blog-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 50vh auto;
+
+      .top-section {
+        grid-column: 1 / 4;
+        overflow: hidden;
+        display: flex;
+
+        h1 {
+          color: $lightFont0;
+          text-shadow: $lightTextShadow0;
+          font-size: $titleFontH1Size0;
+        }
+
+        .blog-header-image {
+        	width: 100%;
+        	height: auto;
+          align-self: center;
+          float: left;
+        }
+
+        .title-block {
+        	position: absolute;
+          width: 100%;
+          align-self: center;
+
+          h1 {
+            width: 50%;
+            margin: 0 auto;
+            min-width: 762px;
+          }
+        }
+      }
+
+      .blog-body {
+        margin-top: -40px;
+        padding: 40px;
+        box-sizing: border-box;
+        color: $darkFont0;
+        max-width: 1024px;
+        min-width: 762px;
+
+        justify-self: stretch;
+
+        grid-column: 2 / 3;
+        grid-row-start: 2;
+      }
+    }
+  }
+}
+
+.blog-post .blog-body {
+  background-color: white;
+  box-shadow: $darkBoxShadow0;
+
+  a {
+    color: #9b3715;
+    font-family: 'Marcellus', serif;
+    &:hover {
+      color: #e35b11;
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    font-size: 1.2rem;
+    text-align: justify;
+    // line-height: 20px;
+    margin-bottom: 1.2rem;
+  }
+
+  p > img {
+    // margin: 1.2rem;
+  }
+
+  p + p + p {
+    // margin-top: 20px;
+  }
+
+  img {
+    box-shadow: $darkBoxShadow1;
+    margin: 2rem;
+  }
+
+  img.size-thumbnail {
+    width: 200px;
+    height: 200px;
+  }
+
+  img.alignleft {
+    float: left;
+    margin-left: -80px;
+  }
+  img.alignright {
+    float: right;
+    margin-right: -80px;
+  }
+
+  img.aligncenter {
+    margin-left: -10%;
+    width: 120%;
+    height: auto;
+  }
+}
+
+@keyframes slide-bottom {
+	from {
+		opacity: 0;
+		transform: translate(0, 100vh);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0,0px);
+	}
+}

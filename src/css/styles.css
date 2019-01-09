@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css?family=Marcellus");
+.Menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.Menu li {
+  float: left;
+  display: inline; }
+  .Menu li a {
+    display: block;
+    padding-left: 8px;
+    padding-right: 8px; }
+
+.Home {
+  color: #fff; }
+  .Home a {
+    color: inherit; }
+  .Home a:hover {
+    opacity: 0.5; }
+  .Home h1 {
+    padding-top: 25px;
+    font-size: 40px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px #fff; }
+  .Home .nav-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+    .Home .nav-container img {
+      /* I need align-self center for images inside of flex so they don't stretch */
+      -ms-flex-item-align: center;
+      align-self: center;
+      padding-top: 40px; }
+
+.blog-modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh; }
+  .blog-modal-wrapper .blog-post {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr auto;
+    max-height: 100vh;
+    z-index: 100;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    overflow-y: scroll;
+    background-color: rgba(0, 0, 0, 0.5); }
+    .blog-modal-wrapper .blog-post .blog-body {
+      color: #000;
+      background-color: #EFEFEF;
+      padding: 40px; }
+    .blog-modal-wrapper .blog-post .blog-container {
+      -webkit-animation: slide-bottom 0.3s;
+      animation: slide-bottom 0.3s;
+      display: grid;
+      -webkit-box-shadow: 1px 1px 100px black;
+      box-shadow: 1px 1px 100px black;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      grid-template-rows: auto 1fr;
+      min-width: 800px; }
+    .blog-modal-wrapper .blog-post .top-section {
+      height: 310px;
+      position: relative;
+      text-shadow: 0 0 10px #fff;
+      background: #646464;
+      overflow: hidden; }
+      .blog-modal-wrapper .blog-post .top-section h1 {
+        line-height: 50px !important;
+        color: #fff;
+        text-shadow: 0 0 10px #fff;
+        font-size: 3em; }
+      .blog-modal-wrapper .blog-post .top-section img {
+        width: 100%;
+        height: auto; }
+      .blog-modal-wrapper .blog-post .top-section .back-button {
+        font-family: inherit;
+        border: 2px solid white;
+        background: none;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 1em;
+        padding: 0.25em 1em;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 10px;
+        padding: 5px;
+        z-index: 150; }
+        .blog-modal-wrapper .blog-post .top-section .back-button:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+          cursor: pointer; }
+      .blog-modal-wrapper .blog-post .top-section .title-block {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        vertical-align: middle;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center; }
+    .blog-modal-wrapper .blog-post .blog-spacer {
+      min-height: 100vh; }
+
+.blog-no-modal-wrapper {
+  overflow-y: auto;
+  position: absolute;
+  height: 100%;
+  min-width: 100vw; }
+  .blog-no-modal-wrapper .blog-post .blog-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 50vh auto; }
+    .blog-no-modal-wrapper .blog-post .blog-container .top-section {
+      grid-column: 1 / 4;
+      overflow: hidden;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .blog-no-modal-wrapper .blog-post .blog-container .top-section h1 {
+        color: #fff;
+        text-shadow: 0 0 10px #fff;
+        font-size: 3em; }
+      .blog-no-modal-wrapper .blog-post .blog-container .top-section .blog-header-image {
+        width: 100%;
+        height: auto;
+        -ms-flex-item-align: center;
+        align-self: center;
+        float: left; }
+      .blog-no-modal-wrapper .blog-post .blog-container .top-section .title-block {
+        position: absolute;
+        width: 100%;
+        -ms-flex-item-align: center;
+        align-self: center; }
+        .blog-no-modal-wrapper .blog-post .blog-container .top-section .title-block h1 {
+          width: 50%;
+          margin: 0 auto;
+          min-width: 762px; }
+    .blog-no-modal-wrapper .blog-post .blog-container .blog-body {
+      margin-top: -40px;
+      padding: 40px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: #000;
+      max-width: 1024px;
+      min-width: 762px;
+      justify-self: stretch;
+      grid-column: 2 / 3;
+      grid-row-start: 2; }
+
+.blog-post .blog-body {
+  background-color: white;
+  -webkit-box-shadow: 1px 1px 100px black;
+  box-shadow: 1px 1px 100px black; }
+  .blog-post .blog-body a {
+    color: #9b3715;
+    font-family: 'Marcellus', serif; }
+    .blog-post .blog-body a:hover {
+      color: #e35b11;
+      text-decoration: underline; }
+  .blog-post .blog-body p {
+    font-size: 1.2rem;
+    text-align: justify;
+    margin-bottom: 1.2rem; }
+  .blog-post .blog-body img {
+    -webkit-box-shadow: 1px 1px 10px black;
+    box-shadow: 1px 1px 10px black;
+    margin: 2rem; }
+  .blog-post .blog-body img.size-thumbnail {
+    width: 200px;
+    height: 200px; }
+  .blog-post .blog-body img.alignleft {
+    float: left;
+    margin-left: -80px; }
+  .blog-post .blog-body img.alignright {
+    float: right;
+    margin-right: -80px; }
+  .blog-post .blog-body img.aligncenter {
+    margin-left: -10%;
+    width: 120%;
+    height: auto; }
+
+@-webkit-keyframes slide-bottom {
+  from {
+    opacity: 0;
+    -webkit-transform: translate(0, 100vh);
+    transform: translate(0, 100vh); }
+  to {
+    opacity: 1;
+    -webkit-transform: translate(0, 0px);
+    transform: translate(0, 0px); } }
+
+@keyframes slide-bottom {
+  from {
+    opacity: 0;
+    -webkit-transform: translate(0, 100vh);
+    transform: translate(0, 100vh); }
+  to {
+    opacity: 1;
+    -webkit-transform: translate(0, 0px);
+    transform: translate(0, 0px); } }

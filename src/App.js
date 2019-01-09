@@ -8,6 +8,7 @@ import BlogPost from './pages/BlogPost.js'
 import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
 
 import './styles/App.css'
+import './css/styles.css'
 
 //TODO - Just leaving this here so I can see how they imported an SVG
 //import logo from './logo.svg';

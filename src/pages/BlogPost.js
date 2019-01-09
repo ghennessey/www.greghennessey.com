@@ -3,13 +3,12 @@ import $ from "jquery";
 import ReactHtmlParser from 'react-html-parser';
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 
+const PAGE_ID = 87;
+
 export class BlogPostModal extends Component {
 
   backClick = (e) => {
     this.props.history.goBack();
-  }
-
-  componentDidMount() {
   }
 
   render() {
@@ -24,9 +23,28 @@ export class BlogPostModal extends Component {
 }
 
 export class BlogPostNoModal extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      background_image: undefined,
+    };
+  }
+
+  async componentDidMount() {
+    const { background_image } = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
+    // let { background_image } = data.acf;
+    console.log('<<<<<<<<<<<<<<<<<<<< MODAL DATA');
+    console.log(background_image);
+
+    this.setState({
+      background_image: background_image.url
+    });
+  }
+
   render() {
     return (
-      <div className='blog-no-modal-wrapper'>
+      <div className='blog-no-modal-wrapper' style={{ backgroundImage: `url(${this.state.background_image})` }}>
         <BlogPost {...this.props} />
       </div>
     )
@@ -98,11 +116,9 @@ export default class BlogPost extends Component {
         <div className='blog-container'>
         <section className='top-section'>
           {children}
-          <div className="page-content">
-            <ImgFadeInOnLoad className='blog-header-image' src={this.state.headerImageURL} />
-            <div className='title-block'>
-              <h1>{this.state.blogTitle}</h1>
-            </div>
+          <ImgFadeInOnLoad className='blog-header-image' src={this.state.headerImageURL} />
+          <div className='title-block'>
+            <h1>{this.state.blogTitle}</h1>
           </div>
         </section>
         <section className='blog-body'>

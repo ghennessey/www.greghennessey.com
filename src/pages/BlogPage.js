@@ -247,10 +247,6 @@ export default class BlogPage extends Component {
     this.setState({
       history: this.state.history
     });
-
-    // console.log('\n<BlogPage> - URL updated to: ');
-    // console.log('pathname: ' + this.state.history.location.pathname);
-    // console.log('search: ' + this.state.history.location.search);
   }
 
   async componentDidMount() {
