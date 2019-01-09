@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import $ from "jquery";
 import ReactHtmlParser from 'react-html-parser';
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
+import HamburgerMenu from '../components/HamburgerMenu.js'
 
 const PAGE_ID = 87;
 
@@ -43,6 +44,7 @@ export class BlogPostNoModal extends Component {
     return (
       <div className='blog-no-modal-wrapper' style={{ backgroundImage: `url(${this.state.background_image})` }}>
         <BlogPost {...this.props} />
+        <HamburgerMenu />
       </div>
     )
   }
