@@ -19,24 +19,25 @@ export default class About extends Component {
     };
   }
 
-  componentWillMount() {
-    this.getPageData(PAGE_ID);
+  async componentDidMount() {
+    let api_Final = 'http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID
+    const pageData = await(await(fetch(api_Final))).json();
 
-    //Get Link ACF Items
-    //https://github.com/airesvsg/acf-to-rest-api
-    fetch('http://www.greghennessey.com/wp-json/acf/v3/pages/' + PAGE_ID)
-      .then(results => results.json())
-      .then(data => {
-        if(data) {
-          this.setState({
-            linkData: data.acf.link_item
-          },
-          () => (
-                  this.buildLinkContent()
-                )
-        );
-        }
-      })
+    // console.log('Page Data', pageData);
+
+    this.setState({
+      linkData: pageData.acf.link_item
+    });
+
+    this.buildLinkContent();
+
+    this.setState({
+      title: pageData.acf.page_header,
+      backgroundImage: pageData.acf.background_image.url,
+      secondaryBGImage: pageData.acf.secondary_bg_image.url,
+      logoImage: pageData.acf.logo_image.url,
+      pageContent: pageData.content.rendered,
+    });
   }
 
   //Once link data is grabbed, let's get the data and build the HTML content

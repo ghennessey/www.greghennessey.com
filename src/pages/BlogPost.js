@@ -75,20 +75,19 @@ export default class BlogPost extends Component {
 
   backClick = (e) => {
     let {history} = this.props
-    console.log(history);
     if(history.action !== "POP") {
       history.goBack();
     }
   }
 
   async componentDidMount() {
-      console.log('\n<BlogPost> Mounted. <BlogPost> Props: ', this.props);
+      // console.log('\n<BlogPost> Mounted. <BlogPost> Props: ', this.props);
 
       let slug = this.parseBlogSlug(this.props);
       let api = 'http://www.greghennessey.com/wp-json/wp/v2/posts?slug=' + slug;
       let data = await(await(fetch(api))).json();
 
-      console.log('\n<BlogPost> Data', data);
+      // console.log('\n<BlogPost> Data', data);
 
       this.setState({
         headerImageURL: data[0].acf.header_image.url,

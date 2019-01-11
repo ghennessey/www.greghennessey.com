@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from './pages/Home.js'
 import About from './pages/About.js'
 import BlogPage from './pages/BlogPage.js'
-import BlogPost from './pages/BlogPost.js'
 import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
 
 import './styles/App.css'
@@ -19,8 +18,8 @@ class BlogRouting extends Component {
   componentDidMount() {
     //If we are directed to "/blog" as a path, show the <BlogPage>
     let { history, location, match } = this.props;
-    console.log('<BlogRouting> MOUNTED');
-    console.log('history: ', history, 'location: ', location, 'match: ', match);
+    // console.log('<BlogRouting> MOUNTED');
+    // console.log('history: ', history, 'location: ', location, 'match: ', match);
 
     //If there is no query param, let's set one
     //&& there is no further sub routing ie. '/blog/123'
@@ -48,7 +47,16 @@ class BlogRouting extends Component {
     //actiom 'POP' is when the website is first loaded, not when a page is encountered when its browsed
     let { history } = this.props;
     let { state } = this.props.location;
-    let isModal = !!( state && state.modal && history.action !== 'POP');
+    let isModal = !!( state && state.modal && history.action !== 'POP' );
+
+    let blogRouteToRender;
+    if(isModal) {
+      console.log('Blog Route rendering as MODAL');
+      blogRouteToRender = <Route path='/blog/:blogID' render={() => <BlogPostModal {...this.props} />} />;
+    } else {
+      console.log('Blog Route rendering as NO MODAL');
+      blogRouteToRender = <Route path='/blog/:blogID' render={() => <BlogPostNoModal {...this.props} />} />;
+    }
 
     return(
       <Fragment>
@@ -63,9 +71,7 @@ class BlogRouting extends Component {
             />
           )}
         />
-        {isModal ?
-          (<Route path='/blog/:blogID' render={() => <BlogPostModal {...this.props} />} />) :
-          (<Route path='/blog/:blogID' render={() => <BlogPostNoModal {...this.props} />} />)}
+        {blogRouteToRender}
       </Fragment>
     );
   }
@@ -90,3 +96,5 @@ export default class App extends Component {
     );
   }
 }
+
+//          {isModal ? (<Route path='/blog/:blogID' render={() => <BlogPostModal {...this.props} />} />) : (<Route path='/blog/:blogID' render={() => <BlogPostNoModal {...this.props} />} />)}

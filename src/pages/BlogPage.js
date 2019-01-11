@@ -253,10 +253,10 @@ export default class BlogPage extends Component {
     const maxPages = await(await(fetch(PAGES_API))).json();
     const pageData = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
 
-    console.log('\n----- <BlogPage Mounted> - Async -----\n<BlogPage> data is retrieved as follows:');
-    //console.log(pageData);
-    console.log('Props from route:');
-    console.log(this.props);
+    // console.log('\n----- <BlogPage Mounted> - Async -----\n<BlogPage> data is retrieved as follows:');
+    // //console.log(pageData);
+    // console.log('Props from route:');
+    // console.log(this.props);
 
     //When the component mounts, parse the query string to get what page we are on and set it as the index
     let pageIndex = this.parseQueryString(this.props);

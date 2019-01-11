@@ -13,5 +13,7 @@
  * @subpackage GH-2018
  * @since GH-2018 1.0
  */
+
+ $homepage = file_get_contents('http://www.greghennessey.com/wp-content/themes/gh-2018/build/index.html');
+ echo $homepage;
   ?>
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><title>Greg Hennessey</title><link href="/static/css/main.461563a7.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script type="text/javascript" src="/static/js/main.8d2c3517.js"></script></body></html>
