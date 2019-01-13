@@ -118,6 +118,24 @@
     padding-left: 8px;
     padding-right: 8px; }
 
+.reroute {
+  height: 100vh;
+  width: 100vw;
+  background: no-repeat center center fixed;
+  background-size: cover; }
+  .reroute .loader {
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    top: 0;
+    left: 0;
+    margin: auto; }
+    .reroute .loader .lds-roller {
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%); }
+
 .Home {
   color: #fff; }
   .Home a {

@@ -57,7 +57,7 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'getAllMenuItems'
   ) );
-  // 
+  //
 } );
 
 add_filter('rest_prepare_post', 'append_acf');

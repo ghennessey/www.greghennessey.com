@@ -8,6 +8,10 @@ const PAGE_ID = 87;
 
 export class BlogPostModal extends Component {
 
+  componentDidMount() {
+    console.log('<BlogPostModal> is Mounted');
+  }
+
   backClick = (e) => {
     this.props.history.goBack();
   }
@@ -34,7 +38,7 @@ export class BlogPostNoModal extends Component {
 
   async componentDidMount() {
     const { background_image } = await(await(fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID))).json();
-
+    console.log('<BlogPosNoModal> is Mounted');
     this.setState({
       background_image: background_image.url
     });

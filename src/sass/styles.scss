@@ -14,7 +14,7 @@ $lightTextShadow0: 0 0 10px $lightFont0;
 $darkBoxShadow0: 1px 1px 100px rgba(0, 0, 0, 1);
 $darkBoxShadow1: 1px 1px 10px rgba(0, 0, 0, 1);
 
-
+//Z Index
 $zIndex_basePage:     0;
 $zIndex_baseOverlay:  50;
 $zIndex_modal:        100;
@@ -138,6 +138,26 @@ $xIndex_modalOverlay: 150;
       display: block;
       padding-left: 8px;
       padding-right: 8px;
+    }
+  }
+}
+
+//Reroute - This page is only shown if the site is given a weird URL and it searches for a match
+.reroute {
+  height: 100vh;
+  width: 100vw;
+  background: no-repeat center center fixed;
+  background-size: cover;
+  .loader {
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    top: 0;
+    left: 0;
+    margin: auto;
+    .lds-roller {
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }

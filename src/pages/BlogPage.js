@@ -220,34 +220,34 @@ export default class BlogPage extends Component {
 
     //If there is no query param for the BlogPage, then we replace the current url
     //in the window with a query param for page 1
-    if(!this.props.history.location.search && this.props.match.path !== '/blog/:postID') {
-      //this.updateURL(1, true);
-    }
+    // if(!this.props.history.location.search && this.props.match.path !== '/blog/:postID') {
+    //   //this.updateURL(1, true);
+    // }
   }
 
-  updateURL(pageQueryID, replace=false) {
-    const url = this.props.match.path;
-    const pageQuery = '?page=';
-
-    //If false, we push a new entry (this is useful when we're navigating back and forth
-    //through different blog pages)
-    if(!replace) {
-      this.state.history.push({
-        pathname: url,
-        search: pageQuery + pageQueryID
-      });
-    } else {
-      //Otherwise, we replace the current url. This is so that we can update the current url
-      this.state.history.replace({
-        pathname: url,
-        search: pageQuery + pageQueryID
-      });
-    }
-
-    this.setState({
-      history: this.state.history
-    });
-  }
+  // updateURL(pageQueryID, replace=false) {
+  //   const url = this.props.match.path;
+  //   const pageQuery = '?page=';
+  //
+  //   //If false, we push a new entry (this is useful when we're navigating back and forth
+  //   //through different blog pages)
+  //   if(!replace) {
+  //     this.state.history.push({
+  //       pathname: url,
+  //       search: pageQuery + pageQueryID
+  //     });
+  //   } else {
+  //     //Otherwise, we replace the current url. This is so that we can update the current url
+  //     this.state.history.replace({
+  //       pathname: url,
+  //       search: pageQuery + pageQueryID
+  //     });
+  //   }
+  //
+  //   this.setState({
+  //     history: this.state.history
+  //   });
+  // }
 
   async componentDidMount() {
     const maxPages = await(await(fetch(PAGES_API))).json();
