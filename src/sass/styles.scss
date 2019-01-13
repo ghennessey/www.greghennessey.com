@@ -11,6 +11,8 @@ $titleFontH1Size0: 3em;
 
 //Shadows
 $lightTextShadow0: 0 0 10px $lightFont0;
+$darkTextShadow0: 0px 0px 5px $darkFont0;
+
 $darkBoxShadow0: 1px 1px 100px rgba(0, 0, 0, 1);
 $darkBoxShadow1: 1px 1px 10px rgba(0, 0, 0, 1);
 
@@ -125,6 +127,7 @@ $xIndex_modalOverlay: 150;
 }
 
 .Menu {
+  display: inline-block;
   ul {
     list-style-type: none;
     margin: 0;
@@ -135,10 +138,58 @@ $xIndex_modalOverlay: 150;
     display: inline;
 
     a {
+      color: $lightFont0;
       display: block;
       padding-left: 8px;
       padding-right: 8px;
+
+      &:hover {
+        opacity: 0.3;
+      }
     }
+  }
+}
+
+//404
+.error404 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+
+  $darkTextShadowIntense:
+    0 0 10px black,
+    0 0 15px black,
+    0 0 20px black,
+    0 0 25px black;
+
+  h1 {
+    font-size: 100px;
+    text-shadow: $darkTextShadowIntense;
+  }
+
+  h2 {
+    font-size: 50px;
+    text-shadow: $darkTextShadowIntense;
+  }
+
+  p {
+    margin: 50px 0 50px 0;
+  }
+
+  .Menu {
+    font-size: 28px;
+  }
+
+  .error-message {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 

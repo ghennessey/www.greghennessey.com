@@ -7,6 +7,8 @@ import BlogPage from './pages/BlogPage.js'
 import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
 
 import LoadingSpinner from './components/LoadingSpinner.js'
+import Menu from './components/Menu.js'
+
 
 import './styles/App.css'
 import './css/styles.css'
@@ -106,7 +108,16 @@ class DebugRouter extends Router {
 }
 
 const Error = () => {
-  return <div><h1 style={{color: 'white', fontSize: "100px"}}>404</h1></div>
+  return (
+    <div className='error404' style={{backgroundImage: `url(${BGImage})`}}>
+      <div className='error-message'>
+        <h1>404</h1>
+        <h2>Page not found...</h2>
+        <p>Choose your path, weary traveller</p>
+        <Menu />
+      </div>
+    </div>
+  )
 }
 
 class ReRoute extends Component {
@@ -124,15 +135,21 @@ class ReRoute extends Component {
     console.log('<BlogReRoute> slug: ', slug);
 
     //1. look through posts and check if this is a valid post
+    //1.1 I'm going to fetch post data here
     let postAPI = API.base + API.posts.base + API.posts.query + slug;
     const post_data = await(await(fetch(postAPI))).json();
-    console.log('post_data: ', post_data[0].type);
 
-    if(post_data[0].type === "post") {
+    //1.2 Then I check if it's valid data ie. it matches a "post" type in the data structure
+    if(post_data[0] && post_data[0].type === "post") {
+      console.log('We have found an appropriate post type and are redirecting');
       let updatedURL = '/blog' + pathname;
-
       history.push({
         pathname: updatedURL,
+      });
+    } else {
+      console.log('No appropriate post type found, redirecting to 404');
+      history.push({
+        pathname: '/404',
       });
     }
   }
@@ -173,8 +190,8 @@ export default class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
               <Route path="/blog" component={BlogRouting} />
+              <Route exact path="/404" component={Error} />
               <Route path="/:pageID" component={ReRoute} />
-              <Route component={Error} />
             </Switch>
           </Fragment>
         </DebugRouter>
