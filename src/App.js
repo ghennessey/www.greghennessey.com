@@ -9,8 +9,6 @@ import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
 import LoadingSpinner from './components/LoadingSpinner.js'
 import Menu from './components/Menu.js'
 
-
-import './styles/App.css'
 import './css/styles.css'
 
 import BGImage from './assets/bgimage.jpg'
@@ -129,10 +127,7 @@ class ReRoute extends Component {
   async componentDidMount() {
     let { pathname } = this.props.history.location;
     let { history } = this.props;
-
-    console.log('<BlogReRoute> pathname: ', pathname);
     let slug = pathname.slice(1, pathname.length);
-    console.log('<BlogReRoute> slug: ', slug);
 
     //1. look through posts and check if this is a valid post
     //1.1 I'm going to fetch post data here
@@ -141,13 +136,11 @@ class ReRoute extends Component {
 
     //1.2 Then I check if it's valid data ie. it matches a "post" type in the data structure
     if(post_data[0] && post_data[0].type === "post") {
-      console.log('We have found an appropriate post type and are redirecting');
       let updatedURL = '/blog' + pathname;
       history.push({
         pathname: updatedURL,
       });
     } else {
-      console.log('No appropriate post type found, redirecting to 404');
       history.push({
         pathname: '/404',
       });
@@ -160,8 +153,6 @@ class ReRoute extends Component {
 
     return(
       <div className='reroute' style={{backgroundImage: `url(${BGImage})`}}>
-        <h1 style={{color: 'blue', fontSize: '100px'}}>BLOG REROUTE</h1>
-        <h2 style={{color: 'white', fontSize: '30px'}}>Attempting to find reroute of: { pathname }</h2>
         <div className='loader'>
           <LoadingSpinner display={true} />
         </div>

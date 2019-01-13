@@ -10,7 +10,7 @@ export default function LogoMark(props) {
 
   return (
     <div className={'logo-mark ' + styleType}>
-      <img className={'logo ' + styleType} alt='Logo' src={ logo } />
+      <img className={'logo ' + styleType} src={ logo } />
       <h1>{ title }</h1>
     </div>
   )
