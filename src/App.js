@@ -168,13 +168,13 @@ export default class App extends Component {
     super(props);
     console.log('App is building');
   }
-  
+
   render() {
     return (
       <div className="App">
         <header>
         </header>
-        <DebugRouter>
+        <Router>
           <Fragment>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -184,7 +184,7 @@ export default class App extends Component {
               <Route path="/:pageID" component={ReRoute} />
             </Switch>
           </Fragment>
-        </DebugRouter>
+        </Router>
       </div>
     );
   }

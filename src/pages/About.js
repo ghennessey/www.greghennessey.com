@@ -89,20 +89,18 @@ export default class About extends Component {
   render() {
     return(
       <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <section className='left-section'>
+        <div className='section left'>
           <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='horizontal'/>
-          <div className="page-content">
-            <ImgFadeInOnLoad className='bg-image' src={this.state.secondaryBGImage} />
-          </div>
-        </section>
-        <section className='right-section'>
+          <ImgFadeInOnLoad className='bg-image' src={this.state.secondaryBGImage} />
+        </div>
+        <div className='section right'>
           <div className='page-content'>
             {convertStringToHTML(this.state.pageContent)}
             <div className='about-links'>
             {this.state.linkContent}
             </div>
           </div>
-        </section>
+        </div>
         <ResumeButton />
         <HamburgerMenu />
       </div>
