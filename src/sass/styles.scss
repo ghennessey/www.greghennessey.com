@@ -27,6 +27,8 @@ $zIndex_logoOverlay:  100;
 $zIndex_resumeButton: 100;
 $zIndex_modal:        200;
 $zIndex_modalOverlay: 210;
+$zIndex_menu:         300;
+$zIndex_menuOverlay:  310;
 
 $floatingEdgeMargin: 20px;
 
@@ -290,14 +292,63 @@ button {
     float: left;
     display: inline;
     a {
+      color: $lightFont0;
+
       display: block;
       padding-left: 8px;
       padding-right: 8px;
+
+      &:hover {
+        opacity: 0.3;
+      }
+
     }
   }
 }
 
 .HamburgerMenu {
+
+  @media screen and (max-width: $break-small) {
+
+    .open {
+      position: absolute !important;
+      top: 0;
+      left: 0;
+    }
+
+    .Menu {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+
+      padding: 0 !important;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+
+      ul {
+        width: 50%;
+        margin-left: 0 auto;
+
+        li {
+          text-align: center;
+          font-size: 100px !important;
+        }
+
+        a {
+          font-size: 36px !important;
+          line-height: 50px;
+        }
+      }
+    }
+  }
+
   .Menu {
   	position: fixed;
   	text-align: right;
@@ -360,30 +411,6 @@ button {
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
-}
-
-.Menu {
-  display: inline-block;
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  li {
-    float: left;
-    display: inline;
-
-    a {
-      color: $lightFont0;
-      display: block;
-      padding-left: 8px;
-      padding-right: 8px;
-
-      &:hover {
-        opacity: 0.3;
-      }
-    }
-  }
 }
 
 // RESUME BUTTON ///////////////////////////////////////////////////////////////
@@ -972,6 +999,11 @@ $portraitWidthFull: 200px;
     grid-template-columns: 100%;
 
     height: auto !important;
+
+    .resume-button {
+      position: relative !important;
+    }
+
   }
   .section {
     width: auto !important;
@@ -984,6 +1016,7 @@ $portraitWidthFull: 200px;
       }
       .logo-mark {
         position: relative !important;
+        float: left;
       }
     }
     &.right {
@@ -1001,43 +1034,11 @@ $portraitWidthFull: 200px;
       }
     }
   }
-  .resume-button {
-    position: relative !important;
-  }
 }
-
-// .section {
-//   &.left {
-//     height: 25vh;
-//     float: left;
-//     width: 100%;
-//
-//   }
-//
-//   &.right {
-//     float: left;
-//     width: 100%;
-//   }
-//
-//   .resume-button {
-//     position: relative !important;
-//   }
-//
-//
-//   .page-content {
-//     overflow: auto;
-//   }
-//
-//
-// }
-
-
 
 .About {
   height: 100%;
   color: $lightFont0;
-  // position: relative;
-  // display: inline-block;
 
   .section {
     overflow: hidden;
@@ -1110,149 +1111,6 @@ $portraitWidthFull: 200px;
       }
     }
   }
-
-
-  // min-height: 100vh;
-  // height: 100%;
-  //
-  // display: grid;
-  // grid-template-columns: 1fr 1fr;
-  // grid-template-rows: 100vh;
-  //
-  // .about-links {
-  // 	padding-top: 16px;
-  // 	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
-  //
-  //   .link-row-1 {
-  //   	display: flex;
-  //   	padding-bottom:5px;
-  //   }
-  //   .link-image, .about-links .link-title {
-  //   	display: flex;
-  //   }
-  //   .about-link-container {
-  //   	padding-bottom: 25px;
-  //   }
-  //   h2 {
-  //   	display: flex;
-  //   	vertical-align: middle;
-  //   	line-height: 25px;
-  //   	padding-left: 15px;
-  //   	font-family: 'Marcellus', serif;
-  //   	font-size: 20px;
-  //   }
-  //   a {
-  //   	color: white;
-  //   	font-family:'Open Sans', sans-serif;
-  //   	font-size: 14px;
-  //   }
-  // }
-  //
-  // .left-section {
-  //   grid-row: 1 -1;
-  //   position: relative;
-  //   overflow: hidden;
-  //
-	// 	box-shadow: 0px 0px 15px 15px rgba(0,0,0,0.3);
-	// 	background-size: cover;
-	// 	background-color: #252122;
-  //
-  //   .bg-image {
-  //     position: absolute;
-  //     left: 0;
-  //     top: 0;
-  //   	height: 100%;
-  //   }
-  // }
-  //
-  // .right-section {
-  // 	color: white;
-  // 	display: grid;
-  // 	align-content: center;
-  // 	justify-items: center;
-  //
-  //   .page-content {
-  //   	width: 70%;
-  //   	display: grid;
-  //   	text-align: left;
-  //
-  //     h1 {
-  //     	display: inline-block;
-  //     	font-size: 64px;
-  //     	padding-bottom: 40px;
-  //     	padding-top: 40px;
-  //     	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
-  //     }
-  //
-  //     p {
-  //     	line-height: 24px;
-  //     	font-size: 14px;
-  //     	text-shadow: 0px 3px 15px rgba(0, 0, 0, 1);
-  //     	margin-bottom: 24px;
-  //     	font-family:'Open Sans', sans-serif;
-  //     }
-  //
-  //     .portrait {
-  //     	max-width: 150px;
-  //     	max-height: 150px;
-  //     	overflow: hidden;
-  //     	box-shadow: 0px 3px 15px 6px rgba(0, 0, 0, 0.3);
-  //
-  //       img {
-  //       	max-width: 150px;
-  //       	height: auto;
-  //       }
-  //     }
-  //   }
-  // }
-  //
-  // @media screen and (max-width: $break-small) {
-  //
-  //   grid-row: 25px 1fr;
-  //   grid-column: 100%;
-  //
-  //   .left-section {
-  //
-  //     grid-row: 1 2;
-  //
-  //     .logo-mark {
-  //       position: absolute !important;
-  //     }
-  //   }
-  //   .right-section {
-  //     display: inline-block;
-  //
-  //     grid-row: 2 -1;
-  //
-  //
-  //     .page-content {
-  //       // width: 100%;
-  //       display: inline-block;
-  //
-  //       h1 {
-  //         display: none;
-  //       }
-  //
-  //     }
-  //     .portrait {
-  //       margin: 1.5rem auto 1.5rem auto;
-  //       grid-column-start: 1;
-  //     }
-  //
-  //     .link-row-1 {
-  //       font-size: 8px;
-  //     }
-  //
-  //     .link-image {
-  //       display: inline-block;
-  //     }
-  //   }
-  //
-  //   .resume-button {
-  //     position: relative;
-  //   }
-  // }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
