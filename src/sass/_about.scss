@@ -1,0 +1,64 @@
+.page-about {
+    .left-side {
+        box-shadow: 10px 0px 20px 20px rgba(0, 0, 0, 0.3);
+
+        background-position: right center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .right-side {
+        .portrait {
+            overflow: hidden;
+            width: 200px;
+            height: 200px;
+
+            box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.3);
+    
+            img {
+                width: 100%;
+                height: auto;
+            }
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 16px !important;
+            line-height: 16px;
+        }
+
+        .link-image, .link-title {
+            display: inline-block;
+        }
+
+        .link-title h2 {
+            font-size: 20px;
+            margin-bottom: 0;
+            padding-left: 0.5rem;
+            transform: translateY(2px)
+        }
+
+        .about-links {
+            margin-top: 2rem;
+
+            a {
+                opacity: 1;
+                transition: opacity 0.1s;
+            }
+            a:hover {
+                opacity: 0.8;
+                transition: opacity 0.3s;
+            }
+        }
+
+        .about-link-container {
+            margin-bottom: 1rem;
+        }
+    }
+
+}
+

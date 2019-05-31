@@ -1,0 +1,84 @@
+.menu {
+    a {
+        opacity: 1;
+        transition: all 0.1s;
+    }
+    a:hover {
+        opacity: 0.8;
+        transition: all 0.3s;
+    }
+}
+
+.HamburgerMenu {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: $menu-depth;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    .btn.focus, .btn:focus  {
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0) !important;
+    }
+
+    button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        pointer-events: all !important;
+ 
+        i {
+            color: $white;
+            font-size: 35px;
+        }
+    }
+
+    .fs-blackout {
+        background-color: rgba(0, 0 , 0, 0.5);
+        position: absolute;
+        min-height: 100%;
+        min-width: 100%;
+        top: 0;
+        left: 0;
+        
+        overflow: hidden;
+
+        animation-name: blackout-in;
+        animation-duration: 0.3s;
+    }
+
+    .menu-open {
+        top: 0;
+        right: 0;
+        position: absolute;
+        width: 20rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        height: 100%;
+        pointer-events: all !important;
+
+        text-transform: uppercase;
+        font-size: 20px;
+        padding-top: 5rem;
+        padding-left: 3rem;
+
+        animation-name: menu-in;
+        animation-duration: 0.2s;
+    }
+
+    @keyframes blackout-in {
+        from { background-color: rgba(0, 0 , 0, 0); }
+        to { background-color: rgba(0, 0 , 0, 0.5); }
+    }
+
+    @keyframes menu-in {
+        from { transform: translateX(20rem) }
+        to { transform: translateX(0rem) }
+    }
+}

@@ -1,40 +1,59 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
 import Menu from '../components/Menu.js'
 
-export default class HamburgerMenu extends Component {
+import { openHamburgerMenu, closeHamburgerMenu } from '../store/actions/menuActions'
 
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.state = {
-      open: false,
-      displayState: {
-        true: 'visible',
-        false: 'hidden'
-      }
-    };
+const MenuOpen = () => {
+  return(
+    <div className='menu-open'>
+      <Menu vertical />
+    </div>
+  )
+}
+
+class HamburgerMenu extends Component {
+  handleClick = () => {
+    if(!this.props.menu.ui.hamburgerOpen) {
+      this.props.openHamburgerMenu();
+    } else {
+      this.props.closeHamburgerMenu();
+    }
   }
 
-  handleClick(e) {
-    this.setState({
-      open: !this.state.open
-    });
+  componentWillUnmount() {
+    //In the case the hamburger menu is open, let's close it
+    this.props.closeHamburgerMenu();
   }
 
   render() {
+
+    const open = this.props.menu.ui.hamburgerOpen;
+
     return(
       <div className="HamburgerMenu">
-        <div className='fs-blackout' style={{visibility: this.state.displayState[this.state.open]}}></div>
-        <div className="open" style={{visibility: this.state.displayState[this.state.open]}}>
-          <Menu />
-        </div>
-        <button className="hburger" onClick={this.handleClick}>
-          <div className="upper-line"></div>
-          <div className="mid-line"></div>
-          <div className="lower-line"></div>
+        { open ? <div className='fs-blackout'></div> : null }
+        { open ? <MenuOpen /> : null }
+        <button className="btn" onClick={this.handleClick}>
+          <i className="fas fa-bars"></i>
         </button>
       </div>
-
-    );
+    )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    menu: state.menu
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openHamburgerMenu: () => dispatch(openHamburgerMenu()),
+    closeHamburgerMenu: () => dispatch(closeHamburgerMenu()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HamburgerMenu)

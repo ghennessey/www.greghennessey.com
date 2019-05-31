@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
+
+import { fetchMenuItems } from '../store/actions/menuActions'
+import { link } from 'fs';
 
 //TODO - Set this up to dynamically interpret the site url
 const SITE_URL = 'http://www.greghennessey.com';
 
-export default class Menu extends Component {
-
-  getPagePath(page) {
-    var pagePath = page.slice(SITE_URL.length, page.length);
-    //console.log('pagePath: ' + pagePath);
-    return pagePath
-  }
+class Menu extends Component {
 
   constructor(props) {
     super(props);
@@ -20,40 +18,36 @@ export default class Menu extends Component {
     };
   }
 
-  async componentDidMount() {
-    const menuData = await(await(fetch('http://www.greghennessey.com/wp-json/gh/v1/menu_items'))).json();
-    this.setState({
-      items: menuData
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    //When the state pageIndex is updated, I do a new data call to fetch page data
-    if(prevState.items !== this.state.items) {
-      var menuStruct = [];
-      //console.log('\n-----Menu Paths (Menu.js)-----');
-      for(var i=0; i < this.state.items.length; i++) {
-        var path = this.getPagePath(this.state.items[i].url);
-        //console.log('path: ' + path);
-        menuStruct.push(
-          <li key={this.state.items[i].title}>
-            <Link key={this.state.items[i].ID} to={path}>{this.state.items[i].title}</Link>
-          </li>
-        );
-      }
-      this.setState({
-        display: menuStruct,
-      });
-    }
+  componentWillMount() {
+    this.props.fetchMenuItems();
   }
 
   render() {
     return(
-      <div className="Menu">
-        <ul>
-          {this.state.display}
-        </ul>
-      </div>
+    <ul className={this.props.vertical ? "nav menu flex-column" : "nav menu"}>
+        {this.props.menu.data.menuItems ? this.props.menu.data.menuItems.map(item => {
+          const { url, title } = item;
+          return [
+            <li key={title} className="nav-item">
+              <Link className="nav-link" to={url}>{title}</Link>
+            </li>
+          ]
+        }) : null}
+      </ul>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    menu: state.menu
+  } 
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchMenuItems: () => dispatch(fetchMenuItems()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)

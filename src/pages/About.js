@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
 import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
-import LogoMark from '../components/Widgets.js'
+import LogoMark from '../components/LogoMark.js'
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
 import convertStringToHTML from '../components/Helpers.js'
+
+import { startAboutFetch } from '../store/actions/aboutActions'
 
 //Pass this slug in to get the specific page data I am looking for
 const PAGE_ID = 21;
 
-export default class About extends Component {
+class About extends Component {
   constructor() {
     super();
     this.state = {
@@ -17,6 +21,12 @@ export default class About extends Component {
       secondaryBGImage: '',
       pageContent: '',
     };
+  }
+
+  componentWillMount() {
+    if(!this.props.about.ui.aboutPageInitialized) {
+      this.props.startAboutFetch();
+    }
   }
 
   async componentDidMount() {
@@ -44,11 +54,8 @@ export default class About extends Component {
   //structure
 
   buildLinkContent = () => {
-    //console.log(this.state.linkData);
     var linkContent = [];
     for(var i=0; i < this.state.linkData.length; i++) {
-      console.log('---- Link Data ' + i + ' ------');
-      console.log(this.state.linkData[i]);
       let linkData = this.state.linkData[i];
       linkContent.push(
         <div key={'link-'+i} className={'about-link-container '+ 'container-'+i}>
@@ -87,24 +94,41 @@ export default class About extends Component {
   }
 //style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}
   render() {
+    //console.log(this.props.about);
+    const { backgroundImage, pageContent, secondaryBgImage } = this.props.about.data;
     return(
-      <div className="About Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <div className='section left'>
-          <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='horizontal'/>
-          <ImgFadeInOnLoad className='bg-image' src={this.state.secondaryBGImage} />
-        </div>
-        <div className='section right'>
-          <div className='page-content'>
-            {convertStringToHTML(this.state.pageContent)}
-            <div className='about-links'>
-            {this.state.linkContent}
+      <div className="container-fluid page-about background-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div className='row h-100'>
+          <div className="col-md-6 px-0 mx-0 left-side d-none d-sm-block" style={{ backgroundImage: `url(${secondaryBgImage})` }}>
+            {/* <ImgFadeInOnLoad className='left-image bg-image' src={ secondaryBgImage } /> */}
+            <LogoMark className='horizontal top-left mt-3 ml-3'/>
+          </div>
+          <div className="col-md-6 right-side d-flex align-items-center">
+            <div className='page-content container px-5 py-3 py-md-0'>
+              {convertStringToHTML(pageContent)}
+              <div className='about-links'>
+                {this.state.linkContent}
+              </div>
             </div>
           </div>
         </div>
-        <ResumeButton />
+        {/* <ResumeButton /> */}
         <HamburgerMenu />
       </div>
-
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    about: state.about,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    startAboutFetch: () => dispatch(startAboutFetch()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(About)

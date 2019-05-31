@@ -1,0 +1,69 @@
+.page-blog {
+    .top-section {
+        min-height: 15rem !important;
+
+        h1 {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+    }
+
+    .blog-items {
+        width: 75%;
+    }
+
+    .blog-preview {
+        min-height: 230px;
+
+        .preview-img-col {
+            transform: scale(1);
+            transition: transform 0.2s;
+        }
+        .preview-img-col:hover {
+           // min-width: 318px;
+           //padding-top: 100%;
+           transform: scale(1.1);
+           transition: transform 0.3s;
+        }
+
+        .preview-img  {
+            padding-left: 100%;
+            min-height: 250px;
+            cursor: pointer;
+
+            .preview-img:hover {
+                
+            }
+        }
+    }
+
+    .pagination {
+        $bgColor: rgba(255, 255, 255, 0.5);
+
+        font-size: 18px; 
+        a {
+            opacity: 1;
+            transition: opacity 0.1s;
+        }
+        a:hover {
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        ul, li, a {
+            background-color: transparent !important;
+            border: none;
+        }
+        .active {
+            border-radius: 3px;
+            background-color: $bgColor !important;
+            a {
+                color: white !important;
+            }
+
+        }
+    }
+}
+
+//4 hours - 8000-10,000 words

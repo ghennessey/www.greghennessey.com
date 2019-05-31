@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from './pages/Home.js'
 import About from './pages/About.js'
-import BlogPage from './pages/BlogPage.js'
-import {BlogPostModal, BlogPostNoModal} from './pages/BlogPost.js'
+import BlogPage from './pages/Blog/BlogPage.js'
+import { BlogPostModal, BlogPostNoModal } from './pages/Blog/BlogPost.js'
 
 import LoadingSpinner from './components/LoadingSpinner.js'
 import Menu from './components/Menu.js'
@@ -88,23 +88,6 @@ class BlogRouting extends Component {
   }
 }
 
-class DebugRouter extends Router {
-  constructor(props){
-    super(props);
-    console.log('initial history is: ', JSON.stringify(this.history, null,2))
-    this.history.listen((location, action, match)=>{
-      console.log(
-        `The current URL is ${location.pathname}${location.search}${location.hash}`
-      )
-      console.log(`The last navigation action was ${action}`, JSON.stringify(this.history, null,2));
-    });
-  }
-
-  componentDidUpdate() {
-    console.log('<DebugRouter> UPDATED with these props: ', this.props);
-  }
-}
-
 const Error = () => {
   return (
     <div className='error404' style={{backgroundImage: `url(${BGImage})`}}>
@@ -162,16 +145,10 @@ class ReRoute extends Component {
 }
 
 
-export default class App extends Component {
-
-  constructor(props) {
-    super(props);
-    console.log('App is building');
-  }
-
+class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App h-100 d-flex flex-grow-1">
         <header>
         </header>
         <Router>
@@ -180,8 +157,8 @@ export default class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
               <Route path="/blog" component={BlogRouting} />
-              <Route exact path="/404" component={Error} />
               <Route path="/:pageID" component={ReRoute} />
+              <Route component={Error} />
             </Switch>
           </Fragment>
         </Router>
@@ -189,3 +166,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default App

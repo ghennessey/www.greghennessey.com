@@ -1,49 +1,66 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Menu from '../components/Menu.js'
 import ResumeButton from '../components/ResumeButton.js'
-import LogoMark from '../components/Widgets.js'
 import convertStringToHTML from '../components/Helpers.js'
 
-//Pass this slug in to get the specific page data I am looking for
-const PAGE_ID = 10;
+import LogoMark from '../components/LogoMark.js'
 
-//Home Page component
-//Later I want to break this down into a component specifically for home
-//and a component for Pages that Home extends
-export default class Home extends Component {
+import { startHomePageFetch } from '../store/actions/homePageActions'
 
-  constructor() {
-    super();
-    this.state = {
-      title: '',
-      backgroundImage: '',
-      pageContent: '',
-    };
-  }
+class Home extends Component {
 
-  async componentDidMount() {
-    const pageData = await (await fetch('http://www.greghennessey.com/wp-json/wp/v2/pages/' + PAGE_ID)).json();
-
-    this.setState({
-      title: pageData.page_header,
-      backgroundImage: pageData.background_image.url,
-      logoImage: pageData.logo_image.url,
-      pageContent: pageData.content.rendered,
-    });
+  componentWillMount() {
+    const { homePageInitialized } = this.props.home;
+    if(!homePageInitialized) {
+      this.props.startHomePageFetch();
+    }
   }
 
   render() {
+    const { pageHeader, backgroundImage, pageContent } = this.props.home.data;
+
     return (
-      <div className="Home Page" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-        <div className="nav-container">
-          <LogoMark title={this.state.title} logo={this.state.logoImage} styleType='centered'/>
-          <Menu />
-        </div>
-        <div className="page-content">
-          {convertStringToHTML(this.state.pageContent)}
-        </div>
-        <ResumeButton />
+      <div className="container-fluid page-home background-cover p-0" style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div className="bg-cover-color"></div>
+        <div className="container d-flex h-100 flex-column">
+          
+          {/* Top Row */}
+          <div className="row">
+            {/* Logo */}
+            <div className="col-12 text-center text-white pt-5">
+              <LogoMark title={pageHeader} className="vertical"/>
+            </div>
+            {/* Menu */}
+            <div className="col-12 d-flex justify-content-center">
+              <Menu />
+            </div>
+          </div>
+
+          {/* Content Row */}
+          <div className="row flex-grow-1 align-items-center justify-content-center">
+              <div className="col text-center home-content g-text-shadow-1">
+                {convertStringToHTML(pageContent)}
+              </div>
+          </div>
+
+          {/* <ResumeButton /> */}
+        </div>       
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    home: state.home,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    startHomePageFetch: () => dispatch(startHomePageFetch()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

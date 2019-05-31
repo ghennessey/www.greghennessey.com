@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import $ from "jquery";
 import ReactHtmlParser from 'react-html-parser';
-import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
-import HamburgerMenu from '../components/HamburgerMenu.js'
+import ImgFadeInOnLoad from '../../components/ImgFadeInOnLoad.js'
+import HamburgerMenu from '../../components/HamburgerMenu.js'
+
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 const PAGE_ID = 87;
 
@@ -111,7 +113,7 @@ export default class BlogPost extends Component {
 
     return(
       <div className='blog-post'>
-        <div className='blog-spacer left' onClick={this.backClick}></div>
+        {/* <div className='blog-spacer left' onClick={this.backClick}></div>
         <div className='blog-container'>
         <section className='top-section'>
           {children}
@@ -124,7 +126,7 @@ export default class BlogPost extends Component {
           {this.convertStringToHTML(this.state.blogContent)}
         </section>
         </div>
-        <div className='blog-spacer right' onClick={this.backClick}></div>
+        <div className='blog-spacer right' onClick={this.backClick}></div> */}
       </div>
     )
   }
