@@ -46,7 +46,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchMenuItems: () => dispatch(fetchMenuItems()),
+    fetchMenuItems: (url) => dispatch(fetchMenuItems(url)),
   }
 }
 

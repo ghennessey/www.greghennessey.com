@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const MENU_API = 'http://www.greghennessey.com/wp-json/gh/v1/menu_items';
 
-export const fetchMenuItems = () => {
+export const fetchMenuItems = (url) => {
     return (dispatch) => {
 
         dispatch({ type: 'MENU_FETCH_STARTED' });
@@ -11,9 +11,11 @@ export const fetchMenuItems = () => {
             const { data } = resp;
 
             let menuItems = data.map(item => {
+                const stringToCut = "http://www.greghennessey.com";
+                const url = item.url.substring(stringToCut.length, item.url.length);
                 return {
                     title: item.title,
-                    url: item.url
+                    url: url
                 }
             });
 

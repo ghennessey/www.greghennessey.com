@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from "react-router-dom";
 
 import BlogPreviewArea from './BlogPreviewArea'
 
@@ -8,7 +9,7 @@ import HamburgerMenu from '../../components/HamburgerMenu.js'
 import LogoMark from '../../components/LogoMark.js'
 import LoadingSpinner from '../../components/LoadingSpinner.js'
 
-import convertStringToHTML from '../../components/Helpers.js'
+import ReactHtmlParser from 'react-html-parser';
 
 import { 
   startBlogPageFetch, 
@@ -61,159 +62,101 @@ const Pagination = ({onClick, currentPage, maxPostsPerPage, blogPostTotal}) => {
 // BLOG PAGE CLASS
 ///////////////////////////////////////////////////////////////////////////////
 class BlogPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handlePageNavClick = this.handlePageNavClick.bind(this);
-
-    this.state = {
-      title: '',
-      backgroundImage: '',
-      secondaryBGImage: '',
-      //pageContent is actually just the title of the blog
-      pageContent: '',
-      maxPostsPerPage: 3,
-      //pageIndex is the current page we're on and will be set by the query param of the URL
-      pageIndex: null,
-      numPages: undefined,
-      paginationVisibility: false,
-      //Lets get the router history from our Router so we can save its state and manipulate it
-      history: this.props.history,
-    };
-
-  }
 
   componentWillMount() {
+    //If there is no query string ie. '?page=#' then let's push them to the first page.
+    //Also push them to 1 if the current page is 0 or less
+    const { search } = this.props.location;
+    const currentPage = queryString.parse(search);
+    if(!search || currentPage.page <= 0) {
+      this.props.history.push({
+        search: 'page=1'
+      });
+      this.forceUpdate();
+    } else {
+      this.props.setCurrentPage(currentPage.page);
+    }    
+
     this.props.setMaxPostsPerPage(MAX_POSTS_PER_PAGE);
     this.props.startBlogPageFetch();
     this.props.getTotalNumberOfBlogPosts();
-
-    const currentPage = queryString.parse(this.props.location.search)
-    this.props.setCurrentPage(currentPage.page);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    //When the state pageIndex is updated, I do a new data call to fetch page data
-    //I also hide the pagination since this is the safest place to do it
-    if(prevState.pageIndex !== this.state.pageIndex) {
-      //this.updateURL(this.state.pageIndex);
-      this.handlePaginationVisibility(false);
-      this.props.updateQueryString(this.state.pageIndex);
+  componentDidUpdate(prevProps) {
+    const currentPage = queryString.parse(this.props.location.search);
+    //Max Posts per Page is Set / Updated
+    if(prevProps.blog.ui.maxPostsPerPage !== this.props.blog.ui.maxPostsPerPage) {
+      //Once max posts is set then get the posts for the page
+      this.props.getPosts(this.props.blog.ui.maxPostsPerPage, currentPage.page);
     }
 
-    if(this.props.blog.ui.maxPostsPerPage !== prevProps.blog.ui.maxPostsPerPage) {
-      //Look at the query string which should be ?page=# and get the #
-      const pageQuery = queryString.parse(this.props.location.search);
-      this.props.getPosts(this.props.blog.ui.maxPostsPerPage, pageQuery.page);
-    }
-
-    //Get the current page again if the query param for the page changes
-    if(this.props.location.search !== prevProps.location.search) {
-      const currentPage = queryString.parse(this.props.location.search)
+    //If the page changes, then get the new posts
+    if(prevProps.location.search !== this.props.location.search) {
       this.props.setCurrentPage(currentPage.page);
+      this.props.getPosts(this.props.blog.ui.maxPostsPerPage, currentPage.page);
     }
-  }
-
-  //Handle CLICK of Pagination Buttons
-  handlePageNavClick = (e) => {
-    let clickedButton = e.target.className;
-    let back = 'button-back';
-    let forward = 'button-forward';
-
-    let currentIndex = parseInt(this.state.pageIndex, 0);
-    let newIndex = currentIndex;
-
-    if(clickedButton === forward) {
-      newIndex++
-    } else if (clickedButton === back) {
-      newIndex--;
-    } else {
-      console.log('There seems to be an issue detecting which button was pressed.');
-    }
-
-    //This is to safeguard someone from going over or under the min/max number of pages
-    if(newIndex <= 0) {
-      newIndex = 1;
-    } else if(newIndex >= this.state.numPages) {
-      newIndex = this.state.numPages;
-    }
-
-    this.setState({
-      pageIndex: newIndex,
-    });
-  }
-
-  handlePaginationVisibility = (visibility) => {
-    this.setState({paginationVisibility: visibility});
-  }
-
-  handleBlogPostData = (slug) => {
-    this.setState({
-      blogSlug: slug
-    });
   }
 
   onPageClick = (e) => {
     e.preventDefault();
-    console.log(this.props.history);
+
     const inputID = e.target.id;
     const { currentPage } = this.props.blog.data;
     const maxPage = Math.ceil(this.props.blog.data.blogPostTotal / this.props.blog.ui.maxPostsPerPage);
     let newPage;
     let newPageQueryString = '?page=';
+
     //If INPUT ID is FORWARD and the new page isn't greater than the max page then go to the next page
-    console.log(currentPage);
     if(inputID === 'forward') {
       newPage = parseInt(currentPage) + 1;
       if(newPage <= maxPage) {
+        this.props.history.push({
+          pathname: this.props.match.path,
+          search: newPageQueryString + newPage
+        });
         this.props.setCurrentPage(newPage);
-        this.props.getPosts(this.props.blog.ui.maxPostsPerPage, newPage);
       }
-      this.props.history.push({
-        pathname: this.props.match.path,
-        search: newPageQueryString + newPage
-      });
       return
     }
+
     //If INPUT ID is BACK and the new page isn't lower than 1, then go to the next page
     if(inputID === 'back') {
       newPage = parseInt(currentPage) - 1;
       if(newPage > 0) {
-        console.log('Lets go back');
+        this.props.history.push({
+          pathname: this.props.match.path,
+          search: newPageQueryString + newPage
+        });
         this.props.setCurrentPage(newPage);
-        this.props.getPosts(this.props.blog.ui.maxPostsPerPage, newPage);
       }
-      this.props.history.push({
-        pathname: this.props.match.path,
-        search: newPageQueryString + newPage
-      });
       return
     }
 
     //If the INPUT ID is a number, let's go to the page if it's not lower or higher than min or max;
     if(inputID > 0 && inputID <= maxPage) {
         newPage = inputID;
-        console.log('Lets go to page', newPage);
         this.props.setCurrentPage(newPage);
         this.props.getPosts(this.props.blog.ui.maxPostsPerPage, newPage);
         this.props.history.push({
           pathname: this.props.match.path,
           search: newPageQueryString + newPage
         });
+        this.props.setCurrentPage(newPage);
         return
     }
 
   }
 
   render() {
-    console.log('\n>>>>>>BLOG DATA IN COMPONENT', this.props.blog);
     const { backgroundImage, secondaryBgImage, pageHeader } = this.props.blog.data;
+    
     return(
       <div className="container-fluid page-blog d-flex flex-column" >
         {/* Top Section */}
         <div className='row top-section background-cover g-shadow-1' style={{ backgroundImage: `url(${secondaryBgImage})` }}>
           <LogoMark className='horizontal top-left mt-3 ml-3'/>
           <div className="col d-flex g-text-shadow-1 justify-content-center text-center page-content g-shadow-1">
-            { convertStringToHTML(pageHeader) }
+            { ReactHtmlParser(pageHeader) }
           </div>
         </div>
 

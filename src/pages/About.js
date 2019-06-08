@@ -97,7 +97,7 @@ class About extends Component {
     //console.log(this.props.about);
     const { backgroundImage, pageContent, secondaryBgImage } = this.props.about.data;
     return(
-      <div className="container-fluid page-about background-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div className="container-fluid page-about background-repeat">
         <div className='row h-100'>
           <div className="col-md-6 px-0 mx-0 left-side d-none d-sm-block" style={{ backgroundImage: `url(${secondaryBgImage})` }}>
             {/* <ImgFadeInOnLoad className='left-image bg-image' src={ secondaryBgImage } /> */}
@@ -113,7 +113,7 @@ class About extends Component {
           </div>
         </div>
         {/* <ResumeButton /> */}
-        <HamburgerMenu />
+        <HamburgerMenu {...this.props.match} />
       </div>
     )
   }

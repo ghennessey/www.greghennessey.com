@@ -19,7 +19,7 @@ class Home extends Component {
 
   render() {
     const { pageHeader, backgroundImage, pageContent } = this.props.home.data;
-
+  
     return (
       <div className="container-fluid page-home background-cover p-0" style={{ backgroundImage: `url(${backgroundImage})` }}>
         <div className="bg-cover-color"></div>
@@ -32,7 +32,7 @@ class Home extends Component {
               <LogoMark title={pageHeader} className="vertical"/>
             </div>
             {/* Menu */}
-            <div className="col-12 d-flex justify-content-center">
+            <div className="col-12 d-flex justify-content-center g-text-shadow-2">
               <Menu />
             </div>
           </div>

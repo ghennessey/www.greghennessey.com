@@ -18,7 +18,7 @@ const BlogPreview = ({date, excerpt, link, previewImage, title}) => {
                     </Link>
                     <h5>{date}</h5>
                     {excerpt}
-                    <div className="read-more text-right"><a href={link}>Read More ></a></div>
+                    <div className="read-more text-right"><Link to={link}>Read More ></Link></div>
                 </div>
             </div>           
         </div>

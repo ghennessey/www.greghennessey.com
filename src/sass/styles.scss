@@ -6,7 +6,9 @@
 //Bootstrap theme overrides
 $theme-colors: (
   "primary": #fff,
-  "g-grey": #2e2a2b
+  "g-grey": #2e2a2b,
+  "g-grey-2":  #1a1a1a,
+  "link-color": #5c3daf,
 );
 
 $text-shadow: #0a0101;
@@ -19,6 +21,7 @@ $menu-depth: 1000;
 //Site Components
 @import './about';
 @import './blogPage';
+@import './blogPost';
 @import './home';
 @import './logo';
 @import './menu';
@@ -55,8 +58,17 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0px 0px 20px $text-shadow;
 }
 
+.g-text-shadow-2 {
+  text-shadow:  0px 0px 20px $text-shadow,
+                -1px -1px 1px $text-shadow;
+}
+
 .g-text-glow-1 {
   text-shadow: 0 0 10px theme-color("white");
+}
+
+.g-text-glow-with-shadow {
+  text-shadow: 0 0 10px theme-color("white"), 0px 2px 5px rgba(0, 0, 0, 1);
 }
 
 // html, body, div, span, applet, object, iframe,

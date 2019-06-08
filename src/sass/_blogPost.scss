@@ -1,0 +1,98 @@
+.page-blog-post {
+    $topOffset: -5rem;
+
+    .top-section {
+        min-height: 372px;
+        //z-index: 0;
+        overflow: hidden !important;
+        position: relative;
+        background-color: theme-color("g-grey-2");
+
+        .container {
+            z-index: 10;
+        }
+
+        h1 {
+            margin-top: $topOffset;
+            z-index: 10;
+        }
+
+        .background-image {
+            position: absolute;
+            z-index: 0;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+    }
+    .bottom-section {
+        background-image: url('../assets/rockywall.jpg');
+        background-repeat: repeat;
+
+        //z-index: 10;
+
+        .blog-container {
+            margin-top: $topOffset;
+            z-index: 10;
+
+            color: theme-color("g-grey-2");
+
+            font-family: 'Lato';
+
+            a {
+                color: theme-color("link-color");
+            }
+
+            $offsetAmount: -10%;
+
+            img.alignleft {
+                float: left;
+                margin: 1rem;
+                margin-left: 0;
+
+                box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.7);
+
+                @include media-breakpoint-up(md) { 
+                    margin-left: $offsetAmount;
+                    box-shadow: -10px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                    2px 2px 5px 0px rgba(0,0,0,0.7);
+                }
+            }
+            img.alignright {
+                float: right;
+                margin: 1rem;
+                margin-right: 0;
+                
+                box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.7);
+
+                @include media-breakpoint-up(md) { 
+                    margin-right: $offsetAmount;
+                    box-shadow: 10px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                    -2px 2px 5px 0px rgba(0,0,0,0.7);
+                }
+
+            }
+            img.aligncenter {
+                height: auto;
+                width: 100%;
+                margin: 1rem;
+                margin-left: 0;
+  
+                box-shadow: -5px 0px 20px 0px rgba(0, 0, 0, 0.3),
+                            5px 0px 20px 0px rgba(0, 0, 0, 0.3);
+
+                @include media-breakpoint-up(md) { 
+                    width: 120%;
+                    margin-left: $offsetAmount;
+                    box-shadow: -20px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                    20px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                    0px 2px 5px 0px rgba(0,0,0,0.7);
+                }
+            }
+        }
+    }
+}

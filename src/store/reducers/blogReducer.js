@@ -45,7 +45,6 @@ const blogReducer = (state = initState, action) => {
                 }
             }
         case "SET_BLOG_POSTS_ON_PAGE":
-            console.log('Blog posts getting set to', action.posts);
             return {
                 ...state,
                 data: {

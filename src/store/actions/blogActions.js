@@ -48,8 +48,10 @@ export const setMaxPostsPerPage = (maxPosts) => {
 export const getPosts = (perPage, currentPage) => {
     return (dispatch) => {
         const api = BLOG_POSTS_ENDPOINT + '?per_page=' + perPage + '&page=' + currentPage;
+
         axios.get(api).then(resp => {
             let postsOnPage = resp.data;
+            //console.log('BLOG DATA', resp.data);
             let posts = {};
             posts[currentPage] = postsOnPage ; 
             dispatch({ type: 'SET_BLOG_POSTS_ON_PAGE', posts: posts });
