@@ -100,11 +100,10 @@ class About extends Component {
       <div className="container-fluid page-about background-repeat">
         <div className='row h-100'>
           <div className="col-md-6 px-0 mx-0 left-side d-none d-sm-block" style={{ backgroundImage: `url(${secondaryBgImage})` }}>
-            {/* <ImgFadeInOnLoad className='left-image bg-image' src={ secondaryBgImage } /> */}
             <LogoMark className='horizontal top-left mt-3 ml-3'/>
           </div>
           <div className="col-md-6 right-side d-flex align-items-center">
-            <div className='page-content container px-5 py-3 py-md-0'>
+            <div className='page-content container px-0 px-sm-5 pt-5 py-3 py-md-0'>
               {convertStringToHTML(pageContent)}
               <div className='about-links'>
                 {this.state.linkContent}

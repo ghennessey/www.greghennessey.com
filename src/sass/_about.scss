@@ -22,10 +22,20 @@
 
             img {
                 width: 100%;
-                height: auto;
-                
+                height: auto;                
             }
             margin-bottom: 1rem;
+
+            //Responsive Positioning
+            margin-left: 50%;
+            transform: translateX(-50%);
+            margin-top: 3rem;
+
+            @include media-breakpoint-up(sm) {
+                margin-top: 0;
+                margin-left: 0;
+                transform: none;
+            }
         }
 
         h1 {
@@ -42,10 +52,14 @@
         }
 
         .link-title h2 {
-            font-size: 20px;
+            font-size: 15px !important;
             margin-bottom: 0;
             padding-left: 0.5rem;
-            transform: translateY(2px)
+            transform: translateY(2px);
+
+            @include media-breakpoint-up(sm) {
+                font-size: 20px !important;
+            }
         }
 
         .about-links {
@@ -58,6 +72,12 @@
             a:hover {
                 opacity: 0.8;
                 transition: opacity 0.3s;
+            }
+
+            font-size: 16px !important;
+
+            @include media-breakpoint-up(sm) {
+                font-size: 24px;
             }
         }
 

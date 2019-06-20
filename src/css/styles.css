@@ -8494,10 +8494,22 @@ a.text-link-color:hover, a.text-link-color:focus {
     -webkit-box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.3);
     background-color: #1a1a1a;
-    margin-bottom: 1rem; }
+    margin-bottom: 1rem;
+    margin-left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    margin-top: 3rem; }
     .page-about .right-side .portrait img {
       width: 100%;
       height: auto; }
+    @media (min-width: 576px) {
+      .page-about .right-side .portrait {
+        margin-top: 0;
+        margin-left: 0;
+        -webkit-transform: none;
+        -ms-transform: none;
+        transform: none; } }
   .page-about .right-side h1 {
     margin-bottom: 1rem; }
   .page-about .right-side p {
@@ -8506,14 +8518,18 @@ a.text-link-color:hover, a.text-link-color:focus {
   .page-about .right-side .link-image, .page-about .right-side .link-title {
     display: inline-block; }
   .page-about .right-side .link-title h2 {
-    font-size: 20px;
+    font-size: 15px !important;
     margin-bottom: 0;
     padding-left: 0.5rem;
     -webkit-transform: translateY(2px);
     -ms-transform: translateY(2px);
     transform: translateY(2px); }
+    @media (min-width: 576px) {
+      .page-about .right-side .link-title h2 {
+        font-size: 20px !important; } }
   .page-about .right-side .about-links {
-    margin-top: 2rem; }
+    margin-top: 2rem;
+    font-size: 16px !important; }
     .page-about .right-side .about-links a {
       opacity: 1;
       -webkit-transition: opacity 0.1s;
@@ -8524,6 +8540,9 @@ a.text-link-color:hover, a.text-link-color:focus {
       -webkit-transition: opacity 0.3s;
       -o-transition: opacity 0.3s;
       transition: opacity 0.3s; }
+    @media (min-width: 576px) {
+      .page-about .right-side .about-links {
+        font-size: 24px; } }
   .page-about .right-side .about-link-container {
     margin-bottom: 1rem; }
 
