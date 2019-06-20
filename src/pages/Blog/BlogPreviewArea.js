@@ -6,7 +6,7 @@ import convertStringToHTML from '../../components/Helpers.js'
 const BlogPreview = ({date, excerpt, link, previewImage, title}) => {
     return (
         <div className="container blog-preview mt-5">
-            <div className="row ">
+            <div className="row">
                 <div className="col-12 col-xl-4 overflow-hidden preview-img-col mb-3 mb-xl-0 p-0 g-shadow-1">
                     <a href={link}>
                         <div className="preview-img background-cover w-100 h-100" style={{ backgroundImage: `url(${previewImage})` }}></div>
@@ -59,7 +59,7 @@ class BlogPreviewArea extends Component {
 
     render() {
         return (
-            <div className='container blog-items pt-5'>
+            <div className='container-fluid blog-items pt-0 pt-sm-5 mx-0 mx-sm-5 w-100'>
                 {this.buildBlogPreviews(this.props.currentPage, this.props.posts)}
             </div>
         )

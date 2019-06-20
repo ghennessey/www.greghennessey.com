@@ -4,6 +4,19 @@
     z-index: 100;
     text-transform: uppercase !important;
 
+    h1 {
+        font-size: 1.5rem;
+        @include media-breakpoint-up(sm) {
+            font-size: 3rem !important;
+        }
+    }
+
+    img {
+        width: $logo-width;
+        -webkit-filter: drop-shadow(2px 2px 3px rgba(0,0,0,1));    
+        filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.3)) drop-shadow(0px 0px 10px rgba(0,0,0,1)) drop-shadow(0px 0px 5px rgba(255,255,255, 0.5)); 
+    }
+
     &.vertical {
         img {
             margin-bottom: 1rem;
@@ -14,14 +27,16 @@
 
         h1 {
             font-size: 24px !important;
+            
             margin-bottom: 0;
             margin-left: 1rem;
-            display: inline-block;
+            display: none;
+            //display: inline-block;
             vertical-align: middle;
         }
         img {
-            height: 50px;
-            width: 50px;
+           
+            width: 100px;
             line-height: 50px;
             display: inline-block;
            

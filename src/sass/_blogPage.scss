@@ -9,6 +9,14 @@
             align-items: center;
             margin-bottom: 0;
         }
+
+
+        .logo {
+            display: none;
+            @include media-breakpoint-up(sm) {
+                display: inline-block;
+            }
+        }
     }
 
     .blog-items {
@@ -21,6 +29,14 @@
 
     .blog-preview {
         min-height: 230px;
+
+        h1 {
+            font-size: 1.5rem !important;
+
+            @include media-breakpoint-up(sm) {
+                font-size: 2.5rem !important;
+            }
+        }
 
         .preview-img-col {
             transform: scale(1);

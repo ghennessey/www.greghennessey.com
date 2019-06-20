@@ -21,10 +21,11 @@ class Home extends Component {
     const { pageHeader, backgroundImage, pageContent } = this.props.home.data;
   
     return (
-      <div className="container-fluid page-home background-cover p-0" style={{ backgroundImage: `url(${backgroundImage})` }}>
-        <div className="bg-cover-color"></div>
+      <div className="container-fluid page-home background-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
         <div className="container d-flex h-100 flex-column">
           
+          <div className="fsBlackout"></div>
+
           {/* Top Row */}
           <div className="row">
             {/* Logo */}

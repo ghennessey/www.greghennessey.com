@@ -51,7 +51,7 @@ class BlogPost extends Component {
           </div>
           <div className="background-image background-cover h-100 w-100" style={{ backgroundImage: `url(${ this.props.post.data.headerImage })` }}></div>
         </div>
-        <div className="row bottom-section flex-grow-1">
+        <div className="row bottom-section">
           <div className="container blog-container g-shadow-1 py-5 px-5 bg-white">
             <div className="row">
               <div className="col-12 mb-4 text-center"><h4>Greg Hennessey <img src={GreenBadge} alt="Blog Badge" style={{height: '50px', width: '50px'}}/> {date}</h4></div>

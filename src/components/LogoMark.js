@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { getLogo } from '../store/actions/siteActions'
 
+import Logo from '../assets/gh_logo_white.svg'
+
 class LogoMark extends Component {
 
     componentWillMount() {
@@ -15,8 +17,8 @@ class LogoMark extends Component {
         const { logo, logoText } = this.props.site.data;
 
         return (
-            <div className={'logo-mark g-text-glow-1 ' + this.props.className}>
-                <img className='logo' src={ logo } />
+            <div className={'logo-mark g-text-glow-with-shadow ' + this.props.className}>
+                <img className='logo' src={ Logo } />
                 <h1>{ logoText }</h1>
             </div>
         )
