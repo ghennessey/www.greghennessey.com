@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import ResumeButton from '../components/ResumeButton.js'
+//import ResumeButton from '../components/ResumeButton.js'
 import HamburgerMenu from '../components/HamburgerMenu.js'
 import LogoMark from '../components/LogoMark.js'
 import ImgFadeInOnLoad from '../components/ImgFadeInOnLoad.js'
@@ -61,10 +61,10 @@ class About extends Component {
         <div key={'link-'+i} className={'about-link-container '+ 'container-'+i}>
           <a href={linkData.link_url}>
           <div className='link-row-1'>
-            <div className={'link-image ' + 'image-'+i}>
+            <div className={'link-image ' + 'image-'+ i}>
               <ImgFadeInOnLoad className='blog-header-image' src={linkData.link_image} />
             </div>
-            <div className={'link-title ' + 'link-title-'+i}>
+            <div className={'link-title ' + 'link-title-'+ i}>
               <h2>{linkData.link_title}</h2>
             </div>
           </div>
@@ -92,10 +92,9 @@ class About extends Component {
       pageContent: this.state.pageData.content.rendered,
     });
   }
-//style={{ backgroundImage: `url(${this.state.secondaryBGImage})` }}
+
   render() {
-    //console.log(this.props.about);
-    const { backgroundImage, pageContent, secondaryBgImage } = this.props.about.data;
+    const { pageContent, secondaryBgImage } = this.props.about.data;
     return(
       <div className="container-fluid page-about background-repeat">
         <div className='row h-100'>

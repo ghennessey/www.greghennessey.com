@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Menu from '../components/Menu.js'
-import ResumeButton from '../components/ResumeButton.js'
+//import ResumeButton from '../components/ResumeButton.js'
 import convertStringToHTML from '../components/Helpers.js'
 
 import LogoMark from '../components/LogoMark.js'

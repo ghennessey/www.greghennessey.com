@@ -49,7 +49,7 @@
 
             $offsetAmount: -10%;
 
-            img.alignleft {
+            .alignleft img {
                 float: left;
                 margin: 1rem;
                 margin-left: 0;
@@ -62,7 +62,7 @@
                     2px 2px 5px 0px rgba(0,0,0,0.7);
                 }
             }
-            img.alignright {
+            .alignright img {
                 float: right;
                 margin: 1rem;
                 margin-right: 0;
@@ -76,7 +76,18 @@
                 }
 
             }
-            img.aligncenter {
+            .aligncenter img {
+                //height: auto;
+                //width: 100%;
+                //margin: 1rem;
+                //margin-left: 0;
+                margin-left: 50%;
+                transform: translate(-50%);
+  
+                box-shadow: -2px 2px 5px 0px rgba(0,0,0,0.7);
+            }
+
+            .alignwide img {
                 height: auto;
                 width: 100%;
                 margin: 1rem;

@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 
 import { fetchMenuItems } from '../store/actions/menuActions'
-import { link } from 'fs';
-
-//TODO - Set this up to dynamically interpret the site url
-const SITE_URL = 'http://www.greghennessey.com';
 
 class Menu extends Component {
 

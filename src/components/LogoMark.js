@@ -14,11 +14,11 @@ class LogoMark extends Component {
     }
 
     render() {
-        const { logo, logoText } = this.props.site.data;
+        const { logoText } = this.props.site.data;
 
         return (
             <div className={'logo-mark g-text-glow-with-shadow ' + this.props.className}>
-                <img className='logo' src={ Logo } />
+                <img className='logo' alt="Logo" src={ Logo } />
                 <h1>{ logoText }</h1>
             </div>
         )

@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from "react-router-dom";
 
 import BlogPreviewArea from './BlogPreviewArea'
 
-import ResumeButton from '../../components/ResumeButton.js'
+//import ResumeButton from '../../components/ResumeButton.js'
 import HamburgerMenu from '../../components/HamburgerMenu.js'
 import LogoMark from '../../components/LogoMark.js'
-import LoadingSpinner from '../../components/LoadingSpinner.js'
 
 import ReactHtmlParser from 'react-html-parser';
 
@@ -36,20 +34,20 @@ const Pagination = ({onClick, currentPage, maxPostsPerPage, blogPostTotal}) => {
   for(let i = 0; i < numPages; i++) {
     let pageNum = parseInt(i + 1, 10);
     let liClass = parseInt(currentPage) === pageNum ? "page-item active" : "page-item";
-    pages.push(<li key={pageNum} className={liClass}><a id={pageNum} className="page-link" onClick={onClick} href="#">{pageNum}</a></li>);
+    pages.push(<li key={pageNum} className={liClass}><a id={pageNum} className="page-link" onClick={onClick} href="#!">{pageNum}</a></li>);
   }
 
   return (
     <nav aria-label="Page navigation example" className="my-5 pt-5 text-center align-self-center d-flex">
       <ul className="pagination">
         <li className="page-item">
-          <a className="page-link" id="back" onClick={onClick} href="#" aria-label="Previous">
+          <a className="page-link" id="back" onClick={onClick} href="#!" aria-label="Previous">
             <span id="back" aria-hidden="true">&laquo;</span>
           </a>
         </li>
         {pages}
         <li className="page-item">
-          <a className="page-link" id="forward" onClick={onClick} href="#" aria-label="Next">
+          <a className="page-link" id="forward" onClick={onClick} href="#!" aria-label="Next">
             <span id="forward" aria-hidden="true">&raquo;</span>
           </a>
         </li>
