@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from './pages/Home.js'
@@ -24,7 +24,7 @@ import './css/styles.css'
 //   }
 // }
 
-const Error = () => {
+const ErrorComponent = () => {
   return (
     <div className='error container d-flex flex-grow-1'>
       <div className='error-message'>
@@ -44,17 +44,15 @@ class App extends Component {
         <header>
         </header>
         <Router>
-          <Fragment>
             <Switch>
               <Route path="/about" component={About} />
               <Route exact path="/blog/:blogSlug" component={BlogPost} />
               <Route exact path="/blog" component={BlogPage} />
+              <Route path="/:blogSlug" component={BlogPost} />
               <Route path="/" component={Home} />
-              <Route exact path="/:blogSlug" component={BlogPost} />
-              <Route component={Error} />
-              <Route path="/404" component={Error} />
+              <Route path="/404" component={ErrorComponent} />
+              <Route component={ErrorComponent} />
             </Switch>
-          </Fragment>
         </Router>
       </div>
     );

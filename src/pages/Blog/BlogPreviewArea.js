@@ -8,9 +8,9 @@ const BlogPreview = ({date, excerpt, link, previewImage, title}) => {
         <div className="container blog-preview mt-5">
             <div className="row">
                 <div className="col-12 col-xl-4 overflow-hidden preview-img-col mb-3 mb-xl-0 p-0 g-shadow-1">
-                    <a href={link}>
+                    <Link to={link}>
                         <div className="preview-img background-cover w-100 h-100" style={{ backgroundImage: `url(${previewImage})` }}></div>
-                    </a>
+                    </Link>
                 </div>
                 <div className="col-12 col-xl-8 pl-xl-5">
                     <Link to={link}>
@@ -35,12 +35,13 @@ class BlogPreviewArea extends Component {
             
             for(posts in postsOnPage) {
 
-                const post = postsOnPage[posts];
-                const title = post.title.rendered;
-                const pageLink = '/blog/' + post.slug;
-                const date = moment(post.date).format("MMMM Do, YYYY");
-                const previewImage = post.acf.header_image.sizes.large;
-                const excerpt = convertStringToHTML(post.excerpt.rendered);
+                const post = postsOnPage[posts]; 
+                
+                const title = post.title.rendered ? post.title.rendered : '';
+                const pageLink = post.slug ? '/' + post.slug : '/blog';
+                const date = post.date ? moment(post.date).format("MMMM Do, YYYY") : '';
+                const previewImage = post.acf.header_image.sizes ? post.acf.header_image.sizes.large : '';
+                const excerpt = post.excerpt.rendered ? convertStringToHTML(post.excerpt.rendered) : post.excerpt.rendered;
                
                 postList.push(<BlogPreview
                     key={post.id}

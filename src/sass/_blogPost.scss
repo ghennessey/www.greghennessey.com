@@ -1,20 +1,21 @@
 .page-blog-post {
     $topOffset: -5rem;
+    $offsetAmount: -10%;
 
     .top-section {
         min-height: 372px;
-        //z-index: 0;
         overflow: hidden !important;
         position: relative;
         background-color: theme-color("g-grey-2");
 
-        .container {
-            z-index: 10;
-        }
+        // .container {
+        //     z-index: 10;
+        // }
 
         h1 {
             margin-top: $topOffset;
-            z-index: 10;
+            height: 100%;
+            //z-index: 10;
         }
 
         .background-image {
@@ -33,35 +34,73 @@
         background-image: url('../assets/rockywall.jpg');
         background-repeat: repeat;
 
-        //z-index: 10;
-
-        .blog-container {
+        .container {
             margin-top: $topOffset;
-            z-index: 10;
-
             color: theme-color("g-grey-2");
-
             font-family: 'Lato';
 
             a {
                 color: theme-color("link-color");
             }
 
-            $offsetAmount: -10%;
+            .wp-block-image {
+                display: inline-block;
 
-            .alignleft img {
-                float: left;
-                margin: 1rem;
-                margin-left: 0;
+                margin-top: 3rem;
+                margin-bottom: 3rem;
 
-                box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.7);
+                figure {
+                    padding: 0;
+                    margin: 0;
+                }
 
-                @include media-breakpoint-up(md) { 
-                    margin-left: $offsetAmount;
-                    box-shadow: -10px 0px 20px 5px rgba(0, 0, 0, 0.3),
-                    2px 2px 5px 0px rgba(0,0,0,0.7);
+                &.center {
+                        margin-left: 50%;
+                        transform: translate(-50%);
+                        padding: 0;
+                        box-shadow: -2px 2px 5px 0px rgba(0,0,0,0.7);
+                }
+    
+                &.alignwide {
+                    img {
+                        width: 100%;
+                        height: auto;
+
+                        @include media-breakpoint-up(md) { 
+                            width: 120%;
+                            margin-left: $offsetAmount;
+                            box-shadow: -20px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                            20px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                            0px 2px 5px 0px rgba(0,0,0,0.7);
+                        }
+                    }
+                }
+                &.alignleft {
+                    img {
+                        float: left;
+                        margin: 1rem;
+                        margin-left: 0;
+        
+                        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.7);
+        
+                        @include media-breakpoint-up(md) { 
+                            margin-left: $offsetAmount;
+                            box-shadow: -10px 0px 20px 5px rgba(0, 0, 0, 0.3),
+                            2px 2px 5px 0px rgba(0,0,0,0.7);
+                        }
+                    }
                 }
             }
+        }
+
+        .blog-container {
+
+
+
+        
+
+        
+            
             .alignright img {
                 float: right;
                 margin: 1rem;
@@ -76,16 +115,6 @@
                 }
 
             }
-            .aligncenter img {
-                //height: auto;
-                //width: 100%;
-                //margin: 1rem;
-                //margin-left: 0;
-                margin-left: 50%;
-                transform: translate(-50%);
-  
-                box-shadow: -2px 2px 5px 0px rgba(0,0,0,0.7);
-            }
 
             .alignwide img {
                 height: auto;
@@ -96,13 +125,7 @@
                 box-shadow: -5px 0px 20px 0px rgba(0, 0, 0, 0.3),
                             5px 0px 20px 0px rgba(0, 0, 0, 0.3);
 
-                @include media-breakpoint-up(md) { 
-                    width: 120%;
-                    margin-left: $offsetAmount;
-                    box-shadow: -20px 0px 20px 5px rgba(0, 0, 0, 0.3),
-                    20px 0px 20px 5px rgba(0, 0, 0, 0.3),
-                    0px 2px 5px 0px rgba(0,0,0,0.7);
-                }
+                
             }
         }
     }

@@ -44,20 +44,27 @@ class BlogPost extends Component {
     const date = moment(this.props.post.data.date).format("MMMM Do, YYYY");
     return (
       <div className="page-blog-post container-fluid d-flex flex-column">
-        <div className="row top-section d-flex align-items-center justify-content-center text-center g-shadow-1">
-          {this.state.showBackButton ? <button onClick={() => { this.props.history.goBack() }} className='btn btn-outline-light btn-back mt-3 ml-3'>Back</button> : null}
-          <div className="container h-100 w-100 d-flex flex-column justify-content-center text-center">
-            <h1 className="align-middle g-text-glow-with-shadow">{this.props.post.data.pageHeader}</h1>
+
+        {/* Top Section - Blog Title & Image */}
+        <div className="row top-section background-image background-cover" style={{ backgroundImage: `url(${ this.props.post.data.headerImage })` }}>
+          <div className="col d-flex text-center justify-content-center">
+            {/* Back Button */}
+            {this.state.showBackButton ? <button onClick={() => { this.props.history.goBack() }} className='btn btn-outline-light btn-back mt-3 ml-3'>Back</button> : null}
+            <h1 className="g-text-glow-with-shadow m-0 align-items-center d-flex">{this.props.post.data.pageHeader}</h1>
           </div>
-          <div className="background-image background-cover h-100 w-100" style={{ backgroundImage: `url(${ this.props.post.data.headerImage })` }}></div>
         </div>
-        <div className="row bottom-section">
-          <div className="container blog-container g-shadow-1 py-5 px-5 bg-white">
+
+        {/* Bottom Section - Blog Content */}
+        <div className="row bottom-section flex-grow-1">
+          <div className="col px-0">
+            <div className="container bg-white">
+              
             <div className="row">
-              <div className="col-12 mb-4 text-center"><h4>Greg Hennessey <img src={GreenBadge} alt="Blog Badge" style={{height: '50px', width: '50px'}}/> {date}</h4></div>
-              <div className="col-12 text-left">
+              <div className="col py-5 px-2 px-md-5">
                 {ReactHtmlParser(this.props.post.data.content)}
               </div>
+            </div>
+
             </div>
           </div>
         </div>
@@ -83,3 +90,25 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogPost)
+
+        // {/* Top Row - Header Image */}
+        // <div className="row top-section d-flex align-items-center justify-content-center text-center g-shadow-1">
+        //   {this.state.showBackButton ? <button onClick={() => { this.props.history.goBack() }} className='btn btn-outline-light btn-back mt-3 ml-3'>Back</button> : null}
+        //   <div className="container h-100 w-100 d-flex flex-column justify-content-center text-center">
+        //     <h1 className="align-middle g-text-glow-with-shadow">{this.props.post.data.pageHeader}</h1>
+        //   </div>
+        //   <div className="background-image background-cover h-100 w-100" style={{ backgroundImage: `url(${ this.props.post.data.headerImage })` }}></div>
+        // </div>
+        // {/* Bottom Row - Blog Content */}
+        // <div className="row bottom-section">
+        //   <div className="col px-0 d-flex">
+        //     <div className="container d-inline-block blog-container g-shadow-1 py-5 px-5 bg-white">
+        //       <div className="row">
+        //         <div className="col-12 mb-4 text-center px-0"><h4>Greg Hennessey <img src={GreenBadge} alt="Blog Badge" style={{height: '50px', width: '50px'}}/> {date}</h4></div>
+        //         <div className="col-12 text-left px-0">
+        //           {ReactHtmlParser(this.props.post.data.content)}
+        //         </div>
+        //       </div>
+        //     </div>
+        //   </div>
+        // </div>
